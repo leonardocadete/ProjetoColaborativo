@@ -67,3 +67,12 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Owin.Security
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo\obj\Debug\ProjetoColaborativo.csprojResolveAssemblyReference.cache
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo\obj\Debug\ProjetoColaborativo.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo\obj\Debug\ProjetoColaborativo.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\ProjetoColaborativo.Models.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\ProjetoColaborativo.Models.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\FluentNHibernate.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\NHibernate.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Iesi.Collections.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\FluentNHibernate.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\FluentNHibernate.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\NHibernate.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Iesi.Collections.xml

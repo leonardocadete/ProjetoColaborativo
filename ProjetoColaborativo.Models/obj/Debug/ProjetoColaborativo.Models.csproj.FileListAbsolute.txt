@@ -1,0 +1,12 @@
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\ProjetoColaborativo.Models.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\ProjetoColaborativo.Models.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\obj\Debug\ProjetoColaborativo.Models.csprojResolveAssemblyReference.cache
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\obj\Debug\ProjetoColaborativo.Models.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\obj\Debug\ProjetoColaborativo.Models.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\FluentNHibernate.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Iesi.Collections.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\NHibernate.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\FluentNHibernate.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\FluentNHibernate.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Iesi.Collections.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\NHibernate.xml
