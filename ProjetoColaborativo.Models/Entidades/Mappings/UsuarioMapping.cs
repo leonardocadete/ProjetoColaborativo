@@ -1,7 +1,6 @@
-﻿using FluentNHibernate.Conventions.Helpers;
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Mapping;
 
-namespace ProjetoColaborativo.Models.Mappings
+namespace ProjetoColaborativo.Models.Entidades.Mappings
 {
     public class UsuarioMapping : ClassMap<Usuario>
     {
@@ -12,7 +11,7 @@ namespace ProjetoColaborativo.Models.Mappings
             Id(x => x.Handle, "ID").Not.Nullable().GeneratedBy.Native(
                 builder => builder.AddParam("sequence", "SEQ_USUARIO"));
 
-            Map(x => x.Nome, "NOME");
+            Map(x => x.Nome, "NOME").Length(100);
         }
     }
 }

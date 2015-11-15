@@ -40,3 +40,12 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\System.Web.
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\obj\Debug\ProjetoColaborativo.Tests.csprojResolveAssemblyReference.cache
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\obj\Debug\ProjetoColaborativo.Tests.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\obj\Debug\ProjetoColaborativo.Tests.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\NHibernate.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\FluentNHibernate.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Models.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Iesi.Collections.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\NHibernate.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\FluentNHibernate.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\FluentNHibernate.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Models.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Iesi.Collections.xml

@@ -1,4 +1,4 @@
-﻿namespace ProjetoColaborativo.Models
+﻿namespace ProjetoColaborativo.Models.Entidades
 {
     public class Entidade
     {
