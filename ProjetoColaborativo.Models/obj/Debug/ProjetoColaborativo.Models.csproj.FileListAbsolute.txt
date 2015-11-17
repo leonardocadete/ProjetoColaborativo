@@ -10,3 +10,12 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\FluentNHib
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\FluentNHibernate.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Iesi.Collections.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\NHibernate.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Microsoft.Practices.Unity.Configuration.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Microsoft.Practices.Unity.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Microsoft.Practices.Unity.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Microsoft.Practices.Unity.Configuration.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Microsoft.Practices.Unity.RegistrationByConvention.xml

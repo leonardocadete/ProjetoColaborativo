@@ -49,3 +49,11 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\FluentNHibe
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\FluentNHibernate.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Models.pdb
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Iesi.Collections.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\WebActivatorEx.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.Unity.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.Unity.Mvc.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.Unity.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.Unity.Mvc.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.xml

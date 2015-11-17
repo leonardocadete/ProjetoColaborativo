@@ -76,3 +76,15 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\FluentNHibernate.pdb
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\FluentNHibernate.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\NHibernate.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Iesi.Collections.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.ServiceLocation.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.Unity.Configuration.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.Unity.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.Unity.RegistrationByConvention.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.ServiceLocation.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.ServiceLocation.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.Unity.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.Unity.Configuration.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.Unity.RegistrationByConvention.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.Unity.Mvc.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\WebActivatorEx.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.Unity.Mvc.xml

@@ -4,8 +4,16 @@ namespace ProjetoColaborativo.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ITeste teste;
+
+        public HomeController(ITeste teste)
+        {
+            this.teste = teste;
+        }
+
         public ActionResult Index()
         {
+            teste.Testar();
             return View();
         }
 
