@@ -57,3 +57,5 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.P
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.Unity.Mvc.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Business.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Business.pdb

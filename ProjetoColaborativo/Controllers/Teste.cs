@@ -9,7 +9,7 @@ namespace ProjetoColaborativo.Controllers
     {
         public void Testar()
         {
-            Console.WriteLine("Sabe maluko");
+            System.Diagnostics.Debug.Write("Sabe maluko");
         }
     }
 }

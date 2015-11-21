@@ -199,6 +199,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ITeste.cs" />
     <Compile Include="Controllers\Teste.cs" />
@@ -259,6 +260,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ProjetoColaborativo.Business\ProjetoColaborativo.Business.csproj">
+      <Project>{585f1ca8-0cf6-4c2b-b0fc-3d7640d2271d}</Project>
+      <Name>ProjetoColaborativo.Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProjetoColaborativo.Models\ProjetoColaborativo.Models.csproj">
       <Project>{b275be39-795d-4881-911e-85d77fe8bca8}</Project>
       <Name>ProjetoColaborativo.Models</Name>

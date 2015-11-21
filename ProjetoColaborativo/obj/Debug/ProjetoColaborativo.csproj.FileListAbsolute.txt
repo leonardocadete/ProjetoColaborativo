@@ -88,3 +88,5 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.Uni
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.Unity.Mvc.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\WebActivatorEx.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\Microsoft.Practices.Unity.Mvc.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\ProjetoColaborativo.Business.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo\bin\ProjetoColaborativo.Business.pdb

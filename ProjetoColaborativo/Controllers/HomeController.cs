@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Microsoft.Practices.Unity;
 
 namespace ProjetoColaborativo.Controllers
 {
@@ -6,6 +7,7 @@ namespace ProjetoColaborativo.Controllers
     {
         private readonly ITeste teste;
 
+        [InjectionConstructor]
         public HomeController(ITeste teste)
         {
             this.teste = teste;
