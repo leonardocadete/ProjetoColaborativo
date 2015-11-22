@@ -68,7 +68,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAO\GenerateDatabase.cs" />
+    <Compile Include="DAO\IRepositorio.cs" />
+    <Compile Include="DAO\Repositorio.cs" />
+    <Compile Include="DAO\SessionHelper.cs" />
     <Compile Include="Entidades\Entidade.cs" />
     <Compile Include="Entidades\Mappings\UsuarioMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

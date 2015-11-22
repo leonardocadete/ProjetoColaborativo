@@ -10,8 +10,7 @@ namespace ProjetoColaborativo
         //ConfigureAuth(app);
         public void Configuration(IAppBuilder app)
         {
-            GenerateDatabase.Generate();
+            //GenerateDatabase.Generate();
         }
     }
-
 }
