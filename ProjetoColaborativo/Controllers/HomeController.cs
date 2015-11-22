@@ -22,7 +22,7 @@ namespace ProjetoColaborativo.Controllers
             var usuarios = repositorioUsuario.RetornarTodos().First();
             usuarios.Nome = "Alterado";
             repositorioUsuario.Salvar(usuarios);
-            repositorioUsuario.Sessao.Flush();
+            //repositorioUsuario.Sessao.Flush();
             return View();
         }
 

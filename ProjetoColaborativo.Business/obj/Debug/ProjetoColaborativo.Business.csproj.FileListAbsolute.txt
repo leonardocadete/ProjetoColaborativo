@@ -25,5 +25,6 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Business\bin\Debug\System.W
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Business\bin\Debug\System.Web.WebPages.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Business\bin\Debug\System.Web.WebPages.Deployment.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Business\bin\Debug\System.Web.WebPages.Razor.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Business\obj\Debug\ProjetoColaborativo.Business.csprojResolveAssemblyReference.cache
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Business\obj\Debug\ProjetoColaborativo.Business.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Business\obj\Debug\ProjetoColaborativo.Business.pdb

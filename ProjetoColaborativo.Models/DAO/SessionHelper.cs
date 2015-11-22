@@ -31,6 +31,7 @@ namespace ProjetoColaborativo.Models.DAO
                 .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString).ShowSql)
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UsuarioMapping>())
                 .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
+                .ExposeConfiguration(cfg => cfg.SetProperty(Environment.CurrentSessionContextClass,"web"))
                 .BuildConfiguration();
 
             return configuration;
@@ -38,7 +39,7 @@ namespace ProjetoColaborativo.Models.DAO
 
         public static ISession GetCurrentSession()
         {
-            return BuildSessionFactory().OpenSession();
+            return BuildSessionFactory().GetCurrentSession();
         }
     }
 }

@@ -13,16 +13,16 @@ namespace ProjetoColaborativo
 {
     public class Bootstrapper
     {
-        public static IUnityContainer Initialise()
+        public static IUnityContainer Initialise(IUnityContainer unityContainer)
         {
-            var container = BuildUnityContainer();
+            var container = BuildUnityContainer(unityContainer);
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
             return container;
         }
 
-        private static IUnityContainer BuildUnityContainer()
+        private static IUnityContainer BuildUnityContainer(IUnityContainer container)
         {
-            var container = new UnityContainer();
+            //var container = new UnityContainer();
 
             // register all your components with the container here  
             //This is the important line to edit  
