@@ -31,6 +31,7 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Owin.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Models.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.Unity.Mvc.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\NHibernate.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Business.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\FluentNHibernate.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Iesi.Collections.dll
@@ -49,6 +50,7 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.P
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Models.pdb
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.Unity.Mvc.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\NHibernate.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Business.pdb
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\FluentNHibernate.pdb
