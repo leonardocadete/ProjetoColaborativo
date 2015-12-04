@@ -7,18 +7,15 @@ namespace ProjetoColaborativo.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ITeste teste;
         private readonly IRepositorio<Usuario> repositorioUsuario; 
 
-        public HomeController(ITeste teste, IRepositorio<Usuario> repositorioUsuario)
+        public HomeController(IRepositorio<Usuario> repositorioUsuario)
         {
-            this.teste = teste;
             this.repositorioUsuario = repositorioUsuario;
         }
 
         public ActionResult Index()
         {
-            teste.Testar();
             var usuarios = repositorioUsuario.RetornarTodos().First();
             usuarios.Nome = "Alterado";
             repositorioUsuario.Salvar(usuarios);
