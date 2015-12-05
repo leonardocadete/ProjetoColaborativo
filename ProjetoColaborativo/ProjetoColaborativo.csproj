@@ -202,8 +202,6 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ITeste.cs" />
-    <Compile Include="Controllers\Teste.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -1,25 +1,11 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using ProjetoColaborativo.Models.DAO;
-using ProjetoColaborativo.Models.Entidades;
+﻿using System.Web.Mvc;
 
 namespace ProjetoColaborativo.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IRepositorio<Usuario> repositorioUsuario; 
-
-        public HomeController(IRepositorio<Usuario> repositorioUsuario)
-        {
-            this.repositorioUsuario = repositorioUsuario;
-        }
-
         public ActionResult Index()
         {
-            var usuarios = repositorioUsuario.RetornarTodos().First();
-            usuarios.Nome = "Alterado";
-            repositorioUsuario.Salvar(usuarios);
-            //repositorioUsuario.Sessao.Flush();
             return View();
         }
 

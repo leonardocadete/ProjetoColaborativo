@@ -18,3 +18,4 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\Microsoft.
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\bin\Debug\NHibernate.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\obj\Debug\ProjetoColaborativo.Models.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\obj\Debug\ProjetoColaborativo.Models.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Models\obj\Debug\ProjetoColaborativo.Models.csprojResolveAssemblyReference.cache

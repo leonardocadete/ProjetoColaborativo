@@ -37,7 +37,7 @@ namespace ProjetoColaborativo
 
             RegisterRepositorios(container);
 
-            container.RegisterType<ITeste, Teste>();
+            //container.RegisterType<ITeste, Teste>();
         }
 
         private static void RegisterRepositorios(IUnityContainer container)
