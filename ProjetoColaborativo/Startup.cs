@@ -7,10 +7,9 @@ namespace ProjetoColaborativo
 {
     public partial class Startup
     {
-        //ConfigureAuth(app);
         public void Configuration(IAppBuilder app)
         {
-            //GenerateDatabase.Generate();
+            ConfigureAuth(app);
         }
     }
 }

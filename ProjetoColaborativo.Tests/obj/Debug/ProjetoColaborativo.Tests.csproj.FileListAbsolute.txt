@@ -59,3 +59,7 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\FluentNHibe
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\obj\Debug\ProjetoColaborativo.Tests.csprojResolveAssemblyReference.cache
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\obj\Debug\ProjetoColaborativo.Tests.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\obj\Debug\ProjetoColaborativo.Tests.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.Cookies.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.Cookies.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.xml

@@ -1,0 +1,32 @@
+﻿@model ProjetoColaborativo.ViewModels.Account.LoginViewModel
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", style = "width: 333px;" }))
+{
+    
+    @Html.AntiForgeryToken()
+    if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+    {
+        @Html.Raw(HttpUtility.HtmlDecode(Html.ValidationSummary().ToHtmlString()))
+    }
+
+    <h3 class="form-title text-center">Login</h3>
+
+    @Html.LabelFor(m => m.Login)
+    @Html.TextBoxFor(m => m.Login)
+
+    @Html.LabelFor(m => m.Senha)
+    @Html.PasswordFor(m => m.Senha)
+
+    <div class="size-12">
+        <div class="form-group text-center">
+            <button type="submit" class="btn blue" id="btnLogin">
+                LOGIN <i class="m-icon-swapright m-icon-white"></i>
+            </button>
+        </div>
+    </div>
+        
+}
