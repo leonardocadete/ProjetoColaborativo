@@ -12,6 +12,10 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
                 builder => builder.AddParam("sequence", "SEQ_USUARIO"));
 
             Map(x => x.Nome, "NOME").Length(100);
+
+            Map(x => x.Login, "LOGIN").Length(20);
+
+            Map(x => x.Senha, "SENHA").Length(20);
         }
     }
 }

@@ -26,10 +26,12 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\System.Web.
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\WebActivatorEx.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\System.Web.Optimization.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Owin.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.Cookies.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.Unity.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\NHibernate.dll
-C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Owin.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Models.dll
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.Unity.Mvc.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Business.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.dll
@@ -46,9 +48,11 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\System.Web.
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\System.Web.WebPages.Razor.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\System.Web.Optimization.xml
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.Cookies.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.Unity.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\NHibernate.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Models.pdb
+C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.Unity.Mvc.xml
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\ProjetoColaborativo.Business.pdb
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
@@ -59,7 +63,3 @@ C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\FluentNHibe
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\obj\Debug\ProjetoColaborativo.Tests.csprojResolveAssemblyReference.cache
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\obj\Debug\ProjetoColaborativo.Tests.dll
 C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\obj\Debug\ProjetoColaborativo.Tests.pdb
-C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.Cookies.dll
-C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.dll
-C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.Cookies.xml
-C:\workspace\ProjetoColaborativo\ProjetoColaborativo.Tests\bin\Debug\Microsoft.Owin.Security.xml

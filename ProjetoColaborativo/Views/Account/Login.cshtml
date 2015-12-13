@@ -2,31 +2,47 @@
 
 @{
     Layout = null;
+    ViewBag.Title = "Login";
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <link href="~/Content/signin.css" rel="stylesheet" />
+</head>
+<body>
 
-@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", style = "width: 333px;" }))
-{
-    
-    @Html.AntiForgeryToken()
-    if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
-    {
-        @Html.Raw(HttpUtility.HtmlDecode(Html.ValidationSummary().ToHtmlString()))
-    }
+    <div class="container" style="width: 391px;">
 
-    <h3 class="form-title text-center">Login</h3>
+        <form class="form-signin" method="POST" action="@Url.Action("Login", "Account", new { ViewBag.ReturnUrl})">
+            <h3>Projeto Colaborativo</h3>
 
-    @Html.LabelFor(m => m.Login)
-    @Html.TextBoxFor(m => m.Login)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <h2 class="form-signin-heading">Login</h2>
 
-    @Html.LabelFor(m => m.Senha)
-    @Html.PasswordFor(m => m.Senha)
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Login, new { @class = "form-control", placeholder = "Login", required = "required", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(m => m.Login)
+            </div>
 
-    <div class="size-12">
-        <div class="form-group text-center">
-            <button type="submit" class="btn blue" id="btnLogin">
-                LOGIN <i class="m-icon-swapright m-icon-white"></i>
-            </button>
-        </div>
+            <div class="form-group">
+                @Html.PasswordFor(m => m.Senha, new { @class = "form-control", placeholder = "Senha", required = "required" })
+                @Html.ValidationMessageFor(m => m.Senha)
+            </div>
+
+            <div class="form-group">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+            </div>
+        </form>
+
     </div>
-        
-}
+</body>
+</html>
