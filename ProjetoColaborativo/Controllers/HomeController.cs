@@ -2,6 +2,7 @@
 
 namespace ProjetoColaborativo.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -9,7 +10,6 @@ namespace ProjetoColaborativo.Controllers
             return View();
         }
 
-        [Authorize]
         public ActionResult About()
         {
             return View();
