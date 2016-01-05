@@ -5,6 +5,8 @@ using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using ProjetoColaborativo.Models.Entidades.Mappings;
 
+// aa
+
 namespace ProjetoColaborativo.Models.DAO
 {
     public class SessionHelper
