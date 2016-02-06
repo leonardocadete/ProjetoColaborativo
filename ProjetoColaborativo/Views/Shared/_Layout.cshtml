@@ -6,7 +6,6 @@
     <title>@ViewBag.Title - Projeto Colaborativo</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -23,6 +22,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Users", "Index", "Usuario")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
