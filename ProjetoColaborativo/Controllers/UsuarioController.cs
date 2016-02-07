@@ -31,6 +31,17 @@ namespace ProjetoColaborativo.Controllers
 
         public ActionResult Delete(long id)
         {
+            var usuario = repositorioUsuario.Retornar(id);
+            var usuarioViewModel = Mapper.Map<UsuarioViewModel>(usuario);
+            return View(usuarioViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            var usuario = repositorioUsuario.Retornar(id);
+            repositorioUsuario.Excluir(usuario);
             return RedirectToAction("Index");
         }
     }
