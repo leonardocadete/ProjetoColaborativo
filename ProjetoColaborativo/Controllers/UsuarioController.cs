@@ -24,8 +24,22 @@ namespace ProjetoColaborativo.Controllers
             return View(usuariosViewModel);
         }
 
-        public ActionResult Create(long id)
+        public ActionResult Create(long id = 0)
         {
+            var usuario = repositorioUsuario.Retornar(id) ?? new Usuario();
+            var usuarioViewModel = Mapper.Map<UsuarioViewModel>(usuario);
+            return View(usuarioViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Create(UsuarioViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            var entidade = Mapper.Map<Usuario>(viewModel);
+            repositorioUsuario.Salvar(entidade);
+
             return RedirectToAction("Index");
         }
 

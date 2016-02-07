@@ -9,6 +9,8 @@ namespace ProjetoColaborativo.Mappers
         protected override void Configure()
         {
            Mapper.CreateMap<Usuario, UsuarioViewModel>();
+
+           Mapper.CreateMap<UsuarioViewModel, Usuario>();
         }
     }
 }

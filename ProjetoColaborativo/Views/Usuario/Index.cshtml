@@ -5,6 +5,9 @@
 }
 
 <h2>Usuários</h2>
+@Html.ActionLink("Inserir", "Create", null, new {@class = "btn btn-default"})
+<br/>
+<br/>
 <form action="/Home/Search" method="get">
     <input type="text" name="q"/>
     <input type="submit" value="Buscar"/>
