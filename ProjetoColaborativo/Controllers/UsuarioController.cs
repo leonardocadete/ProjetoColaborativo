@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using ProjetoColaborativo.Models.DAO;
@@ -17,9 +18,9 @@ namespace ProjetoColaborativo.Controllers
             this.repositorioUsuario = repositorioUsuario;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string q)
         {
-            var usuarios = repositorioUsuario.RetornarTodos();
+            var usuarios = repositorioUsuario.RetornarTodos().Where(x => x.Nome.Contains(q));
             var usuariosViewModel = Mapper.Map<IList<UsuarioViewModel>>(usuarios);
             return View(usuariosViewModel);
         }
