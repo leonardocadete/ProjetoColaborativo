@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Transactions;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -23,6 +24,9 @@ namespace ProjetoColaborativo
 
             //Initialize unity container
             Bootstrapper.Initialise(container);
+
+            // Permitir abrir de um iframe
+            AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
         }
 
         protected static ISessionFactory sessionFactory

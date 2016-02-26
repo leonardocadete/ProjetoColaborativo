@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+
+
+<form id="form" action="/Vimaps/SendImage" method="post">
+	<input id="imgdata" name="imgdata" type="hidden" />
+	<input type="button" onclick="getimage()" value="vai" />
+</form>
+
+<script>
+
+function getimage(){
+	convertToDataURLviaCanvas('bgvimaps.png', function(base64Img){
+	    document.getElementById("imgdata").value = base64Img;
+		document.getElementById("form").submit();
+	}, "image/png");
+}
+
+function convertToDataURLviaCanvas(url, callback, outputFormat){
+    var img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = function(){
+        var canvas = document.createElement('CANVAS');
+        var ctx = canvas.getContext('2d');
+        var dataURL;
+        canvas.height = this.height;
+        canvas.width = this.width;
+        ctx.drawImage(this, 0, 0);
+        dataURL = canvas.toDataURL(/*outputFormat*/);
+        callback(dataURL);
+        canvas = null; 
+    };
+    img.src = url;
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "ShowSession";
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="/Content/paineis.css" rel="stylesheet" />
+</head>
+<body>
+
+    <canvas id="draw-canvas"></canvas>
+
+    <div id="left-panel">
+        <div class="bg-overlay"></div>
+        <div class="panel-trigger"></div>
+        <div class="panel-content">
+
+            <input type="button" value="" class="btn btn-default button-toolbar icon-rect">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-elipse">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-pencil">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-text">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-pin">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-youtube">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-speaker">
+        </div>
+    </div>
+
+    <div id="right-panel">
+        <div class="bg-overlay"></div>
+        <div class="panel-trigger"></div>
+        <div class="panel-content">
+
+            <input type="button" value="" class="btn btn-default button-toolbar icon-rect">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-elipse">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-pencil">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-text">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-pin">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-youtube">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-speaker">
+        </div>
+    </div>
+
+    <div id="bottom-panel">
+        <div class="bg-overlay"></div>
+        <div class="panel-content">
+
+            <div class="miniaturas">
+                <ul id="sortable">
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura selecionado">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                    <li class="miniatura">
+                        <img src="/bgvimaps.png" />
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <div class="bg"></div>
+        <div class="drag">Ferramentas</div>
+        <div class="tools">
+            <input type="button" value="" class="btn btn-default button-toolbar icon-rect" />
+            <input type="button" value="" class="btn btn-default button-toolbar icon-elipse" />
+            <input type="button" value="" class="btn btn-default button-toolbar icon-pencil" />
+            <input type="button" value="" class="btn btn-default button-toolbar icon-text" />
+            <input type="button" value="" class="btn btn-default button-toolbar icon-pin" />
+            <input type="button" value="" class="btn btn-default button-toolbar icon-youtube" />
+            <input type="button" value="" class="btn btn-default button-toolbar icon-speaker" />
+            <div class="clear"></div>
+        </div>
+    </div>
+
+    <script src="/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="/Scripts/jquery-ui.min.js"></script>
+    <script src="/Scripts/fabric.min.js"></script>
+    <script src="/Scripts/paineis.js"></script>
+    <script>
+
+        $("#left-panel .panel-trigger").on("mouseenter", function() {
+            $(this).parent().animate({ left: 0 }, 100);
+        });
+
+        $("#left-panel").on("mouseleave", function() {
+            $(this).animate({ left: -42 }, 100);
+        });
+
+        //$("#right-panel .panel-trigger").on("mouseenter", function() {
+        //    $(this).parent().animate({ right: 0 }, 100);
+        //});
+
+        //$("#right-panel").on("mouseleave", function() {
+        //    $(this).animate({ right: -42 }, 100);
+        //});
+
+        $("#bottom-panel").on("mouseenter", function() {
+            $(this).animate({ bottom: 0 }, 100);
+        });
+
+        $("#bottom-panel").on("mouseleave", function() {
+            $(this).animate({ bottom: $("#bottom-panel").height() * -1 + 20 });
+        });
+
+        (function () {
+
+            setCanvasBackground('@ViewBag.UploadedImageUrl');
+
+            $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
+            $("#bottom-panel").delay(1000).animate({ bottom: $("#bottom-panel").height() * -1 + 20 });
+
+            $(".toolbar").draggable({ handle: ".drag" });
+
+            $("#sortable").sortable();
+            $("#sortable").disableSelection();
+
+            $(".miniatura").on("click", function() {
+                $(".miniatura").removeClass("selecionado");
+                $(this).addClass("selecionado");
+            });
+
+        })();
+
+    </script>
+
+</body>
+</html>
+
+
+
