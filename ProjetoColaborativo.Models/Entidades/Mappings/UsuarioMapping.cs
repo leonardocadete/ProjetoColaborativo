@@ -16,6 +16,8 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
             Map(x => x.Login, "LOGIN").Length(20);
 
             Map(x => x.Senha, "SENHA").Length(20);
+
+            Map(x => x.Cpf, "CPF").Length(14);
         }
     }
 }

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ProjetoColaborativo.ViewModels.Usuario.UsuarioViewModel>
+
+@{
+    ViewBag.Title = "Usuários";
+}
+
+<h2>Usuários</h2>
+@Html.ActionLink("Inserir", "Create", null, new {@class = "btn btn-default"})
+<br/>
+<br/>
+<form action="Index" method="get">
+    <input type="text" name="q"/>
+    <input type="submit" value="Buscar"/>
+</form>
+    
+<table class="table">
+    <tr>
+        <th>
+            Nome
+        </th>
+        <th>
+            Login
+        </th>
+        <th>
+            Cpf
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @item.Nome
+        </td>
+        <td>
+            @item.Login
+        </td>
+        <td>
+            @item.Cpf
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Create", new { id = item.Handle })
+            @Html.ActionLink("Excluir", "Delete", new { id = item.Handle })
+        </td>
+    </tr>
+    }
+</table>
