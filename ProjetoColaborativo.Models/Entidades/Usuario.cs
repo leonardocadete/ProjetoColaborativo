@@ -7,5 +7,7 @@
         public virtual string Login { get; set; }
 
         public virtual string Senha { get; set; }
+
+        public virtual string Cpf { get; set; }
     }
 }

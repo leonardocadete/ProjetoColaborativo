@@ -7,6 +7,7 @@ using System.Web.Routing;
 using Microsoft.Practices.Unity;
 using NHibernate;
 using NHibernate.Context;
+using ProjetoColaborativo.Mappers;
 using ProjetoColaborativo.Models.DAO;
 
 namespace ProjetoColaborativo
@@ -23,6 +24,8 @@ namespace ProjetoColaborativo
 
             //Initialize unity container
             Bootstrapper.Initialise(container);
+            AutoMapperConfig.Register(container);
+
         }
 
         protected static ISessionFactory sessionFactory
