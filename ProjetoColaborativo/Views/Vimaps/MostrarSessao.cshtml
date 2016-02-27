@@ -1,4 +1,4 @@
-﻿
+﻿@model ProjetoColaborativo.Models.Entidades.SessaoColaborativa
 @{
     Layout = null;
     ViewBag.Title = "ShowSession";
@@ -50,51 +50,14 @@
 
             <div class="miniaturas">
                 <ul id="sortable">
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura selecionado">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
-                    <li class="miniatura">
-                        <img src="/bgvimaps.png" />
-                    </li>
+
+                    @foreach (var os in @Model.ObjetosDaSessao)
+                    {
+                        <li class="miniatura">
+                            <img src="@os.UrlImagem" />
+                        </li>
+                    }
+
                 </ul>
             </div>
 
@@ -148,7 +111,7 @@
 
         (function () {
 
-            setCanvasBackground('@ViewBag.UploadedImageUrl');
+            setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault().UrlImagem');
 
             $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
             $("#bottom-panel").delay(1000).animate({ bottom: $("#bottom-panel").height() * -1 + 20 });

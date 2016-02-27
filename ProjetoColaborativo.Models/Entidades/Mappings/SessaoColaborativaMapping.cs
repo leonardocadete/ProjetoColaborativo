@@ -16,8 +16,12 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
             Id(x => x.Handle, "ID").Not.Nullable().GeneratedBy.Native(
                 builder => builder.AddParam("sequence", "SEQ_SESSAOCOLABORATIVA"));
 
-            Map(x => x.DataCriacao, "DATACRIACAO").Not.Nullable().Default(DateTime.Now.ToString());
+            Map(x => x.DataCriacao, "DATACRIACAO").Not.Nullable();
             Map(x => x.Descricao, "DESCRICAO").Not.Nullable().Length(100);
+
+            References(x => x.Usuario).Column("USUARIOID").Not.Nullable();
+
+            HasMany(x => x.ObjetosDaSessao).KeyColumn("ID");
         }
     }
 }

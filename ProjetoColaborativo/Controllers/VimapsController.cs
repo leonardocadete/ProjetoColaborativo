@@ -4,8 +4,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
 
@@ -13,11 +15,17 @@ namespace ProjetoColaborativo.Controllers
 {
     public class VimapsController : Controller
     {
+        private readonly IRepositorio<Usuario> _repositorioUsuarios;
         private readonly IRepositorio<SessaoColaborativa> _repositorioSessaoColaborativa;
+        private readonly IRepositorio<ObjetoSessao> _repositorioObjetosSessaoColaborativa;
 
-        public VimapsController(IRepositorio<SessaoColaborativa> repositorioSessaoColaborativa)
+        public VimapsController(IRepositorio<Usuario> repositorioUsuarios,
+                                IRepositorio<SessaoColaborativa> repositorioSessaoColaborativa,
+                                IRepositorio<ObjetoSessao> repositorioObjetosSessaoColaborativa)
         {
+            this._repositorioUsuarios = repositorioUsuarios;
             this._repositorioSessaoColaborativa = repositorioSessaoColaborativa;
+            this._repositorioObjetosSessaoColaborativa = repositorioObjetosSessaoColaborativa;
         }
 
         [HttpPost]
@@ -50,24 +58,100 @@ namespace ProjetoColaborativo.Controllers
                 TempData["ThumbImageSavedURL"] = "/UserData/Images/" + filename;
             }
 
-            return RedirectToAction("ShowSession");
+            return RedirectToAction("MostrarSessao");
         }
 
         [Authorize]
-        public ActionResult ShowSession(int? sessionid)
+        public ActionResult MostrarSessao(long? id)
         {
-            SessaoColaborativa sessao = _repositorioSessaoColaborativa.RetornarTodos().FirstOrDefault();
+            if (id == null)
+                return RedirectToAction("EscolherSessao");
+
+            Usuario usuario = _repositorioUsuarios.RetornarTodos().FirstOrDefault(x => x.Login.Equals(User.Identity.Name));
+            SessaoColaborativa sessao = usuario.SessoesColaborativas.FirstOrDefault(x => x.Handle == id);
+
             if (sessao == null)
+                return RedirectToAction("EscolherSessao");
+
+            return View(sessao);
+        }
+
+        [Authorize]
+        public ActionResult EscolherSessao()
+        {
+            Usuario usuario = _repositorioUsuarios.RetornarTodos().FirstOrDefault(x => x.Login.Equals(User.Identity.Name));
+            
+            ViewBag.SessaoColaborativaId = new SelectList(
+                usuario.SessoesColaborativas,
+                "Handle",
+                "Descricao"
+            );
+
+
+            return View(usuario);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult EscolherSessao(string SessaoColaborativaId)
+        {
+            if (!string.IsNullOrEmpty(SessaoColaborativaId))
             {
-                sessao = new SessaoColaborativa()
+                SessaoColaborativa sessao = _repositorioSessaoColaborativa.Retornar(long.Parse(SessaoColaborativaId));
+
+                if (sessao != null)
                 {
-                    Descricao = "teste"
-                };
-                _repositorioSessaoColaborativa.Incluir(sessao);
+                    var img = TempData["ThumbImageSavedURL"];
+                    if (img != null)
+                    {
+                        ObjetoSessao os = new ObjetoSessao()
+                        {
+                            SessaoColaborativa = sessao,
+                            UrlImagem = img.ToString(),
+                            DataCriacao = DateTime.Now
+                        };
+                        _repositorioObjetosSessaoColaborativa.Salvar(os);
+                    }
+
+                    return RedirectToAction("MostrarSessao", "Vimaps", new { id = SessaoColaborativaId });
+                }
+
             }
 
-            ViewBag.UploadedImageUrl = TempData["ThumbImageSavedURL"];
             return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult CriarSessaoColaborativa(string descricao)
+        {
+            Usuario usuario = _repositorioUsuarios.RetornarTodos().FirstOrDefault(x => x.Login.Equals(User.Identity.Name));
+
+            if (!string.IsNullOrEmpty(descricao))
+            {
+                SessaoColaborativa sessao = new SessaoColaborativa()
+                {
+                    Usuario = usuario,
+                    DataCriacao = DateTime.Now,
+                    Descricao = descricao
+                };
+
+                var img = TempData["ThumbImageSavedURL"];
+                if (img != null)
+                {
+                    ObjetoSessao os = new ObjetoSessao()
+                    {
+                        SessaoColaborativa = sessao,
+                        UrlImagem = img.ToString(),
+                        DataCriacao = DateTime.Now
+                    };
+                    _repositorioObjetosSessaoColaborativa.Salvar(os);
+                }
+
+                _repositorioSessaoColaborativa.Salvar(sessao);
+            }
+
+            return View("EscolherSessao", usuario);
         }
 
         private ImageCodecInfo GetEncoder(ImageFormat format)
@@ -77,7 +161,7 @@ namespace ProjetoColaborativo.Controllers
             foreach (var codec in codecs)
                 if (codec.FormatID == format.Guid)
                     return codec;
-            
+
             return null;
         }
     }

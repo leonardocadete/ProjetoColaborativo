@@ -286,11 +286,12 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Vimaps\ShowSession.cshtml" />
+    <Content Include="Views\Vimaps\MostrarSessao.cshtml" />
     <Content Include="Views\Vimaps\SendImage.cshtml" />
     <None Include="Views\Usuario\Create.cshtml" />
     <None Include="Views\Usuario\Delete.cshtml" />
     <None Include="Views\Usuario\Index.cshtml" />
+    <Content Include="Views\Vimaps\EscolherSessao.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

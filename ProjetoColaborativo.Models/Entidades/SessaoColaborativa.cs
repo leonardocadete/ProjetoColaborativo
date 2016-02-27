@@ -12,6 +12,9 @@ namespace ProjetoColaborativo.Models.Entidades
 
         public virtual string Descricao { get; set; }
 
-        public virtual List<Usuario> ListaUsuarios { get; set; }
+        public virtual Usuario Usuario { get; set; }
+
+        public virtual IList<Usuario> ListaUsuarios { get; set; }
+        public virtual IList<ObjetoSessao> ObjetosDaSessao { get; set; }
     }
 }

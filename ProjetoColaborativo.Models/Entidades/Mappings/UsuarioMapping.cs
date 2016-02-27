@@ -18,6 +18,8 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
             Map(x => x.Senha, "SENHA").Length(20);
 
             Map(x => x.Cpf, "CPF").Length(14);
+
+            HasMany(x => x.SessoesColaborativas).KeyColumn("ID");
         }
     }
 }
