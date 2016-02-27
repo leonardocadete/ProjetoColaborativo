@@ -20,7 +20,9 @@ namespace ProjetoColaborativo.Controllers
 
         public ActionResult Index(string q)
         {
-            var usuarios = repositorioUsuario.RetornarTodos().Where(x => x.Nome.Contains(q));
+            var usuarios = repositorioUsuario.RetornarTodos();
+            if (q != null)
+                usuarios = usuarios.Where(x => x.Nome.Contains(q));
             var usuariosViewModel = Mapper.Map<IList<UsuarioViewModel>>(usuarios);
             return View(usuariosViewModel);
         }

@@ -92,13 +92,6 @@ namespace ProjetoColaborativo
                 Transaction.Current = null;
                 session.Dispose();
             }
-            //if (!this.Request.IsAuthenticated && this.IsAjaxRequest())
-            //{
-            //    this.Response.TrySkipIisCustomErrors = true;
-            //    this.Response.ClearContent();
-            //    this.Response.StatusCode = 401;
-            //    this.Response.RedirectLocation = null;
-            //}
         }
 
         /// <summary>
