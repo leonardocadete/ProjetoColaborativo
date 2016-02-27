@@ -6,11 +6,20 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ProjetoColaborativo.Models.DAO;
+using ProjetoColaborativo.Models.Entidades;
 
 namespace ProjetoColaborativo.Controllers
 {
     public class VimapsController : Controller
     {
+        private readonly IRepositorio<SessaoColaborativa> _repositorioSessaoColaborativa;
+
+        public VimapsController(IRepositorio<SessaoColaborativa> repositorioSessaoColaborativa)
+        {
+            this._repositorioSessaoColaborativa = repositorioSessaoColaborativa;
+        }
+
         [HttpPost]
         public ActionResult SendImage(string imgdata)
         {
@@ -47,6 +56,16 @@ namespace ProjetoColaborativo.Controllers
         [Authorize]
         public ActionResult ShowSession(int? sessionid)
         {
+            SessaoColaborativa sessao = _repositorioSessaoColaborativa.RetornarTodos().FirstOrDefault();
+            if (sessao == null)
+            {
+                sessao = new SessaoColaborativa()
+                {
+                    Descricao = "teste"
+                };
+                _repositorioSessaoColaborativa.Incluir(sessao);
+            }
+
             ViewBag.UploadedImageUrl = TempData["ThumbImageSavedURL"];
             return View();
         }

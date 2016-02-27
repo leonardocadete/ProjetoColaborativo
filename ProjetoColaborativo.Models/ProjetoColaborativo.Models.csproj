@@ -72,7 +72,9 @@
     <Compile Include="DAO\Repositorio.cs" />
     <Compile Include="DAO\SessionHelper.cs" />
     <Compile Include="Entidades\Entidade.cs" />
+    <Compile Include="Entidades\Mappings\SessaoColaborativaMapping.cs" />
     <Compile Include="Entidades\Mappings\UsuarioMapping.cs" />
+    <Compile Include="Entidades\SessaoColaborativa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entidades\Usuario.cs" />
   </ItemGroup>
