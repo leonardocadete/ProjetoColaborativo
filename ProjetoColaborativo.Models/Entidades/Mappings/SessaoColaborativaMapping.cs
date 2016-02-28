@@ -19,9 +19,8 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
             Map(x => x.DataCriacao, "DATACRIACAO").Not.Nullable();
             Map(x => x.Descricao, "DESCRICAO").Not.Nullable().Length(100);
 
-            References(x => x.Usuario).Column("USUARIOID").Not.Nullable();
-
-            HasMany(x => x.ObjetosDaSessao).KeyColumn("ID");
+            References(x => x.Usuario).Column("USUARIO").Cascade.All();
+            HasMany(x => x.ObjetosDaSessao).KeyColumn("SESSAOCOLABORATIVA");
         }
     }
 }

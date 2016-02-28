@@ -18,8 +18,8 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
 
             Map(x => x.UrlImagem, "URLIMAGEM").Length(100);
             Map(x => x.DataCriacao, "DATACRIACAO").Not.Nullable();
-            
-            References(x => x.SessaoColaborativa).Column("SESSAOCOLABORATIVAID").Not.Nullable();
+
+            References(x => x.SessaoColaborativa).Column("SESSAOCOLABORATIVA").Cascade.All();
         }
 
     }

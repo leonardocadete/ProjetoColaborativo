@@ -287,7 +287,6 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Vimaps\MostrarSessao.cshtml" />
-    <Content Include="Views\Vimaps\SendImage.cshtml" />
     <None Include="Views\Usuario\Create.cshtml" />
     <None Include="Views\Usuario\Delete.cshtml" />
     <None Include="Views\Usuario\Index.cshtml" />

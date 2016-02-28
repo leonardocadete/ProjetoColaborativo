@@ -111,7 +111,12 @@
 
         (function () {
 
+            @if (Model.ObjetosDaSessao.Count > 0)
+            {
+                <text>
             setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault().UrlImagem');
+                </text>
+            }
 
             $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
             $("#bottom-panel").delay(1000).animate({ bottom: $("#bottom-panel").height() * -1 + 20 });

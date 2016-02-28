@@ -67,8 +67,7 @@ namespace ProjetoColaborativo.Controllers
             if (id == null)
                 return RedirectToAction("EscolherSessao");
 
-            Usuario usuario = _repositorioUsuarios.RetornarTodos().FirstOrDefault(x => x.Login.Equals(User.Identity.Name));
-            SessaoColaborativa sessao = usuario.SessoesColaborativas.FirstOrDefault(x => x.Handle == id);
+            SessaoColaborativa sessao = _repositorioSessaoColaborativa.Consultar(x => x.Handle == id).FirstOrDefault();
 
             if (sessao == null)
                 return RedirectToAction("EscolherSessao");
@@ -79,16 +78,19 @@ namespace ProjetoColaborativo.Controllers
         [Authorize]
         public ActionResult EscolherSessao()
         {
-            Usuario usuario = _repositorioUsuarios.RetornarTodos().FirstOrDefault(x => x.Login.Equals(User.Identity.Name));
-            
+            List<SessaoColaborativa> sessoes =
+                _repositorioSessaoColaborativa.RetornarTodos()
+                    .Where(x => x.Usuario.Nome.Equals(User.Identity.Name))
+                    .ToList();
+
+            ViewBag.TemSessoes = sessoes.Count > 0;
             ViewBag.SessaoColaborativaId = new SelectList(
-                usuario.SessoesColaborativas,
+                sessoes,
                 "Handle",
                 "Descricao"
             );
 
-
-            return View(usuario);
+            return View();
         }
 
         [Authorize]
@@ -149,6 +151,7 @@ namespace ProjetoColaborativo.Controllers
                 }
 
                 _repositorioSessaoColaborativa.Salvar(sessao);
+                return RedirectToAction("MostrarSessao", "Vimaps", new { id = sessao.Handle });
             }
 
             return View("EscolherSessao", usuario);

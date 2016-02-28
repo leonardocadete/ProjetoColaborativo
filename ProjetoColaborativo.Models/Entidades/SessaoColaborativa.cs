@@ -8,6 +8,12 @@ namespace ProjetoColaborativo.Models.Entidades
 {
     public class SessaoColaborativa : Entidade
     {
+        public SessaoColaborativa()
+        {
+            this.ListaUsuarios = new List<Usuario>();
+            this.ObjetosDaSessao = new List<ObjetoSessao>();
+        }
+
         public virtual DateTime DataCriacao { get; set; }
 
         public virtual string Descricao { get; set; }

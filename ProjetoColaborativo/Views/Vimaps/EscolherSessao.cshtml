@@ -1,14 +1,13 @@
 ﻿
-@model ProjetoColaborativo.Models.Entidades.Usuario
 @{
     ViewBag.Title = "Escolher sessão colaborativa";
 }
 
-@if (@Model.SessoesColaborativas.Count > 0)
+@if (ViewBag.TemSessoes)
 {
     using (@Html.BeginForm("EscolherSessao", "Vimaps", FormMethod.Post, new {@class = "form-inline"}))
     {
-        <h2>Escolha uma sessão colaborativa:</h2>
+        <h2>Escolha uma sessão colaborativa <b>existente</b>:</h2>
         @Html.DropDownList("SessaoColaborativaId", null, new {@class = "form-control"})
         <input type="submit" value="Continuar" class="btn "/>
     }
