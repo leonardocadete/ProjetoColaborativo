@@ -62,16 +62,17 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [Authorize]
-        public ActionResult MostrarSessao(long? id)
+        public ActionResult MostrarSessao(long? id, long? objetoid)
         {
             if (id == null)
                 return RedirectToAction("EscolherSessao");
 
             SessaoColaborativa sessao = _repositorioSessaoColaborativa.Consultar(x => x.Handle == id).FirstOrDefault();
-
+            
             if (sessao == null)
                 return RedirectToAction("EscolherSessao");
 
+            ViewBag.ObjectId = objetoid;
             return View(sessao);
         }
 

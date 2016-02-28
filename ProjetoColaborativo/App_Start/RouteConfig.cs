@@ -12,6 +12,18 @@ namespace ProjetoColaborativo
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            
+            routes.MapRoute(
+                name: "MostrarSessao",
+                url: "{controller}/{action}/{id}/{objetoid}",
+                defaults: new
+                {
+                    controller = "Vimaps",
+                    action = "MostrarSessao",
+                    id = UrlParameter.Optional,
+                    objetoid = UrlParameter.Optional
+                }
+            );
 
             routes.MapRoute(
                 name: "Default",
