@@ -1,10 +1,11 @@
 
 (function () {
     'use strict';
-    
+
     console.log("starting collab...");
 
     var urlbase = document.location.protocol + "//177.131.33.18:8080";
+    var showiframe = false;
 
     var headElement = document.getElementsByTagName("head")[0];
     var bodyElement = document.getElementsByTagName("body")[0];
@@ -22,6 +23,18 @@
     var divfooter = document.createElement("div");
     divfooter.id = "footer";
     bodyElement.appendChild(divfooter);
+
+    // creating close button
+    var buttonclose = document.createElement("button");
+    buttonclose.id = "bfechar";
+    buttonclose.name = "bfechar";
+    buttonclose.style["display"] = "none";
+    var tc = document.createTextNode("Voltar para o Vimaps");
+    buttonclose.appendChild(tc);
+    buttonclose.onclick = function() {
+        closeCollab();
+    };
+    divfooter.appendChild(buttonclose);
 
     // creating button
     var button = document.createElement("button");
@@ -41,14 +54,19 @@
                 document.getElementById("imgdata").value = canvas[i].toDataURL();
                 document.getElementById("formCollab").submit();
                 document.getElementById("overlay").style["display"] = "block";
+                document.getElementById("bfechar").style["display"] = "block";
                 document.getElementById("benviar").style["display"] = "none";
+                showiframe = true;
                 return;
             }
         }
 
         document.getElementById("imgdata").value = canvas[0].toDataURL();
         document.getElementById("formCollab").submit();
+        showiframe = true;
         document.getElementById("overlay").style["display"] = "block";
+        document.getElementById("bfechar").style["display"] = "block";
+        document.getElementById("benviar").style["display"] = "none";
     };
 
     var t = document.createTextNode("Enviar para sessão colaborativa");
@@ -72,12 +90,11 @@
     var iframe = document.createElement("iframe");
     iframe.id = "iframeCollab";
     iframe.name = "iframeCollab";
-    iframe.src = "";
+    iframe.src = "about:blank";
     iframe.frameBorder = "0";
 
     iframe.onload = function () {
-        console.log(iframe.src);
-        if(iframe.src.indexOf(urlbase) == 0)
+        if (showiframe)
             document.getElementById("iframeCollab").style["display"] = "block";
     }
 
@@ -88,27 +105,16 @@
     overlay.id = "overlay";
     overlay.name = "overlay";
     overlay.onclick = function () {
-        document.getElementById("iframeCollab").style["display"] = "none";
-        document.getElementById("overlay").style["display"] = "none";
-        document.getElementById("benviar").style["display"] = "block";
-        //document.getElementById("divlogin").style["display"] = "none";
+        closeCollab();
     };
     bodyElement.appendChild(overlay);
 
-    // login
-    //var login = document.createElement("div");
-    //login.id = "divlogin";
-    //login.name = "divlogin";
-    //login.className = "login-box"; 
-    //bodyElement.appendChild(login);
-    //
-    //// create login iframe
-    //var loginiframe = document.createElement("iframe");
-    //loginiframe.id = "loginiframeCollab";
-    //loginiframe.name = "loginiframeCollab";
-    //loginiframe.src = "http://177.131.33.18:8080";
-    //loginiframe.frameBorder = "0";
-    //login.appendChild(loginiframe);
+    function closeCollab() {
+        document.getElementById("iframeCollab").style["display"] = "none";
+        document.getElementById("overlay").style["display"] = "none";
+        document.getElementById("bfechar").style["display"] = "none";
+        document.getElementById("benviar").style["display"] = "block";
+    }
 
 })();
 

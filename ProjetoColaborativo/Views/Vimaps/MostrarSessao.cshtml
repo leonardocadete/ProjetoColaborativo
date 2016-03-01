@@ -135,11 +135,17 @@
 
     })();
 
-    var json = @Html.Raw(ViewBag.LerElementos);
+    @if (ViewBag.LerElementos != null)
+    {
+        <text>
+        var json = @Html.Raw(ViewBag.LerElementos);
 
-    canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
-        fabric.log(o, object);
-    });
+        canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
+            fabric.log(o, object);
+        });
+        </text>
+    }
+
 
 
 

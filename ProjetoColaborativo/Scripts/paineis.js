@@ -4,24 +4,20 @@ var canvas1 = new fabric.Canvas('draw-canvas');
 
 window.addEventListener('resize', resizeCanvas, false);
 
-var debug;
-
 canvas1.on('object:modified', function (e) {
-    debug = e.target;
-    SaveObject(e.target);
+    SaveObject(e.target, false);
 });
 
-canvas1.on('mouse:up', function (e) {
-    SaveObject(e.target);
+canvas1.on('object:removed', function (e) {
+    SaveObject(e.target, true);
 });
 
-function SaveObject(target) {
+function SaveObject(target, remover) {
     console.log(target);
-
     $.ajax({
         type: "POST",
         url: "",
-        data: "{ 'guid' : '" + target.id + "', 'json' : '" + JSON.stringify(target.toJSON(['id'])) + "'}",
+        data: "{ 'guid' : '" + target.id + "', 'remover' : '" + remover + "', 'json' : '" + JSON.stringify(target.toJSON(['id'])) + "'}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) { console.log(data) },
@@ -64,6 +60,7 @@ var drawingobject;
 $("input[type='button'].icon-rect").click(function () {
 
     draw = true;
+    var drawingobject;
 
     canvas1.on('mouse:down', function (option) {
 
@@ -76,7 +73,7 @@ $("input[type='button'].icon-rect").click(function () {
                 startX = option.e.offsetX,
                 id = uuid.v4();
 
-            var drawingobject = new fabric.Rect({
+            drawingobject = new fabric.Rect({
                 top: startY,
                 left: startX,
                 width: 0,
@@ -100,6 +97,7 @@ $("input[type='button'].icon-rect").click(function () {
     });
 
     canvas1.on('mouse:up', function () {
+        SaveObject(drawingobject, false);
         draw = false;
         canvas1.off('mouse:move');
         canvas1.off('mouse:down');
@@ -120,6 +118,8 @@ $("input[type='button'].icon-elipse").click(function () {
 
         if (!draw) return false;
 
+        var drawingobject;
+
         if (typeof option.target != "undefined") {
             return;
         } else {
@@ -129,7 +129,7 @@ $("input[type='button'].icon-elipse").click(function () {
 
             var pointer = canvas1.getPointer(option.e);
 
-            var drawingobject = new fabric.Ellipse({
+            drawingobject = new fabric.Ellipse({
                 top: startY,
                 left: startX,
                 originX: 'left',
@@ -174,6 +174,7 @@ $("input[type='button'].icon-elipse").click(function () {
     });
 
     canvas1.on('mouse:up', function () {
+        SaveObject(drawingobject, false);
         draw = false;
         canvas1.off('mouse:move');
         canvas1.off('mouse:down');

@@ -34,7 +34,7 @@ namespace ProjetoColaborativo.Controllers
         [HttpPost]
         [Authorize]
         [ActionName("MostrarSessao")]
-        public ActionResult SalvarElementoMultimidia(long? id, long? objetoid, Guid guid, string json)
+        public ActionResult SalvarElementoMultimidia(long? id, long? objetoid, Guid guid, string json, bool remover = false)
         {
             if (id == null)
                 return RedirectToAction("EscolherSessao");
@@ -62,8 +62,10 @@ namespace ProjetoColaborativo.Controllers
                 el.Json = json;
             }
 
-
-            _repositorioElementoMultimidia.Salvar(el);
+            if(remover)
+                _repositorioElementoMultimidia.Excluir(el);
+            else
+                _repositorioElementoMultimidia.Salvar(el);
 
             return Json(
                 "ok", JsonRequestBehavior.AllowGet)
@@ -114,9 +116,14 @@ namespace ProjetoColaborativo.Controllers
             if (sessao == null)
                 return RedirectToAction("EscolherSessao");
 
-            ObjetoSessao obj = _repositorioObjetosSessaoColaborativa.Consultar(x => x.Handle == objetoid).FirstOrDefault();
+            ObjetoSessao obj = _repositorioObjetosSessaoColaborativa.Consultar(x => x.SessaoColaborativa == sessao && x.Handle == objetoid).FirstOrDefault();
 
-            if (obj != null)
+            if (obj == null)
+            {
+                obj = _repositorioObjetosSessaoColaborativa.Consultar(x => x.SessaoColaborativa == sessao).FirstOrDefault();
+                return RedirectToAction("MostrarSessao", new { id = id, objetoid = obj.Handle });
+            }
+            else
             {
                 List<string> els =
                     _repositorioElementoMultimidia.Consultar(x => x.ObjetoSessao == obj).Select(x => x.Json).ToList();
