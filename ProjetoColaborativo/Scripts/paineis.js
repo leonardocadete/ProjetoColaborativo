@@ -4,6 +4,33 @@ var canvas1 = new fabric.Canvas('draw-canvas');
 
 window.addEventListener('resize', resizeCanvas, false);
 
+var debug;
+
+canvas1.on('object:modified', function (e) {
+    debug = e.target;
+    SaveObject(e.target);
+});
+
+canvas1.on('mouse:up', function (e) {
+    SaveObject(e.target);
+});
+
+function SaveObject(target) {
+    console.log(target);
+
+    $.ajax({
+        type: "POST",
+        url: "",
+        data: "{ 'guid' : '" + target.id + "', 'json' : '" + JSON.stringify(target.toJSON(['id'])) + "'}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) { console.log(data) },
+        failure: function (errMsg) {
+            alert(errMsg);
+        }
+    });
+}
+
 function resizeCanvas() {
     canvas1.setHeight(window.innerHeight);
     canvas1.setWidth(window.innerWidth);
@@ -46,7 +73,8 @@ $("input[type='button'].icon-rect").click(function () {
             return false;
         } else {
             var startY = option.e.offsetY,
-                startX = option.e.offsetX;
+                startX = option.e.offsetX,
+                id = uuid.v4();
 
             var drawingobject = new fabric.Rect({
                 top: startY,
@@ -55,9 +83,10 @@ $("input[type='button'].icon-rect").click(function () {
                 height: 0,
                 fill: 'rgba(255,0,0,0.5)',
                 stroke: 'red',
-                strokewidth: 4
+                strokewidth: 4,
+                id: id
             });
-
+            
             canvas1.add(drawingobject);
 
             canvas1.on('mouse:move', function (option) {
@@ -95,7 +124,8 @@ $("input[type='button'].icon-elipse").click(function () {
             return;
         } else {
             var startY = option.e.offsetY,
-                startX = option.e.offsetX;
+                startX = option.e.offsetX,
+                id = uuid.v4();
 
             var pointer = canvas1.getPointer(option.e);
 
@@ -109,7 +139,8 @@ $("input[type='button'].icon-elipse").click(function () {
                 angle: 0,
                 fill: 'rgba(255,0,0,0.5)',
                 stroke: 'red',
-                strokewidth: 4
+                strokewidth: 4,
+                id: id
             });
 
             canvas1.add(drawingobject);

@@ -20,6 +20,7 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
             Map(x => x.DataCriacao, "DATACRIACAO").Not.Nullable();
 
             References(x => x.SessaoColaborativa).Column("SESSAOCOLABORATIVA").Cascade.All();
+            HasMany(x => x.ElementosMultimidia).KeyColumn("OBJETOSESSAO");
         }
 
     }

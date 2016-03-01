@@ -18,14 +18,56 @@ namespace ProjetoColaborativo.Controllers
         private readonly IRepositorio<Usuario> _repositorioUsuarios;
         private readonly IRepositorio<SessaoColaborativa> _repositorioSessaoColaborativa;
         private readonly IRepositorio<ObjetoSessao> _repositorioObjetosSessaoColaborativa;
+        private readonly IRepositorio<ElementoMultimidia> _repositorioElementoMultimidia;
 
         public VimapsController(IRepositorio<Usuario> repositorioUsuarios,
                                 IRepositorio<SessaoColaborativa> repositorioSessaoColaborativa,
-                                IRepositorio<ObjetoSessao> repositorioObjetosSessaoColaborativa)
+                                IRepositorio<ObjetoSessao> repositorioObjetosSessaoColaborativa,
+                                IRepositorio<ElementoMultimidia> repositorioElementoMultimidia)
         {
             this._repositorioUsuarios = repositorioUsuarios;
             this._repositorioSessaoColaborativa = repositorioSessaoColaborativa;
             this._repositorioObjetosSessaoColaborativa = repositorioObjetosSessaoColaborativa;
+            this._repositorioElementoMultimidia = repositorioElementoMultimidia;
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ActionName("MostrarSessao")]
+        public ActionResult SalvarElementoMultimidia(long? id, long? objetoid, Guid guid, string json)
+        {
+            if (id == null)
+                return RedirectToAction("EscolherSessao");
+
+            ObjetoSessao obj = _repositorioObjetosSessaoColaborativa.Consultar(x => x.Handle == objetoid).FirstOrDefault();
+
+            if (obj == null)
+                return RedirectToAction("EscolherSessao");
+
+            ElementoMultimidia el = _repositorioElementoMultimidia.Consultar(x => x.Guid == guid).FirstOrDefault();
+
+            if (el == null)
+            {
+                el = new ElementoMultimidia()
+                {
+                    ObjetoSessao = obj,
+                    DataCriacao = DateTime.Now,
+                    Guid = guid,
+                    Json = json
+                };
+
+            }
+            else
+            {
+                el.Json = json;
+            }
+
+
+            _repositorioElementoMultimidia.Salvar(el);
+
+            return Json(
+                "ok", JsonRequestBehavior.AllowGet)
+            ;
         }
 
         [HttpPost]
@@ -71,6 +113,23 @@ namespace ProjetoColaborativo.Controllers
             
             if (sessao == null)
                 return RedirectToAction("EscolherSessao");
+
+            ObjetoSessao obj = _repositorioObjetosSessaoColaborativa.Consultar(x => x.Handle == objetoid).FirstOrDefault();
+
+            if (obj != null)
+            {
+                List<string> els =
+                    _repositorioElementoMultimidia.Consultar(x => x.ObjetoSessao == obj).Select(x => x.Json).ToList();
+
+                if (obj.ElementosMultimidia.Count > 0)
+                {
+                    ViewBag.LerElementos = string.Format("{{'objects': [ {0} ]}}", string.Join(",",els));
+                }
+                else
+                {
+                    ViewBag.LerElementos = "null";
+                }
+            }
 
             ViewBag.ObjectId = objetoid;
             return View(sessao);

@@ -25,8 +25,8 @@ namespace ProjetoColaborativo.Models.DAO
 
         private static Configuration CreateNewConfiguration()
         {
-            const string connectionString = "Data Source = localhost; Initial Catalog = projetoColaborativo; Integrated Security = True";
-            //const string connectionString = "Data Source = .\\sqlexpress; Initial Catalog = projetoColaborativo; Integrated Security = True";
+            //const string connectionString = "Data Source = localhost; Initial Catalog = projetoColaborativo; Integrated Security = True";
+            const string connectionString = "Data Source = .\\sqlexpress; Initial Catalog = projetoColaborativo; Integrated Security = True";
             
             var configuration = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString).ShowSql)
@@ -36,6 +36,7 @@ namespace ProjetoColaborativo.Models.DAO
                         m.FluentMappings.AddFromAssemblyOf<UsuarioMapping>();
                         m.FluentMappings.AddFromAssemblyOf<SessaoColaborativaMapping>();
                         m.FluentMappings.AddFromAssemblyOf<ObjetoSessaoMapping>();
+                        m.FluentMappings.AddFromAssemblyOf<ElementoMultimidiaMapping>();
                     }
                  )
                 .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))

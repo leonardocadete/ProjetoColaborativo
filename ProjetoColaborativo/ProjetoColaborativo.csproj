@@ -257,6 +257,7 @@
     <Content Include="Scripts\paineis.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\uuid.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="teste_postar_imagem.html" />
     <Content Include="VimapsAssets\css\vimaps.css" />

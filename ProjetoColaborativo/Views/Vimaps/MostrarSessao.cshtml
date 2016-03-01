@@ -81,58 +81,67 @@
 
     <script src="/Scripts/jquery-1.10.2.min.js"></script>
     <script src="/Scripts/jquery-ui.min.js"></script>
+    <script src="/Scripts/uuid.js"></script>
     <script src="/Scripts/fabric.min.js"></script>
     <script src="/Scripts/paineis.js"></script>
     <script>
 
-        $("#left-panel .panel-trigger").on("mouseenter", function() {
-            $(this).parent().animate({ left: 0 }, 100);
-        });
+    $("#left-panel .panel-trigger").on("mouseenter", function () {
+        $(this).parent().animate({ left: 0 }, 100);
+    });
 
-        $("#left-panel").on("mouseleave", function() {
-            $(this).animate({ left: -42 }, 100);
-        });
+    $("#left-panel").on("mouseleave", function () {
+        $(this).animate({ left: -42 }, 100);
+    });
 
-        //$("#right-panel .panel-trigger").on("mouseenter", function() {
-        //    $(this).parent().animate({ right: 0 }, 100);
-        //});
+    //$("#right-panel .panel-trigger").on("mouseenter", function() {
+    //    $(this).parent().animate({ right: 0 }, 100);
+    //});
 
-        //$("#right-panel").on("mouseleave", function() {
-        //    $(this).animate({ right: -42 }, 100);
-        //});
+    //$("#right-panel").on("mouseleave", function() {
+    //    $(this).animate({ right: -42 }, 100);
+    //});
 
-        $("#bottom-panel").on("mouseenter", function() {
-            $(this).animate({ bottom: 0 }, 100);
-        });
+    $("#bottom-panel").on("mouseenter", function () {
+        $(this).animate({ bottom: 0 }, 100);
+    });
 
-        $("#bottom-panel").on("mouseleave", function() {
-            $(this).animate({ bottom: $("#bottom-panel").height() * -1 + 20 });
-        });
+    $("#bottom-panel").on("mouseleave", function () {
+        $(this).animate({ bottom: $("#bottom-panel").height() * -1 + 20 });
+    });
 
-        (function () {
+    (function () {
 
-            @if (ViewBag.ObjectId != null)
+        @if (ViewBag.ObjectId != null)
             {
                 <text>
-            setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
-                </text>
+        setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
+        </text>
             }
 
-            $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
-            $("#bottom-panel").delay(1000).animate({ bottom: $("#bottom-panel").height() * -1 + 20 });
+        $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
+        $("#bottom-panel").delay(1000).animate({ bottom: $("#bottom-panel").height() * -1 + 20 });
 
-            $(".toolbar").draggable({ handle: ".drag" });
+        $(".toolbar").draggable({ handle: ".drag" });
 
-            $("#sortable").sortable();
-            $("#sortable").disableSelection();
+        $("#sortable").sortable();
+        $("#sortable").disableSelection();
 
-            $(".miniatura").on("click", function () {
-                window.location.href = $(this).attr("data-url");
-                //$(".miniatura").removeClass("selecionado");
-                //$(this).addClass("selecionado");
-            });
+        $(".miniatura").on("click", function () {
+            window.location.href = $(this).attr("data-url");
+            //$(".miniatura").removeClass("selecionado");
+            //$(this).addClass("selecionado");
+        });
 
-        })();
+    })();
+
+    var json = @Html.Raw(ViewBag.LerElementos);
+
+    canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
+        fabric.log(o, object);
+    });
+
+
 
     </script>
 
