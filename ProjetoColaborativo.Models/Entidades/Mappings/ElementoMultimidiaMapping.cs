@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Mapping;
 
 namespace ProjetoColaborativo.Models.Entidades.Mappings
 {
@@ -19,9 +14,6 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
             Map(x => x.DataCriacao, "DATACRIACAO").Not.Nullable();
             Map(x => x.Json, "JSON").Not.Nullable().Length(10000);
             Map(x => x.Guid, "GUID").Not.Nullable();
-
-            References(x => x.ObjetoSessao).Column("OBJETOSESSAO").Cascade.All();
-
         }
     }
 }

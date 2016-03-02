@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjetoColaborativo.Models.Entidades
 {
@@ -11,12 +8,11 @@ namespace ProjetoColaborativo.Models.Entidades
         public ObjetoSessao()
         {
             ElementosMultimidia = new List<ElementoMultimidia>();
+            this.DataCriacao = DateTime.Now;
         }
 
         public virtual string UrlImagem { get; set; }
         public virtual DateTime DataCriacao { get; set; }
-
-        public virtual SessaoColaborativa SessaoColaborativa { get; set; }
 
         public virtual IList<ElementoMultimidia> ElementosMultimidia { get; set; }
     }

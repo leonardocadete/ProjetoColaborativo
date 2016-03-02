@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Mapping;
 
 namespace ProjetoColaborativo.Models.Entidades.Mappings
 {
@@ -19,8 +14,9 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
             Map(x => x.DataCriacao, "DATACRIACAO").Not.Nullable();
             Map(x => x.Descricao, "DESCRICAO").Not.Nullable().Length(100);
 
-            References(x => x.Usuario).Column("USUARIO").Cascade.All();
-            HasMany(x => x.ObjetosDaSessao).KeyColumn("SESSAOCOLABORATIVA");
+            References(x => x.Usuario).Column("USUARIO");
+
+            HasMany(x => x.ObjetosDaSessao).KeyColumn("SESSAOCOLABORATIVA").Cascade.AllDeleteOrphan();
         }
     }
 }
