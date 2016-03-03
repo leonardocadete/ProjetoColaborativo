@@ -12,6 +12,12 @@ canvas1.on('object:removed', function (e) {
     SaveObject(e.target, true);
 });
 
+canvas1.on('path:created', function (e) {
+    var id = uuid.v4();
+    e.path.id = id;
+    SaveObject(e.path, false);
+});
+
 function SaveObject(target, remover) {
     console.log(target);
     $.ajax({
@@ -97,11 +103,11 @@ $("input[type='button'].icon-rect").click(function () {
     });
 
     canvas1.on('mouse:up', function () {
-        SaveObject(drawingobject, false);
         draw = false;
         canvas1.off('mouse:move');
         canvas1.off('mouse:down');
         canvas1.off('mouse:up');
+        SaveObject(drawingobject, false);
     });
 
 });
@@ -114,11 +120,11 @@ $("input[type='button'].icon-elipse").click(function () {
 
     draw = true;
 
+    var drawingobject;
+
     canvas1.on('mouse:down', function (option) {
 
         if (!draw) return false;
-
-        var drawingobject;
 
         if (typeof option.target != "undefined") {
             return;
@@ -174,11 +180,11 @@ $("input[type='button'].icon-elipse").click(function () {
     });
 
     canvas1.on('mouse:up', function () {
-        SaveObject(drawingobject, false);
         draw = false;
         canvas1.off('mouse:move');
         canvas1.off('mouse:down');
         canvas1.off('mouse:up');
+        SaveObject(drawingobject, false);
     });
 
 });

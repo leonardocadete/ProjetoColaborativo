@@ -36,7 +36,9 @@ namespace ProjetoColaborativo.Controllers
             if (id == null)
                 return RedirectToAction("EscolherSessao");
 
-            if (objetoid == null || _repositorioObjetosSessaoColaborativa.Retornar(objetoid.Value) == null)
+            var obj = _repositorioObjetosSessaoColaborativa.Retornar(objetoid.Value);
+
+            if (objetoid == null || obj == null)
                 return RedirectToAction("EscolherSessao");
 
             var el = _repositorioElementoMultimidia.Consultar(x => x.Guid == guid).FirstOrDefault();
@@ -49,11 +51,13 @@ namespace ProjetoColaborativo.Controllers
                 };
             else
                 el.Json = json;
-            
-            if(remover)
-                _repositorioElementoMultimidia.Excluir(el);
+
+            if (remover)
+                obj.ElementosMultimidia.Remove(el);
             else
-                _repositorioElementoMultimidia.Salvar(el);
+                obj.ElementosMultimidia.Add(el);
+
+            _repositorioObjetosSessaoColaborativa.Salvar(obj);
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }

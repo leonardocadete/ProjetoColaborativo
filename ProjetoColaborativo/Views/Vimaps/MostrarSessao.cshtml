@@ -53,7 +53,7 @@
 
                     @foreach (var os in @Model.ObjetosDaSessao)
                     {
-                        <li data-url="@Url.Action("MostrarSessao", "Vimaps", new { id = os.SessaoColaborativa.Handle, objetoid = os.Handle })" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
+                        <li data-url="@Url.Action("MostrarSessao", "Vimaps", new { id = @Model.Handle, objetoid = os.Handle })" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
                             <img src="@os.UrlImagem" />
                         </li>
                     }
