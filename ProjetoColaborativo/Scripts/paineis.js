@@ -4,6 +4,15 @@ var canvas1 = new fabric.Canvas('draw-canvas');
 
 window.addEventListener('resize', resizeCanvas, false);
 
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
 canvas1.on('object:modified', function (e) {
     SaveObject(e.target, false);
 });
@@ -84,9 +93,9 @@ $("input[type='button'].icon-rect").click(function () {
                 left: startX,
                 width: 0,
                 height: 0,
-                fill: 'rgba(255,0,0,0.5)',
-                stroke: 'red',
-                strokewidth: 4,
+                fill: "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)",
+                stroke: '',
+                strokewidth: 0,
                 id: id
             });
             
@@ -143,9 +152,9 @@ $("input[type='button'].icon-elipse").click(function () {
                 rx: pointer.x - startX,
                 ry: pointer.y - startY,
                 angle: 0,
-                fill: 'rgba(255,0,0,0.5)',
-                stroke: 'red',
-                strokewidth: 4,
+                fill: "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)",
+                stroke: '',
+                strokewidth: 0,
                 id: id
             });
 
@@ -196,7 +205,7 @@ $("input[type='button'].icon-elipse").click(function () {
 $("input[type='button'].icon-pencil").click(function () {
     canvas1.isDrawingMode = true;
 
-    canvas1.freeDrawingBrush.color = 'rgba(255,0,0,0.5)';
+    canvas1.freeDrawingBrush.color = "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)";
     canvas1.freeDrawingBrush.width = 12;
 
     canvas1.on('mouse:up', function () {

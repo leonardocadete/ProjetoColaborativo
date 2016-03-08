@@ -18,6 +18,10 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
             Map(x => x.Senha, "SENHA").Length(20);
 
             Map(x => x.Cpf, "CPF").Length(14);
+
+            Map(x => x.Cor, "COR").Length(6);
+
+            HasMany(x => x.ElementosMultimidia).KeyColumn("USUARIO").Cascade.AllDeleteOrphan();
         }
     }
 }

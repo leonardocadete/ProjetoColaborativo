@@ -1,4 +1,5 @@
-﻿@model ProjetoColaborativo.Models.Entidades.SessaoColaborativa
+﻿@using System.Linq
+@model ProjetoColaborativo.Models.Entidades.SessaoColaborativa
 @{
     Layout = null;
     ViewBag.Title = "ShowSession";
@@ -116,7 +117,7 @@
             {
                 <text>
         setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
-        </text>
+                </text>
             }
 
         $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
@@ -139,10 +140,23 @@
     {
         <text>
         var json = @Html.Raw(ViewBag.LerElementos);
-
+        var cordono = "#@Html.Raw(ViewBag.CorDono)";
         canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
-            fabric.log(o, object);
+            /*
+            switch(object.type) {
+                case "rect":
+                case "ellipse":
+                    object.set("fill", "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)");
+                    object.set("stroke", "");
+                    break;
+
+                case "path":
+                    object.set("stroke", "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)");
+                    break;
+            }
+            */
         });
+
         </text>
     }
 

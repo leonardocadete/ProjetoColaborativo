@@ -14,6 +14,8 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
             Map(x => x.DataCriacao, "DATACRIACAO").Not.Nullable();
             Map(x => x.Json, "JSON").Not.Nullable().Length(10000);
             Map(x => x.Guid, "GUID").Not.Nullable();
+            
+            References(x => x.Usuario).Column("USUARIO");
         }
     }
 }

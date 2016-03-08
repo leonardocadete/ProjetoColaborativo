@@ -14,5 +14,7 @@ namespace ProjetoColaborativo.Models.Entidades
         public virtual string Json { get; set; }
 
         public virtual DateTime DataCriacao { get; set; }
+
+        public virtual Usuario Usuario { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
@@ -42,10 +43,12 @@ namespace ProjetoColaborativo.Controllers
                 return RedirectToAction("EscolherSessao");
 
             var el = _repositorioElementoMultimidia.Consultar(x => x.Guid == guid).FirstOrDefault();
+            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
 
             if (el == null)
                 el = new ElementoMultimidia
                 {
+                    Usuario = usuario,
                     Guid = guid,
                     Json = json
                 };
@@ -109,14 +112,27 @@ namespace ProjetoColaborativo.Controllers
             
             if (obj == null)
                 return RedirectToAction("MostrarSessao", new { id = id, objetoid = sessao.ObjetosDaSessao.FirstOrDefault().Handle });
-            
+
+            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+
+            ViewBag.LerElementos = "null";
+            ViewBag.CorDono = usuario.Cor;
+
             if (obj.ElementosMultimidia.Count > 0)
             {
-                var els = obj.ElementosMultimidia.Select(x => x.Json).ToList();
+                List<string> els = new List<string>();
+                foreach (var el in obj.ElementosMultimidia)
+                {
+                    Color cor = System.Drawing.ColorTranslator.FromHtml("#" + el.Usuario.Cor);
+                    
+                    string json = el.Json;
+                    Regex regex = new Regex("fill:(.*)\"");
+                    json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")", string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                    json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")", string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                    els.Add(json);
+                }
                 ViewBag.LerElementos = string.Format("{{'objects': [ {0} ]}}", string.Join(",",els));
             }
-            else
-                ViewBag.LerElementos = "null";
             
             ViewBag.ObjectId = objetoid;
             return View(sessao);
