@@ -184,9 +184,10 @@ namespace ProjetoColaborativo.Controllers
         public ActionResult EscolherSessao()
         {
             //TODO: pegar o usuario pelo handle
-            List<SessaoColaborativa> sessoes =
+            var sessoes =
                 _repositorioSessaoColaborativa.RetornarTodos()
                     .Where(x => x.Usuario.Nome.Equals(User.Identity.Name))
+                    .Select(x => new { Handle = x.Handle, Descricao = x.Descricao + string.Format(" ({0})", x.Usuario.Nome) })
                     .ToList();
 
             ViewBag.TemSessoes = sessoes.Count > 0;

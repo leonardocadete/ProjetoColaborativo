@@ -1,4 +1,5 @@
-﻿@using System.Linq
+﻿@using System
+@using System.Linq
 @model ProjetoColaborativo.Models.Entidades.SessaoColaborativa
 @{
     Layout = null;
@@ -9,7 +10,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <link href="/Content/paineis.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
+    <link href="/Content/paineis.css" rel="stylesheet"/>
 </head>
 <body>
 
@@ -45,17 +47,23 @@
         </div>
     </div>
 
-    <div id="bottom-panel">
-        <div class="bg-overlay"></div>
-        <div class="panel-content">
 
+
+
+    <div id="bottom-panel" class="toggle-panel">
+        <div class="window-title">
+            Objetos da sessão
+            <a class="troggle-minimize">▾</a>
+        </div>
+        <div class="panel-content">
+            <div class="bg-overlay"></div>
             <div class="miniaturas">
                 <ul id="sortable">
 
                     @foreach (var os in @Model.ObjetosDaSessao)
                     {
                         <li data-url="@Url.Action("MostrarSessao", "Vimaps", new { id = @Model.Handle, objetoid = os.Handle })" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
-                            <img src="@os.UrlMiniatura" />
+                            <img src="@string.Format("{0}?{1}",os.UrlMiniatura, DateTime.Now.Ticks)" />
                         </li>
                     }
 
@@ -66,9 +74,9 @@
     </div>
 
     <div class="toolbar">
-        <div class="bg"></div>
-        <div class="drag">Ferramentas</div>
+        <div class="drag window-title">Ferramentas</div>
         <div class="tools">
+            <div class="bg"></div>
             <input type="button" value="" class="btn btn-default button-toolbar icon-rect" />
             <input type="button" value="" class="btn btn-default button-toolbar icon-elipse" />
             <input type="button" value="" class="btn btn-default button-toolbar icon-pencil" />
@@ -103,13 +111,19 @@
     //    $(this).animate({ right: -42 }, 100);
     //});
 
-    $("#bottom-panel").on("mouseenter", function () {
-        $(this).animate({ bottom: 0 }, 100);
+    $(".troggle-minimize").on("click", function () {
+        var p = $(this).closest(".toggle-panel");
+        var t = $(this).closest(".window-title");
+
+        if ($(this).html() != "▴") {
+            $(this).html("▴");
+            p.animate({ bottom: (p.height() * -1) + t.height() + 5 }, 100);
+        } else {
+            $(this).html("▾");
+            p.animate({ bottom: 0 }, 100);
+        }
     });
 
-    $("#bottom-panel").on("mouseleave", function () {
-        $(this).animate({ bottom: $("#bottom-panel").height() * -1 + 20 });
-    });
 
     (function () {
 
@@ -121,8 +135,7 @@
             }
 
         $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
-        $("#bottom-panel").delay(1000).animate({ bottom: $("#bottom-panel").height() * -1 + 20 });
-
+        
         $(".toolbar").draggable({ handle: ".drag" });
 
         $("#sortable").sortable();
