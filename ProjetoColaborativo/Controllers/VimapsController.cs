@@ -4,7 +4,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
@@ -32,12 +34,12 @@ namespace ProjetoColaborativo.Controllers
         [HttpPost]
         [Authorize]
         [ActionName("MostrarSessao")]
-        public ActionResult SalvarElementoMultimidia(long? id, long? objetoid, Guid guid, string json, bool remover = false)
+        public ActionResult SalvarElementoMultimidia(long id, long objetoid, Guid guid, string json, bool remover = false)
         {
             if (id == null)
                 return RedirectToAction("EscolherSessao");
 
-            var obj = _repositorioObjetosSessaoColaborativa.Retornar(objetoid.Value);
+            var obj = _repositorioObjetosSessaoColaborativa.Retornar(objetoid);
 
             if (objetoid == null || obj == null)
                 return RedirectToAction("EscolherSessao");
@@ -66,6 +68,43 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [HttpPost]
+        [Authorize]
+        public ActionResult SalvarMiniatura(long id, long objetoid, string imgdata)
+        {
+            if (objetoid == null || string.IsNullOrEmpty(imgdata))
+                return Json("error");
+
+            var obj = _repositorioObjetosSessaoColaborativa.Retornar(objetoid);
+
+            if (obj == null)
+                return Json("error");
+
+            var imagespath = Server.MapPath("~/UserData/Images");
+            if (!Directory.Exists(imagespath))
+                Directory.CreateDirectory(imagespath);
+
+            var jpgEncoder = GetEncoder(ImageFormat.Png);
+            var myEncoder = Encoder.Quality;
+            var myEncoderParameters = new EncoderParameters(1);
+            var myEncoderParameter = new EncoderParameter(myEncoder, 90L);
+            myEncoderParameters.Param[0] = myEncoderParameter;
+
+            var filename = obj.UrlMiniatura;
+            var str64 = imgdata.Split(',')[1];
+            var bytes = Convert.FromBase64String(str64);
+
+            Image image;
+            using (var ms = new MemoryStream(bytes))
+            {
+                image = Image.FromStream(ms);
+            }
+
+            image.Save(imagespath + "/" + filename.Split('/')[filename.Split('/').Length - 1], jpgEncoder, myEncoderParameters);
+
+            return Json("ok");
+        }
+
+        [HttpPost]
         public ActionResult SendImage(string imgdata)
         {
             // Saving
@@ -83,6 +122,7 @@ namespace ProjetoColaborativo.Controllers
             myEncoderParameters.Param[0] = myEncoderParameter;
 
             var filename = DateTime.Now.ToString("yyyyMMddhhmmss") + "_" + Guid.NewGuid() + ".jpg";
+            var filenametn = DateTime.Now.ToString("yyyyMMddhhmmss") + "_" + Guid.NewGuid() + "_tn.jpg";
             var str64 = imgdata.Split(',')[1];
             var bytes = Convert.FromBase64String(str64);
 
@@ -93,7 +133,9 @@ namespace ProjetoColaborativo.Controllers
             }
 
             image.Save(imagespath + "/" + filename, jpgEncoder, myEncoderParameters);
+            image.Save(imagespath + "/" + filenametn, jpgEncoder, myEncoderParameters);
             TempData["ThumbImageSavedURL"] = "/UserData/Images/" + filename;
+            TempData["ThumbImageTNSavedURL"] = "/UserData/Images/" + filenametn;
 
             return RedirectToAction("MostrarSessao");
         }
@@ -168,13 +210,16 @@ namespace ProjetoColaborativo.Controllers
             if (sessao == null) return View();
 
             var img = TempData["ThumbImageSavedURL"];
+            var imgtn = TempData["ThumbImageTNSavedURL"];
             if (img == null)
                 return RedirectToAction("MostrarSessao", "Vimaps", new {id = SessaoColaborativaId});
 
             sessao.ObjetosDaSessao.Add(new ObjetoSessao
             {
-                UrlImagem = img.ToString()
+                UrlImagem = img.ToString(),
+                UrlMiniatura = imgtn.ToString()
             });
+
             _repositorioSessaoColaborativa.Salvar(sessao);
 
             return RedirectToAction("MostrarSessao", "Vimaps", new { id = SessaoColaborativaId });

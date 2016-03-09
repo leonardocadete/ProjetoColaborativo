@@ -19,9 +19,7 @@ namespace ProjetoColaborativo
                 defaults: new
                 {
                     controller = "Vimaps",
-                    action = "MostrarSessao",
-                    id = UrlParameter.Optional,
-                    objetoid = UrlParameter.Optional
+                    action = "MostrarSessao"
                 }
             );
 

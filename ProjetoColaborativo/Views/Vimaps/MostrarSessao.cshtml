@@ -55,7 +55,7 @@
                     @foreach (var os in @Model.ObjetosDaSessao)
                     {
                         <li data-url="@Url.Action("MostrarSessao", "Vimaps", new { id = @Model.Handle, objetoid = os.Handle })" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
-                            <img src="@os.UrlImagem" />
+                            <img src="@os.UrlMiniatura" />
                         </li>
                     }
 
@@ -136,32 +136,17 @@
 
     })();
 
+    var cordono = "#@Html.Raw(ViewBag.CorDono)";
+
     @if (ViewBag.LerElementos != null)
     {
         <text>
         var json = @Html.Raw(ViewBag.LerElementos);
-        var cordono = "#@Html.Raw(ViewBag.CorDono)";
         canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
-            /*
-            switch(object.type) {
-                case "rect":
-                case "ellipse":
-                    object.set("fill", "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)");
-                    object.set("stroke", "");
-                    break;
-
-                case "path":
-                    object.set("stroke", "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)");
-                    break;
-            }
-            */
+            //$("li.selecionado img").attr("src", canvas1.toDataURL());
         });
-
         </text>
     }
-
-
-
 
     </script>
 

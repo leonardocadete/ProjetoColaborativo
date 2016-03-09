@@ -12,6 +12,7 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
                 builder => builder.AddParam("sequence", "SEQ_OBJETOSESSAO"));
 
             Map(x => x.UrlImagem, "URLIMAGEM").Length(100);
+            Map(x => x.UrlMiniatura, "URLMINIATURA").Length(100);
             Map(x => x.DataCriacao, "DATACRIACAO").Not.Nullable();
 
             HasMany(x => x.ElementosMultimidia).KeyColumn("OBJETOSESSAO").Cascade.AllDeleteOrphan();

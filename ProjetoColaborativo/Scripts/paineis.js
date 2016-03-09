@@ -4,6 +4,25 @@ var canvas1 = new fabric.Canvas('draw-canvas');
 
 window.addEventListener('resize', resizeCanvas, false);
 
+function getThumbnail(original, scale) {
+    var canvas = document.createElement("canvas");
+
+    canvas.width = original.width * scale;
+    canvas.height = original.height * scale;
+
+    canvas.getContext("2d").drawImage(original, 0, 0, canvas.width, canvas.height);
+
+    return canvas;
+}
+
+function atualizarMiniatura() {
+    $("li.selecionado img").attr("src", canvas1.toDataURL({
+        format: 'jpeg',
+        quality: 0.1
+    }));
+    SaveThumbnail();
+}
+
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
@@ -28,7 +47,7 @@ canvas1.on('path:created', function (e) {
 });
 
 function SaveObject(target, remover) {
-    console.log(target);
+    atualizarMiniatura();
     $.ajax({
         type: "POST",
         url: "",
@@ -40,6 +59,24 @@ function SaveObject(target, remover) {
             alert(errMsg);
         }
     });
+}
+
+function SaveThumbnail() {
+
+    var image = canvas1.toDataURL('png');
+
+    $.ajax({
+        type: "POST",
+        url: window.location.pathname.replace("MostrarSessao", "SalvarMiniatura"),
+        data: { imgdata: image },
+        success: function(data) {
+            console.log(data);
+        },
+        failure: function (errMsg) {
+            alert(errMsg);
+        }
+    });
+
 }
 
 function resizeCanvas() {
