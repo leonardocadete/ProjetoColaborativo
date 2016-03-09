@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using FluentNHibernate.Testing.Values;
 
 namespace ProjetoColaborativo.Models.Entidades
 {
@@ -16,5 +15,7 @@ namespace ProjetoColaborativo.Models.Entidades
         public virtual string Cor { get; set; }
 
         public virtual IList<ElementoMultimidia> ElementosMultimidia { get; set; }
+
+        public virtual IList<SessaoColaborativa> SessoesColaborativas { get; set; } 
     }
 }

@@ -17,6 +17,8 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
             References(x => x.Usuario).Column("USUARIO");
 
             HasMany(x => x.ObjetosDaSessao).KeyColumn("SESSAOCOLABORATIVA").Cascade.AllDeleteOrphan();
+
+            HasManyToMany(x => x.UsuariosDaSessao).Cascade.All().Table("USUARIOSESSAO");
         }
     }
 }

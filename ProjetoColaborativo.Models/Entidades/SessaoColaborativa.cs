@@ -18,5 +18,7 @@ namespace ProjetoColaborativo.Models.Entidades
         public virtual Usuario Usuario { get; set; }
 
         public virtual IList<ObjetoSessao> ObjetosDaSessao { get; set; }
+
+        public virtual IList<Usuario> UsuariosDaSessao { get; set; } 
     }
 }
