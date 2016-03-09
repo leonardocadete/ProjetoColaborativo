@@ -15,6 +15,9 @@
 </head>
 <body>
 
+
+@if (Model.ObjetosDaSessao.Count > 0)
+{
     <canvas id="draw-canvas"></canvas>
 
     <div id="left-panel">
@@ -48,7 +51,20 @@
     </div>
 
 
-
+    <div class="toolbar">
+        <div class="drag window-title">Ferramentas</div>
+        <div class="tools">
+            <div class="bg"></div>
+            <input type="button" value="" class="btn btn-default button-toolbar icon-rect"/>
+            <input type="button" value="" class="btn btn-default button-toolbar icon-elipse"/>
+            <input type="button" value="" class="btn btn-default button-toolbar icon-pencil"/>
+            <input type="button" value="" class="btn btn-default button-toolbar icon-text"/>
+            <input type="button" value="" class="btn btn-default button-toolbar icon-pin"/>
+            <input type="button" value="" class="btn btn-default button-toolbar icon-youtube"/>
+            <input type="button" value="" class="btn btn-default button-toolbar icon-speaker"/>
+            <div class="clear"></div>
+        </div>
+    </div>
 
     <div id="bottom-panel" class="toggle-panel">
         <div class="window-title">
@@ -58,35 +74,37 @@
         <div class="panel-content">
             <div class="bg-overlay"></div>
             <div class="miniaturas">
-                <ul id="sortable">
+                @if (Model.ObjetosDaSessao.Count > 0)
+                {
+                    <ul id="sortable">
 
-                    @foreach (var os in @Model.ObjetosDaSessao)
-                    {
-                        <li data-url="@Url.Action("MostrarSessao", "Vimaps", new { id = @Model.Handle, objetoid = os.Handle })" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
-                            <img src="@string.Format("{0}?{1}",os.UrlMiniatura, DateTime.Now.Ticks)" />
-                        </li>
-                    }
+                        @foreach (var os in @Model.ObjetosDaSessao)
+                        {
+                            <li data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
+                                <img src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)"/>
+                            </li>
+                        }
 
-                </ul>
+                    </ul>
+                }
+                else
+                {
+                    <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
+                }
             </div>
 
         </div>
     </div>
 
-    <div class="toolbar">
-        <div class="drag window-title">Ferramentas</div>
-        <div class="tools">
-            <div class="bg"></div>
-            <input type="button" value="" class="btn btn-default button-toolbar icon-rect" />
-            <input type="button" value="" class="btn btn-default button-toolbar icon-elipse" />
-            <input type="button" value="" class="btn btn-default button-toolbar icon-pencil" />
-            <input type="button" value="" class="btn btn-default button-toolbar icon-text" />
-            <input type="button" value="" class="btn btn-default button-toolbar icon-pin" />
-            <input type="button" value="" class="btn btn-default button-toolbar icon-youtube" />
-            <input type="button" value="" class="btn btn-default button-toolbar icon-speaker" />
-            <div class="clear"></div>
-        </div>
+}
+else
+{
+    <div class="sem-objetos">
+        Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps.
+        <br/>@Html.ActionLink("Escolher outra sessão", "EscolherSessao")
     </div>
+}
+
 
     <script src="/Scripts/jquery-1.10.2.min.js"></script>
     <script src="/Scripts/jquery-ui.min.js"></script>
@@ -95,47 +113,47 @@
     <script src="/Scripts/paineis.js"></script>
     <script>
 
-    $("#left-panel .panel-trigger").on("mouseenter", function () {
-        $(this).parent().animate({ left: 0 }, 100);
-    });
+        $("#left-panel .panel-trigger").on("mouseenter", function () {
+            $(this).parent().animate({ left: 0 }, 100);
+        });
 
-    $("#left-panel").on("mouseleave", function () {
-        $(this).animate({ left: -42 }, 100);
-    });
+        $("#left-panel").on("mouseleave", function () {
+            $(this).animate({ left: -42 }, 100);
+        });
 
-    //$("#right-panel .panel-trigger").on("mouseenter", function() {
-    //    $(this).parent().animate({ right: 0 }, 100);
-    //});
+        //$("#right-panel .panel-trigger").on("mouseenter", function() {
+        //    $(this).parent().animate({ right: 0 }, 100);
+        //});
 
-    //$("#right-panel").on("mouseleave", function() {
-    //    $(this).animate({ right: -42 }, 100);
-    //});
+        //$("#right-panel").on("mouseleave", function() {
+        //    $(this).animate({ right: -42 }, 100);
+        //});
 
-    $(".troggle-minimize").on("click", function () {
-        var p = $(this).closest(".toggle-panel");
-        var t = $(this).closest(".window-title");
+        $(".troggle-minimize").on("click", function () {
+            var p = $(this).closest(".toggle-panel");
+            var t = $(this).closest(".window-title");
 
-        if ($(this).html() != "▴") {
-            $(this).html("▴");
-            p.animate({ bottom: (p.height() * -1) + t.height() + 5 }, 100);
-        } else {
-            $(this).html("▾");
-            p.animate({ bottom: 0 }, 100);
-        }
-    });
+            if ($(this).html() != "▴") {
+                $(this).html("▴");
+                p.animate({ bottom: (p.height() * -1) + t.height() + 5 }, 100);
+            } else {
+                $(this).html("▾");
+                p.animate({ bottom: 0 }, 100);
+            }
+        });
 
 
-    (function () {
+        (function () {
 
-        @if (ViewBag.ObjectId != null)
+            @if (ViewBag.ObjectId != null)
             {
                 <text>
-        setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
+                setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
                 </text>
             }
 
         $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
-        
+
         $(".toolbar").draggable({ handle: ".drag" });
 
         $("#sortable").sortable();
@@ -149,6 +167,7 @@
 
     })();
 
+    var dono = "@Html.Raw(ViewBag.Dono)";
     var cordono = "#@Html.Raw(ViewBag.CorDono)";
 
     @if (ViewBag.LerElementos != null)
@@ -156,10 +175,46 @@
         <text>
         var json = @Html.Raw(ViewBag.LerElementos);
         canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
-            //$("li.selecionado img").attr("src", canvas1.toDataURL());
+            if (object.iddono != dono) {
+                //object.lockMovementX = object.lockMovementY = true;
+                //object.lockScalingX = object.lockScalingY = true;
+                //object.lockRotation = true;
+                object.selectable = false;
+            }
         });
         </text>
     }
+
+
+
+
+        window.setInterval(function() {
+            $.getJSON( window.location.pathname.replace("MostrarSessao", "BuscarElementosDosOutrosParticipantesJson"), function( data ) {
+                
+                canvas1.forEachObject(function(d){
+                    if (d.iddono != dono) {
+                        d.naosalvar = true;
+                        d.remove();
+                    }
+                });
+
+                fabric.util.enlivenObjects(data.objects, function(objects) {
+                    var origRenderOnAddRemove = canvas1.renderOnAddRemove;
+                    canvas1.renderOnAddRemove = false;
+                    objects.forEach(function(o) {
+                        o.naosalvar = true;
+                        o.selectable = false;
+                        canvas1.add(o);
+                    });
+                    canvas1.renderOnAddRemove = origRenderOnAddRemove;
+                    canvas1.renderAll();
+                    
+                    atualizarMiniatura(false);
+                });
+            });
+
+        }, 3000);
+
 
     </script>
 

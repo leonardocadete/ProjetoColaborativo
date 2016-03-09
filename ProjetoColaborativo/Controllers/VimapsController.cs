@@ -80,27 +80,22 @@ namespace ProjetoColaborativo.Controllers
                 return Json("error");
 
             var imagespath = Server.MapPath("~/UserData/Images");
+            var filename = obj.UrlMiniatura;
             if (!Directory.Exists(imagespath))
                 Directory.CreateDirectory(imagespath);
 
-            var jpgEncoder = GetEncoder(ImageFormat.Png);
-            var myEncoder = Encoder.Quality;
-            var myEncoderParameters = new EncoderParameters(1);
-            var myEncoderParameter = new EncoderParameter(myEncoder, 90L);
-            myEncoderParameters.Param[0] = myEncoderParameter;
-
-            var filename = obj.UrlMiniatura;
-            var str64 = imgdata.Split(',')[1];
-            var bytes = Convert.FromBase64String(str64);
+            byte[] bitmapData = new byte[imgdata.Length];
+            bitmapData = Convert.FromBase64String(imgdata.Split(',')[1]);
 
             Image image;
-            using (var ms = new MemoryStream(bytes))
+            using (var streamBitmap = new MemoryStream(bitmapData))
             {
-                image = Image.FromStream(ms);
+                using (image = Image.FromStream(streamBitmap))
+                {
+                    image.Save(imagespath + "/" + filename.Split('/')[filename.Split('/').Length - 1]);
+                }
             }
-
-            image.Save(imagespath + "/" + filename.Split('/')[filename.Split('/').Length - 1], jpgEncoder, myEncoderParameters);
-
+            
             return Json("ok");
         }
 
@@ -141,6 +136,43 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [Authorize]
+        public ActionResult BuscarElementosDosOutrosParticipantesJson(long id, long objetoid)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+
+            if (sessao == null)
+                return Json("", JsonRequestBehavior.AllowGet);
+
+            var obj = sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == objetoid);
+
+            if (obj == null)
+                return Json("", JsonRequestBehavior.AllowGet);
+
+            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+
+            List<ElementoMultimidia> elementosdosoutros =
+                obj.ElementosMultimidia.Where(x => x.Usuario != usuario).ToList();
+
+            if (elementosdosoutros.Count > 0)
+            {
+                List<string> els = new List<string>();
+                foreach (var el in elementosdosoutros)
+                {
+                    Color cor = System.Drawing.ColorTranslator.FromHtml("#" + el.Usuario.Cor);
+
+                    string json = el.Json;
+                    Regex regex = new Regex("fill:(.*)\"");
+                    json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")", string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                    json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")", string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                    els.Add(json);
+                }
+                return this.Content(string.Format("{{\"objects\": [ {0} ]}}", string.Join(",", els)), "application/json");
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
         public ActionResult MostrarSessao(long? id, long? objetoid)
         {
             if (id == null)
@@ -151,16 +183,17 @@ namespace ProjetoColaborativo.Controllers
                 return RedirectToAction("EscolherSessao");
 
             var obj = sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == objetoid);
-            
-            if (obj == null)
-                return RedirectToAction("MostrarSessao", new { id = id, objetoid = sessao.ObjetosDaSessao.FirstOrDefault().Handle });
+
+            if (obj == null && sessao.ObjetosDaSessao.Count > 0)
+                return RedirectToAction("MostrarSessao", new {id = id, objetoid = sessao.ObjetosDaSessao.FirstOrDefault().Handle });
 
             var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
 
             ViewBag.LerElementos = "null";
+            ViewBag.Dono = usuario.Handle;
             ViewBag.CorDono = usuario.Cor;
 
-            if (obj.ElementosMultimidia.Count > 0)
+            if (obj != null && obj.ElementosMultimidia.Count > 0)
             {
                 List<string> els = new List<string>();
                 foreach (var el in obj.ElementosMultimidia)
@@ -184,15 +217,22 @@ namespace ProjetoColaborativo.Controllers
         public ActionResult EscolherSessao()
         {
             //TODO: pegar o usuario pelo handle
-            var sessoes =
-                _repositorioSessaoColaborativa.RetornarTodos()
-                    .Where(x => x.Usuario.Nome.Equals(User.Identity.Name))
-                    .Select(x => new { Handle = x.Handle, Descricao = x.Descricao + string.Format(" ({0})", x.Usuario.Nome) })
+            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+
+            var minhassessoes = _repositorioSessaoColaborativa
+                                .Consultar(x => 
+                                    x.Usuario == usuario // minhas sessoes
+                                    ||
+                                    x.UsuariosDaSessao.Contains(usuario) // sessões que participo
+                                );
+
+            var select = minhassessoes
+                .Select(x => new { Handle = x.Handle, Descricao = x.Descricao + string.Format(" ({0})", x.Usuario.Nome) })
                     .ToList();
 
-            ViewBag.TemSessoes = sessoes.Count > 0;
+            ViewBag.TemSessoes = select.Count > 0;
             ViewBag.SessaoColaborativaId = new SelectList(
-                sessoes,
+                select,
                 "Handle",
                 "Descricao"
             );

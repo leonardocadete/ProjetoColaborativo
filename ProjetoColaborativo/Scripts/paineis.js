@@ -4,6 +4,8 @@ var canvas1 = new fabric.Canvas('draw-canvas');
 
 window.addEventListener('resize', resizeCanvas, false);
 
+var customProperties = 'id iddono'.split(' ');
+
 function getThumbnail(original, scale) {
     var canvas = document.createElement("canvas");
 
@@ -15,12 +17,14 @@ function getThumbnail(original, scale) {
     return canvas;
 }
 
-function atualizarMiniatura() {
+function atualizarMiniatura(salvar) {
     $("li.selecionado img").attr("src", canvas1.toDataURL({
         format: 'jpeg',
         quality: 0.1
     }));
-    SaveThumbnail();
+
+    if(salvar)
+        SaveThumbnail();
 }
 
 function hexToRgb(hex) {
@@ -43,15 +47,21 @@ canvas1.on('object:removed', function (e) {
 canvas1.on('path:created', function (e) {
     var id = uuid.v4();
     e.path.id = id;
+    e.path.iddono = dono;
     SaveObject(e.path, false);
 });
 
 function SaveObject(target, remover) {
-    atualizarMiniatura();
+
+    if (target.naosalvar) 
+        return;
+    
+    atualizarMiniatura(true);
+
     $.ajax({
         type: "POST",
         url: "",
-        data: "{ 'guid' : '" + target.id + "', 'remover' : '" + remover + "', 'json' : '" + JSON.stringify(target.toJSON(['id'])) + "'}",
+        data: "{ 'guid' : '" + target.id + "', 'remover' : '" + remover + "', 'json' : '" + JSON.stringify(target.toJSON(customProperties)) + "'}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) { console.log(data) },
@@ -63,7 +73,10 @@ function SaveObject(target, remover) {
 
 function SaveThumbnail() {
 
-    var image = canvas1.toDataURL('png');
+    var image = canvas1.toDataURL({
+        format: 'jpeg',
+        quality: 0.1
+    });
 
     $.ajax({
         type: "POST",
@@ -90,10 +103,10 @@ resizeCanvas();
 
 function setCanvasBackground(url) {
     canvas1.setBackgroundImage(url, canvas1.renderAll.bind(canvas1), {
-        width: canvas1.width,
-        height: canvas1.height,
-        originX: 'left',
-        originY: 'top'
+       // width: canvas1.width,
+       // height: canvas1.height,
+       // originX: 'left',
+       // originY: 'top'
     });
 }
 
@@ -133,7 +146,8 @@ $("input[type='button'].icon-rect").click(function () {
                 fill: "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)",
                 stroke: '',
                 strokewidth: 0,
-                id: id
+                id: id,
+                iddono: dono
             });
             
             canvas1.add(drawingobject);
@@ -192,7 +206,8 @@ $("input[type='button'].icon-elipse").click(function () {
                 fill: "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)",
                 stroke: '',
                 strokewidth: 0,
-                id: id
+                id: id,
+                iddono: dono
             });
 
             canvas1.add(drawingobject);
