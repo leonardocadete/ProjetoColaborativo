@@ -14,6 +14,7 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
             Map(x => x.UrlImagem, "URLIMAGEM").Length(100);
             Map(x => x.UrlMiniatura, "URLMINIATURA").Length(100);
             Map(x => x.DataCriacao, "DATACRIACAO").Not.Nullable();
+            Map(x => x.Ordem, "ORDEM").Not.Nullable();
 
             HasMany(x => x.ElementosMultimidia).KeyColumn("OBJETOSESSAO").Cascade.AllDeleteOrphan();
         }

@@ -78,9 +78,9 @@
                 {
                     <ul id="sortable">
 
-                        @foreach (var os in @Model.ObjetosDaSessao)
+                        @foreach (var os in @Model.ObjetosDaSessao.OrderBy(x => x.Ordem))
                         {
-                            <li data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
+                            <li data-id="@os.Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
                                 <img src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)"/>
                             </li>
                         }
@@ -142,7 +142,7 @@ else
             }
         });
 
-
+        
         (function () {
 
             @if (ViewBag.ObjectId != null)
@@ -156,7 +156,28 @@ else
 
         $(".toolbar").draggable({ handle: ".drag" });
 
-        $("#sortable").sortable();
+        $("#sortable").sortable({
+            axis: 'x',
+            cursor: 'move',
+            update: function(event, ui) {
+                var id = ui.item.attr("data-id");
+                var idanterior = ui.item.prev().attr("data-id") || "0";
+
+                $.ajax({
+                    type: "POST",
+                    url: window.location.pathname.replace("MostrarSessao", "OrdenarObjeto"),
+                    data: "{ 'idreordenar' : '" + id + "', 'idanterior' : '" + idanterior + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) { console.log(data) },
+                    failure: function (errMsg) {
+                        alert(errMsg);
+                    }
+                });
+
+            }
+        });
+
         $("#sortable").disableSelection();
 
         $(".miniatura").on("click", function () {

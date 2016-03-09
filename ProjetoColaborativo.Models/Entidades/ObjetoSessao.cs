@@ -17,6 +17,8 @@ namespace ProjetoColaborativo.Models.Entidades
 
         public virtual DateTime DataCriacao { get; set; }
 
+        public virtual int Ordem { get; set; }
+
         public virtual IList<ElementoMultimidia> ElementosMultimidia { get; set; }
     }
 }

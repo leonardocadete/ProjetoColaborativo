@@ -67,6 +67,37 @@ namespace ProjetoColaborativo.Controllers
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult OrdenarObjeto(long id, long objetoid, long idanterior, long idreordenar)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+
+            if (sessao == null)
+                return Json("", JsonRequestBehavior.AllowGet);
+
+            int ordematual = 1;
+            int novaordem = 0;
+
+            foreach (var objetoSessao in sessao.ObjetosDaSessao.OrderBy(x => x.Ordem))
+            {
+                if (objetoSessao.Handle == idreordenar)
+                    continue;
+
+                objetoSessao.Ordem = ordematual;
+
+                if (objetoSessao.Handle == idanterior)
+                    novaordem = ordematual++;
+                
+                ordematual++;
+            }
+
+            sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == idreordenar).Ordem = novaordem;
+            _repositorioSessaoColaborativa.Salvar(sessao);
+            return Json("ok", JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         [Authorize]
         public ActionResult SalvarMiniatura(long id, long objetoid, string imgdata)
@@ -255,15 +286,23 @@ namespace ProjetoColaborativo.Controllers
             if (img == null)
                 return RedirectToAction("MostrarSessao", "Vimaps", new {id = SessaoColaborativaId});
 
-            sessao.ObjetosDaSessao.Add(new ObjetoSessao
+            int ordem = 1;
+
+            if (sessao.ObjetosDaSessao.Count > 0)
+                ordem = sessao.ObjetosDaSessao.Max(x => x.Ordem) + 1;
+
+            var objeto = new ObjetoSessao
             {
                 UrlImagem = img.ToString(),
-                UrlMiniatura = imgtn.ToString()
-            });
+                UrlMiniatura = imgtn.ToString(),
+                Ordem = ordem
+            };
 
-            _repositorioSessaoColaborativa.Salvar(sessao);
+            sessao.ObjetosDaSessao.Add(objeto);
+            sessao = _repositorioSessaoColaborativa.Salvar(sessao);
+            objeto = sessao.ObjetosDaSessao.FirstOrDefault(x => x.Ordem == ordem);
 
-            return RedirectToAction("MostrarSessao", "Vimaps", new { id = SessaoColaborativaId });
+            return RedirectToAction("MostrarSessao", "Vimaps", new { id = SessaoColaborativaId, objetoid = objeto.Handle });
         }
 
         [Authorize]
