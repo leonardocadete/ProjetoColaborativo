@@ -78,7 +78,12 @@ namespace ProjetoColaborativo.Controllers
                 return Json("", JsonRequestBehavior.AllowGet);
 
             int ordematual = 1;
-            int novaordem = 0;
+
+            if (idanterior == 0)
+            {
+                sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == idreordenar).Ordem = 1;
+                ordematual++;
+            }
 
             foreach (var objetoSessao in sessao.ObjetosDaSessao.OrderBy(x => x.Ordem))
             {
@@ -88,12 +93,14 @@ namespace ProjetoColaborativo.Controllers
                 objetoSessao.Ordem = ordematual;
 
                 if (objetoSessao.Handle == idanterior)
-                    novaordem = ordematual++;
-                
+                {
+                    sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == idreordenar).Ordem = 1;
+                    ordematual++;
+                }
+
                 ordematual++;
             }
-
-            sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == idreordenar).Ordem = novaordem;
+            
             _repositorioSessaoColaborativa.Salvar(sessao);
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
