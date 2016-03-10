@@ -11,7 +11,9 @@
 <head>
     <title></title>
     <link href='https://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
-    <link href="/Content/paineis.css" rel="stylesheet"/>
+    <link href="/Content/jquery.hoverscroll.css" rel="stylesheet" />
+    <link href="/Content/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="/Content/paineis.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -81,7 +83,7 @@
                         @foreach (var os in @Model.ObjetosDaSessao.OrderBy(x => x.Ordem))
                         {
                             <li data-id="@os.Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
-                                <img src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)"/>
+                                <img data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)"/>
                             </li>
                         }
 
@@ -108,6 +110,7 @@ else
 
     <script src="/Scripts/jquery-1.10.2.min.js"></script>
     <script src="/Scripts/jquery-ui.min.js"></script>
+    <script src="/Scripts/jquery.hoverscroll.js"></script>
     <script src="/Scripts/uuid.js"></script>
     <script src="/Scripts/fabric.min.js"></script>
     <script src="/Scripts/paineis.js"></script>
@@ -152,41 +155,57 @@ else
                 </text>
             }
 
-        $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
+            $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
 
-        $(".toolbar").draggable({ handle: ".drag" });
+            $(".toolbar").draggable({ handle: ".drag" });
 
-        $("#sortable").sortable({
-            axis: 'x',
-            cursor: 'move',
-            update: function(event, ui) {
-                var id = ui.item.attr("data-id");
-                var idanterior = ui.item.prev().attr("data-id") || "0";
+            $("#sortable").sortable({
+                axis: 'x',
+                cursor: 'move',
+                update: function(event, ui) {
+                    var id = ui.item.attr("data-id");
+                    var idanterior = ui.item.prev().attr("data-id") || "0";
 
-                $.ajax({
-                    type: "POST",
-                    url: window.location.pathname.replace("MostrarSessao", "OrdenarObjeto"),
-                    data: "{ 'idreordenar' : '" + id + "', 'idanterior' : '" + idanterior + "'}",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (data) { console.log(data) },
-                    failure: function (errMsg) {
-                        alert(errMsg);
-                    }
-                });
+                    $.ajax({
+                        type: "POST",
+                        url: window.location.pathname.replace("MostrarSessao", "OrdenarObjeto"),
+                        data: "{ 'idreordenar' : '" + id + "', 'idanterior' : '" + idanterior + "'}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) { console.log(data) },
+                        failure: function (errMsg) {
+                            alert(errMsg);
+                        }
+                    });
 
-            }
-        });
+                }
+            });
 
-        $("#sortable").disableSelection();
+            $("#sortable").disableSelection();
 
-        $(".miniatura").on("click", function () {
-            window.location.href = $(this).attr("data-url");
-            //$(".miniatura").removeClass("selecionado");
-            //$(this).addClass("selecionado");
-        });
+            $("#sortable").hoverscroll({
+                width: $("#sortable").width(),
+                height: 80,
+                rtl: false
+            });
+            
+            $(".miniatura").on("click", function () {
+                window.location.href = $(this).attr("data-url");
+            });
 
-    })();
+            $(document).tooltip({
+                items: "[data-tooltip]",  
+                at: "center top",
+                tooltipClass: "collab-tooltip-styling",
+                content: function() {
+                    return "<img class='img-tooltip' src='" + $(this).attr("src") + "' >";
+                },
+                show: {
+                    delay: 700
+                }
+            });
+
+        })();
 
     var dono = "@Html.Raw(ViewBag.Dono)";
     var cordono = "#@Html.Raw(ViewBag.CorDono)";

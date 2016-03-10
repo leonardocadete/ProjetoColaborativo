@@ -147,7 +147,7 @@ ul {
 /* thumbs */
 
 .miniaturas {
-    overflow-x: scroll;
+    overflow-x: hidden;
     white-space: nowrap;
     padding: 10px;
 }
@@ -248,3 +248,15 @@ ul {
     height: 100%;
     margin-top: 300px;
 }
+
+.img-tooltip {
+    width: 360px;
+    height: 192px;
+}
+
+.collab-tooltip-styling {
+    color: white;
+    border-color: #E74C3C;
+    border-radius: 3px;
+    max-width: 600px;
+  }
