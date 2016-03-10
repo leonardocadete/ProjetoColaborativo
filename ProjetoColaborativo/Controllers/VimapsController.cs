@@ -92,13 +92,14 @@ namespace ProjetoColaborativo.Controllers
 
                 objetoSessao.Ordem = ordematual;
 
+                ordematual++;
+
                 if (objetoSessao.Handle == idanterior)
                 {
-                    sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == idreordenar).Ordem = 1;
+                    sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == idreordenar).Ordem = ordematual;
                     ordematual++;
                 }
 
-                ordematual++;
             }
             
             _repositorioSessaoColaborativa.Salvar(sessao);
@@ -230,6 +231,7 @@ namespace ProjetoColaborativo.Controllers
             ViewBag.LerElementos = "null";
             ViewBag.Dono = usuario.Handle;
             ViewBag.CorDono = usuario.Cor;
+            ViewBag.NovoObjeto = TempData["NovoObjeto"];
 
             if (obj != null && obj.ElementosMultimidia.Count > 0)
             {
@@ -308,7 +310,7 @@ namespace ProjetoColaborativo.Controllers
             sessao.ObjetosDaSessao.Add(objeto);
             sessao = _repositorioSessaoColaborativa.Salvar(sessao);
             objeto = sessao.ObjetosDaSessao.FirstOrDefault(x => x.Ordem == ordem);
-
+            TempData["NovoObjeto"] = objeto.Handle;
             return RedirectToAction("MostrarSessao", "Vimaps", new { id = SessaoColaborativaId, objetoid = objeto.Handle });
         }
 
@@ -329,11 +331,14 @@ namespace ProjetoColaborativo.Controllers
             };
 
             var img = TempData["ThumbImageSavedURL"];
+            var imgtn = TempData["ThumbImageTNSavedURL"];
             if (img != null)
             {
                 sessao.ObjetosDaSessao.Add(new ObjetoSessao
                 {
-                    UrlImagem = img.ToString()
+                    UrlMiniatura = imgtn.ToString(),
+                    UrlImagem = img.ToString(),
+                    Ordem = 1
                 });
             }
 

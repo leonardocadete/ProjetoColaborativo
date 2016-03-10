@@ -11,7 +11,6 @@
 <head>
     <title></title>
     <link href='https://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
-    <link href="/Content/jquery.hoverscroll.css" rel="stylesheet" />
     <link href="/Content/jquery-ui.min.css" rel="stylesheet"/>
     <link href="/Content/paineis.css" rel="stylesheet" />
 </head>
@@ -78,9 +77,25 @@
             <div class="miniaturas">
                 @if (Model.ObjetosDaSessao.Count > 0)
                 {
-                    <ul id="sortable">
+                    if (ViewBag.NovoObjeto != null)
+                    {
+                        <ul id="sortable-novo" class="listas-sortable">
+                            <li data-id="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle})" class="miniatura @(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")">
+                                <img data-tooltip="" src="@string.Format("{0}?{1}", @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().UrlMiniatura, DateTime.Now.Ticks)" />
+                            </li>
+                            <li class="miniatura info">
+                                <img class="icon-arrow" src="/Content/icons/arrow.png" />
+                                <h3>Esse é o seu novo objeto!</h3>
+                                Arraste ele para a lista abaixo, na posição que ele deve ficar.
+                            </li>
+                        </ul>
+                    }
 
-                        @foreach (var os in @Model.ObjetosDaSessao.OrderBy(x => x.Ordem))
+                    <div></div>
+
+                    <ul id="sortable" class="listas-sortable">
+
+                        @foreach (var os in @Model.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
                         {
                             <li data-id="@os.Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
                                 <img data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)"/>
@@ -102,15 +117,19 @@
 else
 {
     <div class="sem-objetos">
-        Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps.
-        <br/>@Html.ActionLink("Escolher outra sessão", "EscolherSessao")
+        Esta sessão ainda não possui nenhum objeto. <br/>
+        Para adicionar objetos acesse o 
+        <a href="">Vimaps</a> ou
+        @Html.ActionLink("escolha outra sessão", "EscolherSessao")
+
+        <br/><br/><br/><br/>
+        <a href="/teste_postar_imagem.html">Teste de envio de imagem</a>
     </div>
 }
 
 
     <script src="/Scripts/jquery-1.10.2.min.js"></script>
     <script src="/Scripts/jquery-ui.min.js"></script>
-    <script src="/Scripts/jquery.hoverscroll.js"></script>
     <script src="/Scripts/uuid.js"></script>
     <script src="/Scripts/fabric.min.js"></script>
     <script src="/Scripts/paineis.js"></script>
@@ -159,13 +178,16 @@ else
 
             $(".toolbar").draggable({ handle: ".drag" });
 
-            $("#sortable").sortable({
-                axis: 'x',
+            $("#sortable, #sortable-novo").sortable({
+                items: "li:not(.info)",
+                connectWith: ".listas-sortable",
+                //axis: 'x',
                 cursor: 'move',
-                update: function(event, ui) {
+                stop: function(event, ui) {
+                    $("#sortable-novo").hide();
                     var id = ui.item.attr("data-id");
                     var idanterior = ui.item.prev().attr("data-id") || "0";
-
+                    
                     $.ajax({
                         type: "POST",
                         url: window.location.pathname.replace("MostrarSessao", "OrdenarObjeto"),
@@ -181,13 +203,34 @@ else
                 }
             });
 
-            $("#sortable").disableSelection();
+            $("#sortable, #sortable-novo").disableSelection();
 
-            $("#sortable").hoverscroll({
-                width: $("#sortable").width(),
-                height: 80,
-                rtl: false
+            // autoscroll
+            var $bl    = $(".miniaturas"),
+                $th    = $("#sortable"),
+                blW    = $bl.outerWidth(),
+                blSW   = $bl[0].scrollWidth,
+                wDiff  = (blSW/blW)-1,
+                mPadd  = 90, 
+                damp   = 20, 
+                mX     = 0,
+                mX2    = 0,
+                posX   = 0,
+                mmAA   = blW-(mPadd*2), 
+                mmAAr  = (blW/mmAA);
+
+            $bl.mousemove(function(e) {
+                mX = e.pageX - this.offsetLeft;
+                mX2 = Math.min( Math.max(0, mX-mPadd), mmAA ) * mmAAr;
             });
+
+            setInterval(function(){
+                posX += (mX2 - posX) / damp; 
+                $th.css({marginLeft: -posX*wDiff });
+            }, 10);
+            // autoscroll
+
+
             
             $(".miniatura").on("click", function () {
                 window.location.href = $(this).attr("data-url");

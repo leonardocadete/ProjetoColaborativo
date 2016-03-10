@@ -156,7 +156,7 @@ ul {
         display: inline-block;
     }
 
-        .miniaturas .miniatura img {
+        .miniaturas .miniatura img:not(.icon-arrow) {
             width: 150px;
             height: 80px;
             margin-right: 5px;
@@ -169,8 +169,24 @@ ul {
                 opacity: 1;
             }
 
+            .miniaturas .miniatura.info {
+                display: inline-block;
+                margin-right: 5px;
+                vertical-align: top;
+                margin-top: 15px
+            }
 
-.miniatura img {
+            .miniaturas .miniatura.info > h3 {
+                margin: 0;
+            }
+
+
+            .icon-arrow {
+                height: 48px;
+                float:left
+            }
+
+.miniatura img:not(.icon-arrow) {
     outline: 1px solid white;
     outline-offset: -4px;
 }
