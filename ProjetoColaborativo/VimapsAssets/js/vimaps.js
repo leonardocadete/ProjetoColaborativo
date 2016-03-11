@@ -23,38 +23,35 @@
     var divfooter = document.createElement("div");
     divfooter.id = "footer";
     bodyElement.appendChild(divfooter);
-
-    // creating close button
-    var buttonclose = document.createElement("button");
-    buttonclose.id = "bfechar";
-    buttonclose.name = "bfechar";
-    buttonclose.style["display"] = "none";
-    var tc = document.createTextNode("Voltar para o Vimaps");
-    buttonclose.appendChild(tc);
-    buttonclose.onclick = function() {
-        closeCollab();
+    
+    // creating open button
+    var buttonopen = document.createElement("button");
+    buttonopen.id = "babrir";
+    buttonopen.name = "babrir";
+    var tco = document.createTextNode("Abrir Colaborativo");
+    buttonopen.appendChild(tco);
+    buttonopen.onclick = function () {
+        document.getElementById("iframeCollab").style["display"] = "block";
+        document.getElementById("overlay").style["display"] = "block";
+        document.getElementById("babrir").style["display"] = "none";
+        document.getElementById("benviar").style["display"] = "none";
     };
-    divfooter.appendChild(buttonclose);
+    divfooter.appendChild(buttonopen);
 
     // creating button
     var button = document.createElement("button");
     button.id = "benviar";
     button.name = "benviar";
     button.onclick = function () {
-
-        // login test
-        // document.getElementById("overlay").style["display"] = "block";
-        // document.getElementById("divlogin").style["display"] = "block";
-        // return;
-        // login test
-
+        
         var canvas = document.getElementsByTagName("canvas");
         for (var i = 0; i < canvas.length; i++) { // searching rv canvas
             if (canvas[i].parentNode.className == "show") {
                 document.getElementById("imgdata").value = canvas[i].toDataURL();
+                document.getElementById("url").value = window.location.href;
                 document.getElementById("formCollab").submit();
                 document.getElementById("overlay").style["display"] = "block";
-                document.getElementById("bfechar").style["display"] = "block";
+                document.getElementById("babrir").style["display"] = "none";
                 document.getElementById("benviar").style["display"] = "none";
                 showiframe = true;
                 return;
@@ -62,11 +59,12 @@
         }
 
         document.getElementById("imgdata").value = canvas[0].toDataURL();
+        document.getElementById("url").value = window.location.href;
         document.getElementById("formCollab").submit();
         showiframe = true;
         document.getElementById("overlay").style["display"] = "block";
-        document.getElementById("bfechar").style["display"] = "block";
         document.getElementById("benviar").style["display"] = "none";
+        document.getElementById("babrir").style["display"] = "none";
     };
 
     var t = document.createTextNode("Enviar para sessão colaborativa");
@@ -79,18 +77,23 @@
     imgdata.type = "hidden";
     imgdata.id = "imgdata";
     imgdata.name = "imgdata";
+    var url = document.createElement("input");
+    url.type = "hidden";
+    url.id = "url";
+    url.name = "url";
     form.id = "formCollab";
     form.method = "POST";
     form.action = urlbase + "/Vimaps/SendImage";
     form.target = "iframeCollab";
     form.appendChild(imgdata);
+    form.appendChild(url);
     bodyElement.appendChild(form);
 
     // create iframe
     var iframe = document.createElement("iframe");
     iframe.id = "iframeCollab";
     iframe.name = "iframeCollab";
-    iframe.src = "about:blank";
+    iframe.src = "http://177.131.33.18:8080/";
     iframe.frameBorder = "0";
 
     iframe.onload = function () {
@@ -112,9 +115,24 @@
     function closeCollab() {
         document.getElementById("iframeCollab").style["display"] = "none";
         document.getElementById("overlay").style["display"] = "none";
-        document.getElementById("bfechar").style["display"] = "none";
         document.getElementById("benviar").style["display"] = "block";
+        document.getElementById("babrir").style["display"] = "block";
     }
 
+    // message listener
+    window.addEventListener("message", function (event) {
+        console.log("Recebido: " + event.data);
+        var acao = event.data.split("<|>")[0];
+        var par = event.data.split("<|>")[1];
+
+        if (acao == "url") {
+            closeCollab();
+            window.location.href = par;
+        } else if (acao == "fechar") {
+            closeCollab();
+        }
+    });
+
 })();
+
 

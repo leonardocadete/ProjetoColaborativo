@@ -185,8 +185,8 @@ ul {
                 height: 48px;
                 float:left
             }
-
-.miniatura img:not(.icon-arrow) {
+            
+.miniatura img:not(.icon-arrow):not(.selecionado) {
     outline: 1px solid white;
     outline-offset: -4px;
 }
@@ -194,7 +194,6 @@ ul {
 .selecionado img {
     outline: 4px solid #e74c3c;
 }
-
 
 .clear {
     clear: both;
@@ -236,6 +235,31 @@ ul {
         display: inline-block;
     }
 
+    .window-title-info {
+        background: #FFF;
+        color: #E74C3C;
+        border-radius: 4px ;
+        margin: 0 5px 0 5px;
+        padding: 3px 10px;
+        z-index: 11;
+        position: relative;
+        display: inline-block;
+    }
+
+    .window-title-info:hover {
+        background: #E74C3C;
+        color: #fff;
+    }
+
+    .window-title-info a {
+        text-decoration: none;
+        color: #E74C3C;
+    }
+
+    .window-title-info:hover a {
+        color: #FFF;
+    }
+
     .toolbar .tools {
         z-index: 11;
         position: relative;
@@ -271,8 +295,13 @@ ul {
 }
 
 .collab-tooltip-styling {
-    color: white;
+    color: black;
+    font-size: 10px;
     border-color: #E74C3C;
     border-radius: 3px;
     max-width: 600px;
   }
+
+#sortable-novo {
+    margin-bottom: 10px
+}

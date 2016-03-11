@@ -99,7 +99,6 @@ namespace ProjetoColaborativo.Controllers
                     sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == idreordenar).Ordem = ordematual;
                     ordematual++;
                 }
-
             }
             
             _repositorioSessaoColaborativa.Salvar(sessao);
@@ -139,7 +138,7 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [HttpPost]
-        public ActionResult SendImage(string imgdata)
+        public ActionResult SendImage(string imgdata, string url)
         {
             // Saving
             if (string.IsNullOrEmpty(imgdata))
@@ -170,6 +169,7 @@ namespace ProjetoColaborativo.Controllers
             image.Save(imagespath + "/" + filenametn, jpgEncoder, myEncoderParameters);
             TempData["ThumbImageSavedURL"] = "/UserData/Images/" + filename;
             TempData["ThumbImageTNSavedURL"] = "/UserData/Images/" + filenametn;
+            TempData["UrlReferer"] = url;
 
             return RedirectToAction("MostrarSessao");
         }
@@ -284,6 +284,9 @@ namespace ProjetoColaborativo.Controllers
         [HttpPost]
         public ActionResult EscolherSessao(string SessaoColaborativaId)
         {
+            //TODO: pegar o usuario pelo handle
+            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+
             if (string.IsNullOrEmpty(SessaoColaborativaId))
                 return View();
 
@@ -291,7 +294,9 @@ namespace ProjetoColaborativo.Controllers
             if (sessao == null) return View();
 
             var img = TempData["ThumbImageSavedURL"];
+            TempData["ThumbImageSavedURL"] = null;
             var imgtn = TempData["ThumbImageTNSavedURL"];
+            var url = TempData["UrlReferer"];
             if (img == null)
                 return RedirectToAction("MostrarSessao", "Vimaps", new {id = SessaoColaborativaId});
 
@@ -304,13 +309,16 @@ namespace ProjetoColaborativo.Controllers
             {
                 UrlImagem = img.ToString(),
                 UrlMiniatura = imgtn.ToString(),
-                Ordem = ordem
+                Ordem = ordem,
+                UrlOrigem = url.ToString(),
+                Usuario = usuario
             };
 
             sessao.ObjetosDaSessao.Add(objeto);
             sessao = _repositorioSessaoColaborativa.Salvar(sessao);
             objeto = sessao.ObjetosDaSessao.FirstOrDefault(x => x.Ordem == ordem);
-            TempData["NovoObjeto"] = objeto.Handle;
+            if(sessao.ObjetosDaSessao.Count > 0)
+                TempData["NovoObjeto"] = objeto.Handle;
             return RedirectToAction("MostrarSessao", "Vimaps", new { id = SessaoColaborativaId, objetoid = objeto.Handle });
         }
 
@@ -331,14 +339,18 @@ namespace ProjetoColaborativo.Controllers
             };
 
             var img = TempData["ThumbImageSavedURL"];
+            TempData["ThumbImageSavedURL"] = null;
             var imgtn = TempData["ThumbImageTNSavedURL"];
+            var url = TempData["UrlReferer"];
             if (img != null)
             {
                 sessao.ObjetosDaSessao.Add(new ObjetoSessao
                 {
                     UrlMiniatura = imgtn.ToString(),
                     UrlImagem = img.ToString(),
-                    Ordem = 1
+                    Ordem = 1,
+                    UrlOrigem = url.ToString(),
+                    Usuario = usuario
                 });
             }
 

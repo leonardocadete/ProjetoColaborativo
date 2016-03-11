@@ -69,22 +69,29 @@
 
     <div id="bottom-panel" class="toggle-panel">
         <div class="window-title">
-            Objetos da sessão
+            @Model.Descricao
             <a class="troggle-minimize">▾</a>
+        </div>
+        <div class="window-title-info">
+            <a href="javascript:" id="abrir-no-vimaps">Abrir essa tela no Vimaps</a>
+        </div>
+        <div class="window-title-info">
+            <a href="javascript:" id="minimizar-colaborativo">Minimizar colaborativo</a>
         </div>
         <div class="panel-content">
             <div class="bg-overlay"></div>
             <div class="miniaturas">
+                
                 @if (Model.ObjetosDaSessao.Count > 0)
                 {
                     if (ViewBag.NovoObjeto != null)
                     {
                         <ul id="sortable-novo" class="listas-sortable">
                             <li data-id="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle})" class="miniatura @(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")">
-                                <img data-tooltip="" src="@string.Format("{0}?{1}", @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().UrlMiniatura, DateTime.Now.Ticks)" />
+                                <img data-createdtime="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().DataCriacao.ToString()" data-authorname="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")"/>
                             </li>
                             <li class="miniatura info">
-                                <img class="icon-arrow" src="/Content/icons/arrow.png" />
+                                <img class="icon-arrow" src="/Content/icons/arrow.png"/>
                                 <h3>Esse é o seu novo objeto!</h3>
                                 Arraste ele para a lista abaixo, na posição que ele deve ficar.
                             </li>
@@ -98,7 +105,7 @@
                         @foreach (var os in @Model.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
                         {
                             <li data-id="@os.Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
-                                <img data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)"/>
+                                <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == os.Handle ? "selecionado" : "")"/>
                             </li>
                         }
 
@@ -164,7 +171,7 @@ else
             }
         });
 
-        
+
         (function () {
 
             @if (ViewBag.ObjectId != null)
@@ -187,7 +194,7 @@ else
                     $("#sortable-novo").hide();
                     var id = ui.item.attr("data-id");
                     var idanterior = ui.item.prev().attr("data-id") || "0";
-                    
+
                     $.ajax({
                         type: "POST",
                         url: window.location.pathname.replace("MostrarSessao", "OrdenarObjeto"),
@@ -211,12 +218,12 @@ else
                 blW    = $bl.outerWidth(),
                 blSW   = $bl[0].scrollWidth,
                 wDiff  = (blSW/blW)-1,
-                mPadd  = 90, 
-                damp   = 20, 
+                mPadd  = 90,
+                damp   = 20,
                 mX     = 0,
                 mX2    = 0,
                 posX   = 0,
-                mmAA   = blW-(mPadd*2), 
+                mmAA   = blW-(mPadd*2),
                 mmAAr  = (blW/mmAA);
 
             $bl.mousemove(function(e) {
@@ -225,28 +232,46 @@ else
             });
 
             setInterval(function(){
-                posX += (mX2 - posX) / damp; 
+                posX += (mX2 - posX) / damp;
                 $th.css({marginLeft: -posX*wDiff });
             }, 10);
             // autoscroll
 
 
-            
+
             $(".miniatura").on("click", function () {
                 window.location.href = $(this).attr("data-url");
             });
 
             $(document).tooltip({
-                items: "[data-tooltip]",  
+                items: "[data-tooltip]",
                 at: "center top",
                 tooltipClass: "collab-tooltip-styling",
                 content: function() {
-                    return "<img class='img-tooltip' src='" + $(this).attr("src") + "' >";
+                    return "<img class='img-tooltip' src='" + $(this).attr("src") + "' > <br />" +
+                        "Enviado por <b>" + $(this).attr("data-authorname") + "</b><br/>" +
+                        $(this).attr("data-createdtime");
                 },
                 show: {
                     delay: 700
                 }
             });
+
+
+
+            if (window.self !== window.top) { // está no iframe
+                $("#abrir-no-vimaps").click(function() {
+                    parent.postMessage("url<|>@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)", "*");
+                });
+                $("#minimizar-colaborativo").click(function() {
+                    parent.postMessage("fechar<|>yo", "*");
+                });
+            } else {
+                $("#abrir-no-vimaps").click(function() {
+                    window.location.href = "@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)";
+                });
+                $("#minimizar-colaborativo").parent().hide();
+            }
 
         })();
 
@@ -269,11 +294,9 @@ else
     }
 
 
-
-
         window.setInterval(function() {
             $.getJSON( window.location.pathname.replace("MostrarSessao", "BuscarElementosDosOutrosParticipantesJson"), function( data ) {
-                
+
                 canvas1.forEachObject(function(d){
                     if (d.iddono != dono) {
                         d.naosalvar = true;
@@ -291,7 +314,7 @@ else
                     });
                     canvas1.renderOnAddRemove = origRenderOnAddRemove;
                     canvas1.renderAll();
-                    
+
                     atualizarMiniatura(false);
                 });
             });

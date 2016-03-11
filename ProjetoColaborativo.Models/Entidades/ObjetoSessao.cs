@@ -11,6 +11,8 @@ namespace ProjetoColaborativo.Models.Entidades
             this.DataCriacao = DateTime.Now;
         }
 
+        public virtual string UrlOrigem { get; set; }
+
         public virtual string UrlImagem { get; set; }
 
         public virtual string UrlMiniatura { get; set; }
@@ -20,5 +22,7 @@ namespace ProjetoColaborativo.Models.Entidades
         public virtual int Ordem { get; set; }
 
         public virtual IList<ElementoMultimidia> ElementosMultimidia { get; set; }
+
+        public virtual Usuario Usuario { get; set; }
     }
 }
