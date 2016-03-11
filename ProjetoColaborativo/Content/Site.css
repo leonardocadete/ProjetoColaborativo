@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    font-family: 'Dosis', sans-serif;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +22,101 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: 'Dosis', sans-serif;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+.miniaturas {
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+    .miniaturas .miniatura {
+        display: inline-block;
+    }
+
+        .miniaturas .miniatura img:not(.icon-arrow) {
+            width: 195px;
+            height: 104px;
+            margin-right: 5px;
+            cursor: pointer;
+            float: left;
+            opacity: .8;
+        }
+
+            .miniaturas .miniatura img:hover {
+                opacity: 1;
+            }
+
+            .miniaturas .miniatura.info {
+                display: inline-block;
+                margin-right: 5px;
+                vertical-align: top;
+                margin-top: 15px
+            }
+
+            .miniaturas .miniatura.info > h3 {
+                margin: 0;
+            }
+
+
+            .icon-arrow {
+                height: 48px;
+                float:left
+            }
+            
+.miniatura img:not(.icon-arrow):not(.selecionado) {
+    outline: 1px solid white;
+    outline-offset: -4px;
+}
+
+
+.card-sessao {
+    background: #fff;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    
+}
+
+
+.card-sessao h3 {
+    margin: 5px auto;
+    padding: 0;
+    width: 1000px
+}
+
+.card-sessao h3 a {
+    color: #e74c3c;
+}
+
+.card-sessao h3 a:hover {
+    text-decoration: none;
+}
+
+.list-scroll {
+    width: 1000px;
+    margin: auto;
+}
+
+.slick-prev:before, .slick-next:before { 
+    color:#e74c3c !important;
 }

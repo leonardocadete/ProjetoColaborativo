@@ -78,6 +78,9 @@
         <div class="window-title-info">
             <a href="javascript:" id="minimizar-colaborativo">Minimizar colaborativo</a>
         </div>
+        <div class="window-title-info">
+            <a href="@Url.Action("Index","Home")" id="link-minhas-sessoes">Minhas sessões</a>
+        </div>
         <div class="panel-content">
             <div class="bg-overlay"></div>
             <div class="miniaturas">
@@ -127,7 +130,7 @@ else
         Esta sessão ainda não possui nenhum objeto. <br/>
         Para adicionar objetos acesse o 
         <a href="">Vimaps</a> ou
-        @Html.ActionLink("escolha outra sessão", "EscolherSessao")
+        @Html.ActionLink("escolha outra sessão", "Index", "Home")
 
         <br/><br/><br/><br/>
         <a href="/teste_postar_imagem.html">Teste de envio de imagem</a>
@@ -261,14 +264,26 @@ else
 
             if (window.self !== window.top) { // está no iframe
                 $("#abrir-no-vimaps").click(function() {
-                    parent.postMessage("url<|>@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)", "*");
+                    @if (Model.ObjetosDaSessao.Any())
+                    {
+                        <text>
+                        parent.postMessage("url<|>@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)", "*");
+                        </text>
+                    }
+
                 });
                 $("#minimizar-colaborativo").click(function() {
                     parent.postMessage("fechar<|>yo", "*");
                 });
             } else {
                 $("#abrir-no-vimaps").click(function() {
-                    window.location.href = "@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)";
+                    @if (Model.ObjetosDaSessao.Any())
+                    {
+                        <text>
+                        window.location.href = "@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)";
+                        </text>
+                    }
+
                 });
                 $("#minimizar-colaborativo").parent().hide();
             }

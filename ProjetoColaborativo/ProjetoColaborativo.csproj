@@ -231,11 +231,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bgvimaps.png" />
+    <Content Include="Content\ajax-loader.gif" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fonts\slick.svg" />
     <Content Include="Content\icons\arrow.png" />
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\paineis.css" />
+    <Content Include="Content\slick-theme.css" />
+    <Content Include="Content\slick.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -244,6 +248,9 @@
     <Content Include="login.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\fonts\slick.ttf" />
+    <Content Include="Content\fonts\slick.woff" />
+    <Content Include="Content\fonts\slick.eot" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\test.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -260,6 +267,7 @@
     <Content Include="Scripts\paineis.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\slick.min.js" />
     <Content Include="Scripts\uuid.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="teste_postar_imagem.html" />

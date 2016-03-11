@@ -1,9 +1,112 @@
-﻿@{
+﻿@using NHibernate.Linq
+@using ProjetoColaborativo.Models.Entidades
+@using ProjetoColaborativo.Models.Entidades.Mappings
+@{
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>Projeto Colaborativo</h1>
-    <p class="lead">Projeto Colaborativo da Pós em Desenvolvimento de Aplicações Multiplataformas.</p>
-    <p><a href="https://github.com/leonardocadete/ProjetoColaborativo" class="btn btn-primary btn-lg">GitHub &raquo;</a></p>
-</div>
+<h1>Minhas sessões colaborativas</h1>
+
+@if (((NhQueryable<SessaoColaborativa>)ViewBag.MinhasSessoes).Any())
+{
+    foreach (SessaoColaborativa sessao in ViewBag.MinhasSessoes)
+    {
+        <div class="card-sessao">
+            <h3>
+                <a href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle})">@sessao.Descricao</a>
+            </h3>
+            @*
+    <em>Criada por <b>@sessao.Usuario.Nome</b> em @sessao.DataCriacao</em>
+            *@
+            <div class="miniaturas">
+
+                @if (sessao.ObjetosDaSessao.Count > 0)
+                {
+                    <div class="list-scroll">
+                        @foreach (var os in sessao.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
+                        {
+                            <a href="@Url.Action("MostrarSessao", "Vimaps", new { id = sessao.Handle, objetoid = os.Handle })">
+                                <div data-id="@os.Handle" data-url="" class="miniatura">
+                                    <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
+                                </div>
+                            </a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
+                }
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div> Você não possui nenhuma sessão. </div>
+}
+
+
+
+
+<h1>Sessões compartilhadas comigo</h1>
+
+@if (((NhQueryable<SessaoColaborativa>)ViewBag.SessoesQueParticipo).Any())
+{
+    foreach (SessaoColaborativa sessao in ViewBag.SessoesQueParticipo)
+    {
+        <div class="card-sessao">
+            <h3>
+                <a href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle})">@sessao.Descricao</a>
+            </h3>
+            @*
+    <em>Criada por <b>@sessao.Usuario.Nome</b> em @sessao.DataCriacao</em>
+            *@
+            <div class="miniaturas">
+
+                @if (sessao.ObjetosDaSessao.Count > 0)
+                {
+                    <ul class="list-scroll">
+                        @foreach (var os in sessao.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
+                        {
+                            <a href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
+                                <li data-id="@os.Handle" data-url="" class="miniatura">
+                                    <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
+                                </li>
+                            </a>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
+                }
+            </div>
+        </div>
+
+    }
+}
+else
+{
+    <div> Você não possui nenhuma sessão compartilhada. </div>
+}
+
+@section styles{
+<link href="/Content/slick.css" rel="stylesheet" />
+<link href="/Content/slick-theme.css" rel="stylesheet" />
+
+
+}
+
+@section scripts{
+    <script src="/Scripts/slick.min.js"></script>
+
+    <script>
+        $('.list-scroll').slick({
+            slidesToShow: 5,
+            slidesToScroll: 5,
+            infinite: false
+        });
+    </script>
+
+}

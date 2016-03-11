@@ -8,6 +8,7 @@
 
 <form id="form" action="/Vimaps/SendImage" method="post">
 	<input id="imgdata" name="imgdata" type="hidden" />
+	<input id="url" name="url" type="hidden" />
 	<input type="button" onclick="getimage()" value="vai" />
 </form>
 
@@ -16,6 +17,7 @@
 function getimage(){
 	convertToDataURLviaCanvas('bgvimaps.png', function(base64Img){
 	    document.getElementById("imgdata").value = base64Img;
+	    document.getElementById("url").value = "";
 		document.getElementById("form").submit();
 	}, "image/png");
 }

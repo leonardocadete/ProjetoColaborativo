@@ -66,8 +66,7 @@ namespace ProjetoColaborativo.Controllers
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
-
-
+        
         [HttpPost]
         [Authorize]
         public ActionResult OrdenarObjeto(long id, long objetoid, long idanterior, long idreordenar)
