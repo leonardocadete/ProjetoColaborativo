@@ -36,6 +36,23 @@ function hexToRgb(hex) {
     } : null;
 }
 
+var escrevendo = false;
+canvas1.on('text:editing:entered', function (e) {
+    escrevendo = true;
+});
+
+canvas1.on('text:editing:exited', function (e) {
+    escrevendo = false;
+    canvas1.off('mouse:up');
+
+    if (e.target.text == "") {
+        e.target.remove();
+        return;
+    }
+
+    SaveObject(e.target, false);
+});
+
 canvas1.on('object:modified', function (e) {
     SaveObject(e.target, false);
 });
@@ -250,6 +267,7 @@ $("input[type='button'].icon-elipse").click(function () {
 
 });
 
+
 /**
  * PENCIL
  */
@@ -268,6 +286,35 @@ $("input[type='button'].icon-pencil").click(function () {
 // alert json
 $("input[type='button'].icon-speaker").click(function () {
     alert(JSON.stringify(canvas1.toDatalessJSON()));
+});
+
+/**
+ * TEXT
+ */
+$("input[type='button'].icon-text").click(function () {
+
+    canvas1.on('mouse:up', function(o) {
+        var id = uuid.v4();
+        var startY = o.e.offsetY,
+            startX = o.e.offsetX;
+
+        escrevendo = true;
+        var iText7 = new fabric.IText('', {
+            left: startX,
+            top: startY,
+            padding: 7,
+            fill: "#fff",
+            fontFamily: 'Helvetica',
+            textBackgroundColor: "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)",
+            stroke: "#000",
+            strokeWidth: 1,
+            id: id,
+            iddono: dono
+        });
+        canvas1.add(iText7).setActiveObject(iText7);
+        iText7.enterEditing();
+    });
+
 });
 
 // delete

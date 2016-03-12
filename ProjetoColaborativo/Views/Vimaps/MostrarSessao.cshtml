@@ -310,6 +310,10 @@ else
 
 
         window.setInterval(function() {
+
+            if (escrevendo)
+                return;
+
             $.getJSON( window.location.pathname.replace("MostrarSessao", "BuscarElementosDosOutrosParticipantesJson"), function( data ) {
 
                 canvas1.forEachObject(function(d){

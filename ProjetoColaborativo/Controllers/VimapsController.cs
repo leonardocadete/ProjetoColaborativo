@@ -46,7 +46,8 @@ namespace ProjetoColaborativo.Controllers
 
             var el = _repositorioElementoMultimidia.Consultar(x => x.Guid == guid).FirstOrDefault();
             var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
-
+            
+            json = json.Replace("\n", "\\n");
             if (el == null)
                 el = new ElementoMultimidia
                 {
@@ -199,9 +200,22 @@ namespace ProjetoColaborativo.Controllers
                     Color cor = System.Drawing.ColorTranslator.FromHtml("#" + el.Usuario.Cor);
 
                     string json = el.Json;
-                    Regex regex = new Regex("fill:(.*)\"");
-                    json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")", string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
-                    json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")", string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                    if (json.Contains("\"type\":\"i-text\"")) // TEXTO
+                    {
+                        json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")", "rgba(255, 255, 255, 1)");
+                        json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")", "rgba(0, 0, 0, 1)");
+                        json = Regex.Replace(json, "(?<=textBackgroundColor\":\").*?(?=\")",
+                            string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                        //json = json.Replace("\\n", "\n");
+                    }
+                    else // GEOMETRIA
+                    {
+                        json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")",
+                            string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                        json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")",
+                            string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                    }
+
                     els.Add(json);
                 }
                 return this.Content(string.Format("{{\"objects\": [ {0} ]}}", string.Join(",", els)), "application/json");
@@ -240,9 +254,21 @@ namespace ProjetoColaborativo.Controllers
                     Color cor = System.Drawing.ColorTranslator.FromHtml("#" + el.Usuario.Cor);
                     
                     string json = el.Json;
-                    Regex regex = new Regex("fill:(.*)\"");
-                    json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")", string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
-                    json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")", string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                    if (json.Contains("\"type\":\"i-text\"")) // TEXTO
+                    {
+                        json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")", "rgba(255, 255, 255, 1)");
+                        json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")", "rgba(0, 0, 0, 1)");
+                        json = Regex.Replace(json, "(?<=textBackgroundColor\":\").*?(?=\")",
+                            string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                        //json = json.Replace("\\n", "\n");
+                    }
+                    else // GEOMETRIA
+                    {
+                        json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")",
+                            string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                        json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")",
+                            string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
+                    }
                     els.Add(json);
                 }
                 ViewBag.LerElementos = string.Format("{{'objects': [ {0} ]}}", string.Join(",",els));
