@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
-using ProjetoColaborativo.Models.DAO;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using ProjetoColaborativo.Models.Entidades;
 using ProjetoColaborativo.ViewModels.Account;
 
@@ -9,11 +11,15 @@ namespace ProjetoColaborativo.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IRepositorio<Usuario> repositorioUsuario;
+        private readonly SignInManager<Usuario, string> signInManager;
+        private readonly IAuthenticationManager authenticationManager;
 
-        public AccountController(IRepositorio<Usuario> repositorioUsuario)
+        public AccountController( 
+            IAuthenticationManager authenticationManager, 
+            UserManager<Usuario> userManager)
         {
-            this.repositorioUsuario = repositorioUsuario;
+            this.authenticationManager = authenticationManager;
+            this.signInManager = new SignInManager<Usuario, string>(userManager, authenticationManager);
         }
 
         [AllowAnonymous]
@@ -26,18 +32,19 @@ namespace ProjetoColaborativo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel viewModel, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel viewModel, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                var usuario =
-                    repositorioUsuario.Consultar(x => x.Login == viewModel.Login && x.Senha == viewModel.Senha)
-                        .FirstOrDefault();
-                if (usuario != null)
+                var loginResult = await signInManager.PasswordSignInAsync(viewModel.Login, viewModel.Senha, true, true);
+                switch (loginResult)
                 {
-                    FormsAuthentication.SetAuthCookie(usuario.Login, false);
-
-                    return RedirectToLocal(returnUrl);
+                    case SignInStatus.Success:
+                        FormsAuthentication.SetAuthCookie(viewModel.Login, false);
+                        return RedirectToLocal(returnUrl);
+                    default:
+                        ModelState.AddModelError("", "Usuário ou senha incorretos.");
+                        return View(viewModel);
                 }
             }
 
@@ -48,6 +55,7 @@ namespace ProjetoColaborativo.Controllers
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
+            authenticationManager.SignOut();
 
             return RedirectToAction("Index", "Home");
         }

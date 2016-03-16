@@ -4,10 +4,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
 
@@ -281,8 +280,7 @@ namespace ProjetoColaborativo.Controllers
         [Authorize]
         public ActionResult EscolherSessao()
         {
-            //TODO: pegar o usuario pelo handle
-            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+            var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));
 
             var minhassessoes = _repositorioSessaoColaborativa
                                 .Consultar(x => 
@@ -309,8 +307,7 @@ namespace ProjetoColaborativo.Controllers
         [HttpPost]
         public ActionResult EscolherSessao(string SessaoColaborativaId)
         {
-            //TODO: pegar o usuario pelo handle
-            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+            var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));
 
             if (string.IsNullOrEmpty(SessaoColaborativaId))
                 return View();
@@ -351,8 +348,7 @@ namespace ProjetoColaborativo.Controllers
         [HttpPost]
         public ActionResult CriarSessaoColaborativa(string descricao)
         {
-            //TODO: pegar usuario pelo handle
-            var usuario = _repositorioUsuarios.RetornarTodos().FirstOrDefault(x => x.Login.Equals(User.Identity.Name));
+            var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));
 
             if (string.IsNullOrEmpty(descricao))
                 return View("EscolherSessao", usuario);

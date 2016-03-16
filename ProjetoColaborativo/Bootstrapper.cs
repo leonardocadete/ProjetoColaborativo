@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Mvc;
 using NHibernate;
 using ProjetoColaborativo.Business.Extensions;
-using ProjetoColaborativo.Controllers;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
+using ProjetoColaborativo.Store;
 
 namespace ProjetoColaborativo
 {
@@ -22,8 +25,6 @@ namespace ProjetoColaborativo
 
         private static IUnityContainer BuildUnityContainer(IUnityContainer container)
         {
-            //var container = new UnityContainer();
-
             // register all your components with the container here  
             //This is the important line to edit  
             RegisterTypes(container);
@@ -37,9 +38,11 @@ namespace ProjetoColaborativo
 
             RegisterRepositorios(container);
 
-            //container.RegisterType<ITeste, Teste>();
+            container.RegisterType<IUserStore<Usuario>, UserStore<Usuario>>();
+            container.RegisterType<UserManager<Usuario>>();
+            container.RegisterType<IAuthenticationManager>(new InjectionFactory(o => HttpContext.Current.GetOwinContext().Authentication));
         }
-
+        
         private static void RegisterRepositorios(IUnityContainer container)
         {
             // Todas as classes que herdam de entidade

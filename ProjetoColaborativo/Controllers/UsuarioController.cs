@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using Microsoft.AspNet.Identity;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
 using ProjetoColaborativo.ViewModels.Usuario;
@@ -21,6 +22,8 @@ namespace ProjetoColaborativo.Controllers
 
         public ActionResult Index(string q)
         {
+            var test = User.Identity.GetUserId();
+
             var usuarios = repositorioUsuario.RetornarTodos();
             if (q != null)
                 usuarios = usuarios.Where(x => x.Nome.Contains(q));
