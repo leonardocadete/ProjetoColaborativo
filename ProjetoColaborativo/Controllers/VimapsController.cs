@@ -166,11 +166,52 @@ namespace ProjetoColaborativo.Controllers
 
             image.Save(imagespath + "/" + filename, jpgEncoder, myEncoderParameters);
             image.Save(imagespath + "/" + filenametn, jpgEncoder, myEncoderParameters);
+
+            // VERIFICANDO SESSÃO ABERTA
+            if (Session["lastSessionId"] != null && Session["lastObjectId"] != null)
+            {
+                long sessionid, objectid;
+
+                if (long.TryParse(Session["lastSessionId"].ToString(), out sessionid) &&
+                    long.TryParse(Session["lastObjectId"].ToString(), out objectid))
+                {
+                    var sessao = _repositorioSessaoColaborativa.Retornar(sessionid);
+
+                    int ordem = 1;
+
+                    if (sessao.ObjetosDaSessao.Count > 0)
+                        ordem = sessao.ObjetosDaSessao.Max(x => x.Ordem) + 1;
+
+                    var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+
+                    var objeto = new ObjetoSessao
+                    {
+                        UrlImagem = "/UserData/Images/" + filename,
+                        UrlMiniatura = "/UserData/Images/" + filenametn,
+                        Ordem = ordem,
+                        UrlOrigem = url.ToString(),
+                        Usuario = usuario
+                    };
+
+                    sessao.ObjetosDaSessao.Add(objeto);
+                    sessao = _repositorioSessaoColaborativa.Salvar(sessao);
+
+                    // COLOCANDO OBJETO DEPOIS DO OBJETO ATUAL
+                    objeto = sessao.ObjetosDaSessao.FirstOrDefault(x => x.Ordem == ordem);
+                    long ido = 0;
+                    if (Session["lastObjectId"] != null && long.TryParse(Session["lastObjectId"].ToString(), out ido))
+                        OrdenarObjeto(sessao.Handle, objeto.Handle, ido, objeto.Handle);
+
+                    return RedirectToAction("MostrarSessao", "Vimaps", new { id = sessao.Handle, objetoid = objeto.Handle });
+                }
+            }
+
             TempData["ThumbImageSavedURL"] = "/UserData/Images/" + filename;
             TempData["ThumbImageTNSavedURL"] = "/UserData/Images/" + filenametn;
             TempData["UrlReferer"] = url;
 
             return RedirectToAction("MostrarSessao");
+            
         }
 
         [Authorize]
@@ -274,6 +315,8 @@ namespace ProjetoColaborativo.Controllers
             }
             
             ViewBag.ObjectId = objetoid;
+            Session["lastObjectId"] = objetoid;
+            Session["lastSessionId"] = sessao.Handle;
             return View(sessao);
         }
 
@@ -338,9 +381,12 @@ namespace ProjetoColaborativo.Controllers
 
             sessao.ObjetosDaSessao.Add(objeto);
             sessao = _repositorioSessaoColaborativa.Salvar(sessao);
+
+            // MOSTRANDO PRA ESCOLHER QUAL SESSÃO
             objeto = sessao.ObjetosDaSessao.FirstOrDefault(x => x.Ordem == ordem);
             if(sessao.ObjetosDaSessao.Count > 0)
                 TempData["NovoObjeto"] = objeto.Handle;
+
             return RedirectToAction("MostrarSessao", "Vimaps", new { id = SessaoColaborativaId, objetoid = objeto.Handle });
         }
 
