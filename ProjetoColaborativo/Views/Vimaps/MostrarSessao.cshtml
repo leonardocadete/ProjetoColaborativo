@@ -107,7 +107,7 @@
 
                         @foreach (var os in @Model.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
                         {
-                            <li data-id="@os.Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
+                            <li data-id="@os.Handle" data-order="@os.Ordem" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
                                 <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == os.Handle ? "selecionado" : "")"/>
                             </li>
                         }
@@ -299,31 +299,41 @@ else
         var json = @Html.Raw(ViewBag.LerElementos);
         canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
             if (object.iddono != dono) {
-                //object.lockMovementX = object.lockMovementY = true;
-                //object.lockScalingX = object.lockScalingY = true;
-                //object.lockRotation = true;
                 object.selectable = false;
             }
         });
         </text>
     }
 
-
+        var ddd;
         window.setInterval(function() {
 
             if (escrevendo)
                 return;
 
             $.getJSON( window.location.pathname.replace("MostrarSessao", "BuscarElementosDosOutrosParticipantesJson"), function( data ) {
+                
 
-                canvas1.forEachObject(function(d){
+                // sorting
+                data.objects.forEach(function(d) {
+                    $("li[data-id='" + d.id + "']").attr("data-order", d.order);
+                });
+
+                var li = $("#sortable li");
+                li.detach().sort(function(a, b) {
+                    return parseInt($(a).attr("data-order")) > parseInt($(b).attr("data-order"))
+                });
+                $("#sortable").append(li);
+                
+
+                canvas1.forEachObject(function(d) {
                     if (d.iddono != dono) {
                         d.naosalvar = true;
                         d.remove();
                     }
                 });
 
-                fabric.util.enlivenObjects(data.objects, function(objects) {
+                fabric.util.enlivenObjects(data.multimediaelements, function(objects) {
                     var origRenderOnAddRemove = canvas1.renderOnAddRemove;
                     canvas1.renderOnAddRemove = false;
                     objects.forEach(function(o) {
@@ -336,8 +346,9 @@ else
 
                     atualizarMiniatura(false);
                 });
-            });
 
+            });
+            
         }, 3000);
 
 

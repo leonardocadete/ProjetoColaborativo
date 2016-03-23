@@ -232,9 +232,9 @@ namespace ProjetoColaborativo.Controllers
             List<ElementoMultimidia> elementosdosoutros =
                 obj.ElementosMultimidia.Where(x => x.Usuario != usuario).ToList();
 
+            List<string> els = new List<string>();
             if (elementosdosoutros.Count > 0)
             {
-                List<string> els = new List<string>();
                 foreach (var el in elementosdosoutros)
                 {
                     Color cor = System.Drawing.ColorTranslator.FromHtml("#" + el.Usuario.Cor);
@@ -244,12 +244,14 @@ namespace ProjetoColaborativo.Controllers
                     {
                         json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")", "rgba(255, 255, 255, 1)");
                         json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")", "rgba(0, 0, 0, 1)");
+                        json = Regex.Replace(json, "(?<=iddono\":\").*?(?=\")", el.Usuario.Id);
                         json = Regex.Replace(json, "(?<=textBackgroundColor\":\").*?(?=\")",
                             string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
                         //json = json.Replace("\\n", "\n");
                     }
                     else // GEOMETRIA
                     {
+                        json = Regex.Replace(json, "(?<=iddono\":\").*?(?=\")", el.Usuario.Id);
                         json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")",
                             string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
                         json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")",
@@ -258,12 +260,24 @@ namespace ProjetoColaborativo.Controllers
 
                     els.Add(json);
                 }
-                return this.Content(string.Format("{{\"objects\": [ {0} ]}}", string.Join(",", els)), "application/json");
             }
 
-            return Json("", JsonRequestBehavior.AllowGet);
-        }
+            // orders
+            var objs = sessao.ObjetosDaSessao.OrderBy(x => x.Ordem).ToList();
 
+            if (objs.Count == 0)
+                return Json("", JsonRequestBehavior.AllowGet);
+
+            List<string> orders = new List<string>();
+            foreach (var o in objs)
+                orders.Add(string.Format("{{ \"id\":\"{0}\", \"order\":\"{1}\" }}", o.Handle, o.Ordem));
+
+            return this.Content(string.Format("{{\"multimediaelements\": [ {0} ], \"objects\": [ {1} ]}}",
+                string.Join(",", els),
+                string.Join(",", orders)),
+                "application/json");
+        }
+        
         [Authorize]
         public ActionResult MostrarSessao(long? id, long? objetoid)
         {
@@ -292,23 +306,26 @@ namespace ProjetoColaborativo.Controllers
                 foreach (var el in obj.ElementosMultimidia)
                 {
                     Color cor = System.Drawing.ColorTranslator.FromHtml("#" + el.Usuario.Cor);
-                    
+
                     string json = el.Json;
                     if (json.Contains("\"type\":\"i-text\"")) // TEXTO
                     {
                         json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")", "rgba(255, 255, 255, 1)");
                         json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")", "rgba(0, 0, 0, 1)");
+                        json = Regex.Replace(json, "(?<=iddono\":\").*?(?=\")", el.Usuario.Id);
                         json = Regex.Replace(json, "(?<=textBackgroundColor\":\").*?(?=\")",
                             string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
                         //json = json.Replace("\\n", "\n");
                     }
                     else // GEOMETRIA
                     {
+                        json = Regex.Replace(json, "(?<=iddono\":\").*?(?=\")", el.Usuario.Id);
                         json = Regex.Replace(json, "(?<=fill\":\").*?(?=\")",
                             string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
                         json = Regex.Replace(json, "(?<=stroke\":\").*?(?=\")",
                             string.Format("rgba({0}, {1}, {2}, 0.5)", cor.R, cor.G, cor.B));
                     }
+
                     els.Add(json);
                 }
                 ViewBag.LerElementos = string.Format("{{'objects': [ {0} ]}}", string.Join(",",els));
