@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
@@ -45,10 +46,49 @@ namespace ProjetoColaborativo.Controllers
                 return View(viewModel);
 
             var entidade = Mapper.Map<Usuario>(viewModel);
-            entidade.Cor = getRandomColorHex();
-            repositorioUsuario.Salvar(entidade);
 
-            return RedirectToAction("Index");
+            if(string.IsNullOrEmpty(entidade.Cor))
+                entidade.Cor = getRandomColorHex();
+
+            if (!string.IsNullOrEmpty(entidade.Foto))
+            {
+                entidade.Foto = null;
+
+                if (Request.Files.Count > 0)
+                {
+                    var imagespath = Server.MapPath("~/UserData/Profiles");
+
+                    if (!Directory.Exists(imagespath))
+                        Directory.CreateDirectory(imagespath);
+
+                    var filename = DateTime.Now.ToString("yyyyMMddhhmmss") + "_" + Guid.NewGuid() + ".jpg";
+                    var file = Request.Files[0];
+
+                    var validImageTypes = new string[]
+                    {
+                        "image/gif",
+                        "image/jpeg",
+                        "image/pjpeg",
+                        "image/png"
+                    };
+
+                    if (!validImageTypes.Contains(file.ContentType))
+                        ModelState.AddModelError("Foto", "Please choose either a GIF, JPG or PNG image.");
+                    else
+                    {
+                        file.SaveAs(imagespath + "/" + filename);
+                        entidade.Foto = "/UserData/Profiles/" + filename;
+                    }
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
+                repositorioUsuario.Salvar(entidade);
+                return RedirectToAction("Index");
+            }
+            
+            return View("Create", viewModel);
         }
 
         public ActionResult Delete(long id)

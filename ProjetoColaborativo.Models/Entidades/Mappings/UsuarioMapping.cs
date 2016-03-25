@@ -21,6 +21,10 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
 
             Map(x => x.Cor, "COR").Length(6);
 
+            Map(x => x.Email, "EMAIL").Length(50);
+
+            Map(x => x.Foto, "FOTO").Length(100);
+
             HasMany(x => x.ElementosMultimidia).KeyColumn("USUARIO").Cascade.AllDeleteOrphan();
 
             HasManyToMany(x => x.SessoesColaborativas).Cascade.All().Inverse().Table("USUARIOSESSAO");
