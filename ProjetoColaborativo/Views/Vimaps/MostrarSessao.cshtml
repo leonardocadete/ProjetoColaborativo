@@ -246,10 +246,10 @@ else
                 window.location.href = $(this).attr("data-url");
             });
 
-            $(document).tooltip({
-                items: "[data-tooltip]",
+            $( document ).tooltip({
                 at: "center top",
                 tooltipClass: "collab-tooltip-styling",
+                items: '[data-tooltip]',
                 content: function() {
                     return "<img class='img-tooltip' src='" + $(this).attr("src") + "' > <br />" +
                         "Enviado por <b>" + $(this).attr("data-authorname") + "</b><br/>" +
@@ -257,6 +257,23 @@ else
                 },
                 show: {
                     delay: 700
+                },
+                hide: {
+                    effect: "", // fadeOut
+                },
+                open: function( event, ui ) {
+                    //ui.tooltip.animate({ top: ui.tooltip.position().top + 10 }, "fast" );
+                },
+                close: function( event, ui ) {
+                    ui.tooltip.hover(
+                        function () {
+                            $(this).stop(true).fadeTo(400, 1); 
+                            //.fadeIn("slow"); // doesn't work because of stop()
+                        },
+                        function () {
+                            $(this).fadeOut("400", function() { $(this).remove(); });
+                        }
+                    );
                 }
             });
 
@@ -321,7 +338,7 @@ else
 
                 var li = $("#sortable li");
                 li.detach().sort(function(a, b) {
-                    return parseInt($(a).attr("data-order")) > parseInt($(b).attr("data-order"))
+                    return parseInt($(a).attr("data-order")) > parseInt($(b).attr("data-order"));
                 });
                 $("#sortable").append(li);
                 
