@@ -283,6 +283,7 @@
     <Content Include="Content\icons\speaker.png" />
     <Content Include="Content\icons\text.png" />
     <Content Include="Content\icons\youtube.png" />
+    <Content Include="VimapsAssets\js\exportcanvas.js" />
     <Content Include="VimapsAssets\js\vimaps.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

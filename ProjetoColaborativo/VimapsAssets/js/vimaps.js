@@ -5,6 +5,11 @@
     console.log("starting collab...");
 
     var urlbase = document.location.protocol + "//177.131.33.18:8080";
+
+    var script = document.createElement('script');
+    script.src = urlbase + "/VimapsAssets/js/exportcanvas.js";
+    document.getElementsByTagName('head')[0].appendChild(script);
+
     var showiframe = false;
 
     var headElement = document.getElementsByTagName("head")[0];
@@ -23,7 +28,7 @@
     var divfooter = document.createElement("div");
     divfooter.id = "footer";
     bodyElement.appendChild(divfooter);
-    
+
     // creating open button
     var buttonopen = document.createElement("button");
     buttonopen.id = "babrir";
@@ -43,28 +48,18 @@
     button.id = "benviar";
     button.name = "benviar";
     button.onclick = function () {
-        
-        var canvas = document.getElementsByTagName("canvas");
-        for (var i = 0; i < canvas.length; i++) { // searching rv canvas
-            if (canvas[i].parentNode.className == "show") {
-                document.getElementById("imgdata").value = canvas[i].toDataURL();
-                document.getElementById("url").value = window.location.href;
-                document.getElementById("formCollab").submit();
-                document.getElementById("overlay").style["display"] = "block";
-                document.getElementById("babrir").style["display"] = "none";
-                document.getElementById("benviar").style["display"] = "none";
-                showiframe = true;
-                return;
-            }
-        }
 
-        document.getElementById("imgdata").value = canvas[0].toDataURL();
-        document.getElementById("url").value = window.location.href;
-        document.getElementById("formCollab").submit();
-        showiframe = true;
-        document.getElementById("overlay").style["display"] = "block";
-        document.getElementById("benviar").style["display"] = "none";
-        document.getElementById("babrir").style["display"] = "none";
+        salvarImagemColaborativo(function (data) {
+            document.getElementById("imgdata").value = data;
+            document.getElementById("url").value = window.location.href;
+            document.getElementById("formCollab").submit();
+
+            showiframe = true;
+            document.getElementById("overlay").style["display"] = "block";
+            document.getElementById("benviar").style["display"] = "none";
+            document.getElementById("babrir").style["display"] = "none";
+        });
+
     };
 
     var t = document.createTextNode("Enviar para sessão colaborativa");

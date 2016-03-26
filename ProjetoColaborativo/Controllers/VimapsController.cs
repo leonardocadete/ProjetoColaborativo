@@ -45,7 +45,7 @@ namespace ProjetoColaborativo.Controllers
 
             var el = _repositorioElementoMultimidia.Consultar(x => x.Guid == guid).FirstOrDefault();
             var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
-            
+
             json = json.Replace("\n", "\\n");
             if (el == null)
                 el = new ElementoMultimidia
@@ -66,7 +66,7 @@ namespace ProjetoColaborativo.Controllers
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpPost]
         [Authorize]
         public ActionResult OrdenarObjeto(long id, long objetoid, long idanterior, long idreordenar)
@@ -99,7 +99,7 @@ namespace ProjetoColaborativo.Controllers
                     ordematual++;
                 }
             }
-            
+
             _repositorioSessaoColaborativa.Salvar(sessao);
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
@@ -132,7 +132,7 @@ namespace ProjetoColaborativo.Controllers
                     image.Save(imagespath + "/" + filename.Split('/')[filename.Split('/').Length - 1]);
                 }
             }
-            
+
             return Json("ok");
         }
 
@@ -211,7 +211,7 @@ namespace ProjetoColaborativo.Controllers
             TempData["UrlReferer"] = url;
 
             return RedirectToAction("MostrarSessao");
-            
+
         }
 
         [Authorize]
@@ -277,7 +277,7 @@ namespace ProjetoColaborativo.Controllers
                 string.Join(",", orders)),
                 "application/json");
         }
-        
+
         [Authorize]
         public ActionResult MostrarSessao(long? id, long? objetoid)
         {
@@ -291,7 +291,7 @@ namespace ProjetoColaborativo.Controllers
             var obj = sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == objetoid);
 
             if (obj == null && sessao.ObjetosDaSessao.Count > 0)
-                return RedirectToAction("MostrarSessao", new {id = id, objetoid = sessao.ObjetosDaSessao.FirstOrDefault().Handle });
+                return RedirectToAction("MostrarSessao", new { id = id, objetoid = sessao.ObjetosDaSessao.FirstOrDefault().Handle });
 
             var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
 
@@ -328,9 +328,9 @@ namespace ProjetoColaborativo.Controllers
 
                     els.Add(json);
                 }
-                ViewBag.LerElementos = string.Format("{{'objects': [ {0} ]}}", string.Join(",",els));
+                ViewBag.LerElementos = string.Format("{{'objects': [ {0} ]}}", string.Join(",", els));
             }
-            
+
             ViewBag.ObjectId = objetoid;
             Session["lastObjectId"] = objetoid;
             Session["lastSessionId"] = sessao.Handle;
@@ -343,7 +343,7 @@ namespace ProjetoColaborativo.Controllers
             var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));
 
             var minhassessoes = _repositorioSessaoColaborativa
-                                .Consultar(x => 
+                                .Consultar(x =>
                                     x.Usuario == usuario // minhas sessoes
                                     ||
                                     x.UsuariosDaSessao.Contains(usuario) // sessões que participo
@@ -380,7 +380,7 @@ namespace ProjetoColaborativo.Controllers
             var imgtn = TempData["ThumbImageTNSavedURL"];
             var url = TempData["UrlReferer"];
             if (img == null)
-                return RedirectToAction("MostrarSessao", "Vimaps", new {id = SessaoColaborativaId});
+                return RedirectToAction("MostrarSessao", "Vimaps", new { id = SessaoColaborativaId });
 
             int ordem = 1;
 
@@ -401,7 +401,7 @@ namespace ProjetoColaborativo.Controllers
 
             // MOSTRANDO PRA ESCOLHER QUAL SESSÃO
             objeto = sessao.ObjetosDaSessao.FirstOrDefault(x => x.Ordem == ordem);
-            if(sessao.ObjetosDaSessao.Count > 0)
+            if (sessao.ObjetosDaSessao.Count > 0)
                 TempData["NovoObjeto"] = objeto.Handle;
 
             return RedirectToAction("MostrarSessao", "Vimaps", new { id = SessaoColaborativaId, objetoid = objeto.Handle });
