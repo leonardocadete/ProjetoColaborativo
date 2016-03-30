@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using Microsoft.AspNet.Identity;
+using NHibernate;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
 using ProjetoColaborativo.ViewModels.Usuario;
@@ -14,10 +17,17 @@ namespace ProjetoColaborativo.Controllers
     public class UsuarioController : Controller
     {
         private readonly IRepositorio<Usuario> repositorioUsuario;
+        private readonly UserManager<Usuario> userManager;
+        private readonly ISession session;
 
-        public UsuarioController(IRepositorio<Usuario> repositorioUsuario)
+        public UsuarioController(
+            IRepositorio<Usuario> repositorioUsuario, 
+            UserManager<Usuario> userManager, 
+            ISession session)
         {
             this.repositorioUsuario = repositorioUsuario;
+            this.userManager = userManager;
+            this.session = session;
         }
 
         public ActionResult Index(string q)
@@ -37,7 +47,7 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(UsuarioViewModel viewModel)
+        public async Task<ActionResult> Create(UsuarioViewModel viewModel)
         {
             if (!ModelState.IsValid)
                 return View(viewModel);
@@ -81,8 +91,18 @@ namespace ProjetoColaborativo.Controllers
 
             if (ModelState.IsValid)
             {
-                repositorioUsuario.Salvar(entidade);
-                return RedirectToAction("Index");
+                var result = await userManager.CreateAsync(entidade, entidade.Senha);
+                if (!result.Succeeded)
+                {
+                    if (session.Transaction.IsActive)
+                        session.Transaction.Rollback();
+                    ModelState.AddModelError("Senha", "Senha deve conter no mínimo 6 caracteres");
+                }
+                else
+                {
+                    repositorioUsuario.Salvar(entidade);
+                    return RedirectToAction("Index");
+                }
             }
             
             return View("Create", viewModel);
