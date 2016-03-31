@@ -35,12 +35,9 @@ namespace ProjetoColaborativo.Controllers
         [ActionName("MostrarSessao")]
         public ActionResult SalvarElementoMultimidia(long id, long objetoid, Guid guid, string json, bool remover = false)
         {
-            if (id == null)
-                return RedirectToAction("EscolherSessao");
-
             var obj = _repositorioObjetosSessaoColaborativa.Retornar(objetoid);
 
-            if (objetoid == null || obj == null)
+            if (obj == null)
                 return RedirectToAction("EscolherSessao");
 
             var el = _repositorioElementoMultimidia.Consultar(x => x.Guid == guid).FirstOrDefault();
@@ -108,7 +105,7 @@ namespace ProjetoColaborativo.Controllers
         [Authorize]
         public ActionResult SalvarMiniatura(long id, long objetoid, string imgdata)
         {
-            if (objetoid == null || string.IsNullOrEmpty(imgdata))
+            if (string.IsNullOrEmpty(imgdata))
                 return Json("error");
 
             var obj = _repositorioObjetosSessaoColaborativa.Retornar(objetoid);

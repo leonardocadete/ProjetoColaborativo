@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
 
@@ -20,7 +22,7 @@ namespace ProjetoColaborativo.Controllers
 
         public ActionResult Index()
         {
-            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+            var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));
 
             var minhassessoes = _repositorioSessaoColaborativa
                     .Consultar(x =>
