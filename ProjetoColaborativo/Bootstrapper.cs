@@ -7,6 +7,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Mvc;
 using NHibernate;
+using ProjetoColaborativo.Business.Cargas;
 using ProjetoColaborativo.Business.Extensions;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
@@ -41,6 +42,8 @@ namespace ProjetoColaborativo
             container.RegisterType<IUserStore<Usuario>, UserStore<Usuario>>();
             container.RegisterType<UserManager<Usuario>>();
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(o => HttpContext.Current.GetOwinContext().Authentication));
+
+            container.RegisterType<ICargaUsuarioAdm, CargaUsuarioAdm>();
         }
         
         private static void RegisterRepositorios(IUnityContainer container)

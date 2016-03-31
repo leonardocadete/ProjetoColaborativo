@@ -4,6 +4,7 @@ using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using ProjetoColaborativo.Business.Cargas;
 using ProjetoColaborativo.Models.Entidades;
 using ProjetoColaborativo.ViewModels.Account;
 
@@ -13,12 +14,15 @@ namespace ProjetoColaborativo.Controllers
     {
         private readonly SignInManager<Usuario, string> signInManager;
         private readonly IAuthenticationManager authenticationManager;
+        private readonly ICargaUsuarioAdm cargaUsuarioAdm;
 
         public AccountController( 
             IAuthenticationManager authenticationManager, 
-            UserManager<Usuario> userManager)
+            UserManager<Usuario> userManager, 
+            ICargaUsuarioAdm cargaUsuarioAdm)
         {
             this.authenticationManager = authenticationManager;
+            this.cargaUsuarioAdm = cargaUsuarioAdm;
             this.signInManager = new SignInManager<Usuario, string>(userManager, authenticationManager);
         }
 
@@ -58,6 +62,13 @@ namespace ProjetoColaborativo.Controllers
             authenticationManager.SignOut();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        public ActionResult CargaUsuarioAdm()
+        {
+            cargaUsuarioAdm.Executar();
+            return RedirectToAction("Login");
         }
 
         private ActionResult RedirectToLocal(string returnUrl)

@@ -77,7 +77,7 @@ namespace ProjetoColaborativo.Store
 
         public Task<TUser> FindByNameAsync(string userName)
         {
-            return Task.FromResult(repositorio.Consultar(x => x.Nome == userName).FirstOrDefault());
+            return Task.FromResult(repositorio.Consultar(x => x.Login == userName).FirstOrDefault());
         }
 
         public Task<DateTimeOffset> GetLockoutEndDateAsync(TUser user)
