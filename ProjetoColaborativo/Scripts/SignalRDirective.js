@@ -6,18 +6,19 @@
     app.directive("atualizaElementos", function() {
         return{
             restrict: "A",
-            controller: atualizaElementosCtrl,
-            controllerAs: "ctrl"
+            controller: atualizaElementosCtrl
         };
     });
 
     var atualizaElementosCtrl = function () {
         var atualizaElementos = $.connection.atualizaElementos;
 
-        atualizaElementos.client.atualizar = function() {
-            console.log("chamou");
-        };
+        atualizaElementos.client.atualizar = atualizacao;
 
         $.connection.hub.start();
+    };
+
+    var atualizacao = function() {
+        console.log("chamou");
     };
 })();
