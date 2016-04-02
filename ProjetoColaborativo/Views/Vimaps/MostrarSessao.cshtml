@@ -14,7 +14,7 @@
     <link href="/Content/jquery-ui.min.css" rel="stylesheet"/>
     <link href="/Content/paineis.css" rel="stylesheet" />
 </head>
-<body>
+<body ng-app="ColaborativoApp" atualiza-elementos="true">
 
 
 @if (Model.ObjetosDaSessao.Count > 0)
@@ -143,6 +143,9 @@ else
     <script src="/Scripts/uuid.js"></script>
     <script src="/Scripts/fabric.min.js"></script>
     <script src="/Scripts/paineis.js"></script>
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/SignalRDirective.js"></script>
+    
     <script>
 
         $("#left-panel .panel-trigger").on("mouseenter", function () {

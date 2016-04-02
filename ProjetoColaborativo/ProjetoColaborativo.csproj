@@ -1055,6 +1055,7 @@
     <Content Include="Scripts\uuid.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="teste_postar_imagem.html" />
+    <Content Include="Views\Vimaps\Scripts\SignalRDirective.js" />
     <Content Include="VimapsAssets\css\vimaps.css" />
     <Content Include="Content\icons\circle.png" />
     <Content Include="Content\icons\elipse.png" />
