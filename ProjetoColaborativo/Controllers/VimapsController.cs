@@ -42,7 +42,7 @@ namespace ProjetoColaborativo.Controllers
                 return RedirectToAction("EscolherSessao");
 
             var el = _repositorioElementoMultimidia.Consultar(x => x.Guid == guid).FirstOrDefault();
-            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+            var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));
 
             json = json.Replace("\n", "\\n");
             if (el == null)
@@ -62,9 +62,9 @@ namespace ProjetoColaborativo.Controllers
 
             _repositorioObjetosSessaoColaborativa.Salvar(obj);
 
-            var usuarios = _repositorioUsuarios.RetornarTodos().ToList();
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
             var atualizaElementosHub = new AtualizaElementos();
-            atualizaElementosHub.Executar(usuarios);
+            atualizaElementosHub.Executar(sessao);
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
