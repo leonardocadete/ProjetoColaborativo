@@ -12,6 +12,12 @@
     });
 
     var atualizaElementosCtrl = function () {
-        alert("olá");
+        var atualizaElementos = $.connection.atualizaElementos;
+
+        atualizaElementos.client.atualizar = function() {
+            console.log("chamou");
+        };
+
+        $.connection.hub.start();
     };
 })();

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using ProjetoColaborativo.Hubs;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
 
@@ -60,6 +61,10 @@ namespace ProjetoColaborativo.Controllers
                 obj.ElementosMultimidia.Add(el);
 
             _repositorioObjetosSessaoColaborativa.Salvar(obj);
+
+            var usuarios = _repositorioUsuarios.RetornarTodos().ToList();
+            var atualizaElementosHub = new AtualizaElementos();
+            atualizaElementosHub.Executar(usuarios);
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
