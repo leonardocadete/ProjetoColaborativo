@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using ProjetoColaborativo.Hubs;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
 
@@ -41,7 +42,7 @@ namespace ProjetoColaborativo.Controllers
                 return RedirectToAction("EscolherSessao");
 
             var el = _repositorioElementoMultimidia.Consultar(x => x.Guid == guid).FirstOrDefault();
-            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+            var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));
 
             json = json.Replace("\n", "\\n");
             if (el == null)
@@ -60,6 +61,10 @@ namespace ProjetoColaborativo.Controllers
                 obj.ElementosMultimidia.Add(el);
 
             _repositorioObjetosSessaoColaborativa.Salvar(obj);
+
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            var atualizaElementosHub = new AtualizaElementos();
+            atualizaElementosHub.Executar(sessao);
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
@@ -98,6 +103,10 @@ namespace ProjetoColaborativo.Controllers
             }
 
             _repositorioSessaoColaborativa.Salvar(sessao);
+            
+            var atualizaElementosHub = new AtualizaElementos();
+            atualizaElementosHub.Executar(sessao);
+
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
@@ -179,7 +188,7 @@ namespace ProjetoColaborativo.Controllers
                     if (sessao.ObjetosDaSessao.Count > 0)
                         ordem = sessao.ObjetosDaSessao.Max(x => x.Ordem) + 1;
 
-                    var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+                    var usuario = _repositorioUsuarios.Consultar(x => x.Handle.Equals(User.Identity.GetUserId<long>())).FirstOrDefault();
 
                     var objeto = new ObjetoSessao
                     {
@@ -224,7 +233,7 @@ namespace ProjetoColaborativo.Controllers
             if (obj == null)
                 return Json("", JsonRequestBehavior.AllowGet);
 
-            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+            var usuario = _repositorioUsuarios.Consultar(x => x.Handle.Equals(User.Identity.GetUserId<long>())).FirstOrDefault();
 
             List<ElementoMultimidia> elementosdosoutros =
                 obj.ElementosMultimidia.Where(x => x.Usuario != usuario).ToList();
@@ -290,7 +299,7 @@ namespace ProjetoColaborativo.Controllers
             if (obj == null && sessao.ObjetosDaSessao.Count > 0)
                 return RedirectToAction("MostrarSessao", new { id = id, objetoid = sessao.ObjetosDaSessao.FirstOrDefault().Handle });
 
-            var usuario = _repositorioUsuarios.Consultar(x => x.Nome.Equals(User.Identity.Name)).FirstOrDefault();
+            var usuario = _repositorioUsuarios.Consultar(x => x.Handle.Equals(User.Identity.GetUserId<long>())).FirstOrDefault();
 
             ViewBag.LerElementos = "null";
             ViewBag.Dono = usuario.Handle;

@@ -1,6 +1,7 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNet.SignalR;
+using Microsoft.Owin;
 using Owin;
-using ProjetoColaborativo.Models.DAO;
+using ProjetoColaborativo.Hubs;
 
 [assembly: OwinStartupAttribute(typeof(ProjetoColaborativo.Startup))]
 namespace ProjetoColaborativo
@@ -10,6 +11,9 @@ namespace ProjetoColaborativo
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+
+            app.MapSignalR();
+            GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => new SignalRUserIdProvider());
         }
     }
 }

@@ -2,6 +2,7 @@
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Cfg;
+using NHibernate.Context;
 using NHibernate.Tool.hbm2ddl;
 using ProjetoColaborativo.Models.Entidades.Mappings;
 
@@ -47,6 +48,9 @@ namespace ProjetoColaborativo.Models.DAO
 
         public static ISession GetCurrentSession()
         {
+            if(!CurrentSessionContext.HasBind(BuildSessionFactory()))
+            CurrentSessionContext.Bind(BuildSessionFactory().OpenSession());
+
             return BuildSessionFactory().GetCurrentSession();
         }
     }
