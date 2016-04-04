@@ -103,6 +103,10 @@ namespace ProjetoColaborativo.Controllers
             }
 
             _repositorioSessaoColaborativa.Salvar(sessao);
+            
+            var atualizaElementosHub = new AtualizaElementos();
+            atualizaElementosHub.Executar(sessao);
+
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 

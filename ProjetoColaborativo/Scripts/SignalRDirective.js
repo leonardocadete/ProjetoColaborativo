@@ -12,9 +12,7 @@
 
     var atualizaElementosCtrl = function () {
         var atualizaElementos = $.connection.atualizaElementos;
-
         atualizaElementos.client.atualizar = atualizacao;
-
         $.connection.hub.start();
     };
 
