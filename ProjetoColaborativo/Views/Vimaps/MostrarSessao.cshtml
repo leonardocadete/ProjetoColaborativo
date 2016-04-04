@@ -11,16 +11,17 @@
 <head>
     <title></title>
     <link href='https://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
-    <link href="/Content/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="/Content/jquery-ui.min.css" rel="stylesheet" />
     <link href="/Content/paineis.css" rel="stylesheet" />
 </head>
 <body ng-app="ColaborativoApp" atualiza-elementos="true">
 
 
-@if (Model.ObjetosDaSessao.Count > 0)
-{
-    <canvas id="draw-canvas"></canvas>
+    @if (Model.ObjetosDaSessao.Count > 0)
+    {
+        <canvas id="draw-canvas"></canvas>
 
+        @*
     <div id="left-panel">
         <div class="bg-overlay"></div>
         <div class="panel-trigger"></div>
@@ -50,92 +51,102 @@
             <input type="button" value="" class="btn btn-default button-toolbar icon-speaker">
         </div>
     </div>
+        *@
 
+        <div class="toolbar">
+            <div class="drag window-title">Ferramentas</div>
+            <div class="tools">
+                <div class="bg"></div>
+                <input type="button" value="" class="btn btn-default button-toolbar icon-rect" />
+                <input type="button" value="" class="btn btn-default button-toolbar icon-elipse" />
+                <input type="button" value="" class="btn btn-default button-toolbar icon-pencil" />
+                <input type="button" value="" class="btn btn-default button-toolbar icon-text" />
+                <input type="button" value="" class="btn btn-default button-toolbar icon-pin" />
+                <input type="button" value="" class="btn btn-default button-toolbar icon-youtube" />
+                <input type="button" value="" class="btn btn-default button-toolbar icon-speaker" />
+                <div class="clear"></div>
+            </div>
+        </div>
 
-    <div class="toolbar">
-        <div class="drag window-title">Ferramentas</div>
-        <div class="tools">
-            <div class="bg"></div>
-            <input type="button" value="" class="btn btn-default button-toolbar icon-rect"/>
-            <input type="button" value="" class="btn btn-default button-toolbar icon-elipse"/>
-            <input type="button" value="" class="btn btn-default button-toolbar icon-pencil"/>
-            <input type="button" value="" class="btn btn-default button-toolbar icon-text"/>
-            <input type="button" value="" class="btn btn-default button-toolbar icon-pin"/>
-            <input type="button" value="" class="btn btn-default button-toolbar icon-youtube"/>
-            <input type="button" value="" class="btn btn-default button-toolbar icon-speaker"/>
-            <div class="clear"></div>
+        <div id="top-panel">
+            <ul id="menu-superior">
+                <li>
+                    <a href="#">Objeto</a>
+                    <ul>
+                        <li><a href="#">Abrir no Vimaps</a></li>
+                        <li><a href="#">Excluir</a></li>
+                        <li><a href="#">Sub Menu 1</a></li>
+                    </ul>
+                </li>
+                <li><a href="javascript:" id="minimizar-colaborativo">Minimizar colaborativo</a></li>
+                <li><a href="@Url.Action("Index", "Home")" id="link-minhas-sessoes">Minhas sessões</a></li>
+            </ul>
         </div>
-    </div>
 
-    <div id="bottom-panel" class="toggle-panel">
-        <div class="window-title">
-            @Model.Descricao
-            <a class="troggle-minimize">▾</a>
-        </div>
-        <div class="window-title-info">
-            <a href="javascript:" id="abrir-no-vimaps">Abrir essa tela no Vimaps</a>
-        </div>
-        <div class="window-title-info">
-            <a href="javascript:" id="minimizar-colaborativo">Minimizar colaborativo</a>
-        </div>
-        <div class="window-title-info">
-            <a href="@Url.Action("Index","Home")" id="link-minhas-sessoes">Minhas sessões</a>
-        </div>
-        <div class="panel-content">
-            <div class="bg-overlay"></div>
-            <div class="miniaturas">
-                
+        <div id="bottom-panel" class="toggle-panel">
+            <div class="window-title">
+                @Model.Descricao - Lista de objetos
+                <a class="troggle-minimize">▾</a>
+            </div>
+            <div class="window-title-info">
+                <a href="javascript:" id="abrir-no-vimaps">Abrir essa tela no Vimaps</a>
+            </div>
+            <div class="panel-content">
+                <div class="bg-overlay"></div>
+                <div class="miniaturas">
+
                 @if (Model.ObjetosDaSessao.Count > 0)
                 {
                     if (ViewBag.NovoObjeto != null)
                     {
-                        <ul id="sortable-novo" class="listas-sortable">
-                            <li data-id="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle})" class="miniatura @(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")">
-                                <img data-createdtime="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().DataCriacao.ToString()" data-authorname="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")"/>
-                            </li>
-                            <li class="miniatura info">
-                                <img class="icon-arrow" src="/Content/icons/arrow.png"/>
-                                <h3>Esse é o seu novo objeto!</h3>
-                                Arraste ele para a lista abaixo, na posição que ele deve ficar.
-                            </li>
-                        </ul>
+                            <ul id="sortable-novo" class="listas-sortable">
+                                <li data-id="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle})" class="miniatura @(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")">
+                                    <img data-createdtime="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().DataCriacao.ToString()" data-authorname="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")" />
+                                </li>
+                                <li class="miniatura info">
+                                    <img class="icon-arrow" src="/Content/icons/arrow.png" />
+                                    <h3>Esse é o seu novo objeto!</h3>
+                                    Arraste ele para a lista abaixo, na posição que ele deve ficar.
+                                </li>
+                            </ul>
                     }
 
-                    <div></div>
+                        <div></div>
 
-                    <ul id="sortable" class="listas-sortable">
+                        <ul id="sortable" class="listas-sortable">
 
-                        @foreach (var os in @Model.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
-                        {
-                            <li data-id="@os.Handle" data-order="@os.Ordem" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
-                                <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == os.Handle ? "selecionado" : "")"/>
-                            </li>
-                        }
+                            @foreach (var os in @Model.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
+                            {
+                                <li data-id="@os.Handle" data-order="@os.Ordem" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
+                                    <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == os.Handle ? "selecionado" : "")" />
+                                    <div class="noti_bubble">2</div>
+                                </li>
+                            }
 
-                    </ul>
-                }
-                else
-                {
-                    <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
-                }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
+                    }
+                </div>
+
             </div>
-
         </div>
-    </div>
 
-}
-else
-{
-    <div class="sem-objetos">
-        Esta sessão ainda não possui nenhum objeto. <br/>
-        Para adicionar objetos acesse o 
-        <a href="">Vimaps</a> ou
-        @Html.ActionLink("escolha outra sessão", "Index", "Home")
+    }
+    else
+    {
+        <div class="sem-objetos">
+            Esta sessão ainda não possui nenhum objeto. <br />
+            Para adicionar objetos acesse o
+            <a href="">Vimaps</a> ou
+            @Html.ActionLink("escolha outra sessão", "Index", "Home")
 
-        <br/><br/><br/><br/>
-        <a href="/teste_postar_imagem.html">Teste de envio de imagem</a>
-    </div>
-}
+            <br /><br /><br /><br />
+            <a href="/teste_postar_imagem.html">Teste de envio de imagem</a>
+        </div>
+    }
 
 
     <script src="/Scripts/jquery-1.10.2.min.js"></script>
@@ -184,8 +195,8 @@ else
             @if (ViewBag.ObjectId != null)
             {
                 <text>
-                setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
-                </text>
+            setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
+            </text>
             }
 
             $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
@@ -271,7 +282,7 @@ else
                 close: function( event, ui ) {
                     ui.tooltip.hover(
                         function () {
-                            $(this).stop(true).fadeTo(400, 1); 
+                            $(this).stop(true).fadeTo(400, 1);
                             //.fadeIn("slow"); // doesn't work because of stop()
                         },
                         function () {
@@ -288,8 +299,8 @@ else
                     @if (Model.ObjetosDaSessao.Any())
                     {
                         <text>
-                        parent.postMessage("url<|>@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)", "*");
-                        </text>
+                    parent.postMessage("url<|>@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)", "*");
+                    </text>
                     }
 
                 });
@@ -301,8 +312,8 @@ else
                     @if (Model.ObjetosDaSessao.Any())
                     {
                         <text>
-                        window.location.href = "@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)";
-                        </text>
+                    window.location.href = "@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)";
+                    </text>
                     }
 
                 });
@@ -311,10 +322,10 @@ else
 
         })();
 
-    var dono = "@Html.Raw(ViewBag.Dono)";
-    var cordono = "#@Html.Raw(ViewBag.CorDono)";
+        var dono = "@Html.Raw(ViewBag.Dono)";
+        var cordono = "#@Html.Raw(ViewBag.CorDono)";
 
-    @if (ViewBag.LerElementos != null)
+        @if (ViewBag.LerElementos != null)
     {
         <text>
         var json = @Html.Raw(ViewBag.LerElementos);

@@ -76,9 +76,15 @@ ul {
         top: 25%;
     }
 
+/* CIMA */
+#top-panel {
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
 
 /* BAIXO */
-
 #bottom-panel {
     width: 100%;
     position: absolute;
@@ -226,7 +232,6 @@ ul {
 
     .window-title {
         background: #E74C3C;
-        border-radius: 4px 4px 0 0;
         margin: 0 5px 0 5px;
         padding: 3px 3px 5px 3px;
         z-index: 11;
@@ -234,7 +239,11 @@ ul {
         color: white;
         display: inline-block;
     }
-
+    
+    #bottom-panel .window-title {
+        border-radius: 4px 4px 0 0;
+    }
+    
     .window-title-info {
         background: #FFF;
         color: #E74C3C;
@@ -265,6 +274,54 @@ ul {
         position: relative;
         padding: 2px;
     }
+
+    /*Menu superior*/
+    #menu-superior {
+        list-style: none;
+        float: left;
+        margin-top: 5px;
+    }
+    
+    #menu-superior li {
+        background: #FFF;
+        color: #E74C3C;
+        border-radius: 4px ;
+        margin: 0 5px 2px 5px;
+        padding: 3px 10px;
+        z-index: 11;
+        position: relative;
+        float: left;
+    }
+
+    #menu-superior li a {
+        color: #E74C3C;
+    }
+
+    #menu-superior li:hover,
+    #menu-superior li:hover > a {
+        background: #E74C3C;
+        color: #fff;
+        cursor: pointer;
+    }
+        #menu-superior li:hover > ul {
+            display: block;
+        }
+    
+    #menu-superior li a {
+        text-decoration: none;
+    }
+
+    /* sub */
+    #menu-superior ul {
+        display: none;
+        list-style: none;
+        position: absolute;
+        border-radius: 4px;
+        width: 150px;
+        padding: 5px 0 5px 0;
+        margin: 0 0 0 -15px;
+    }
+
 
 
 /* minimize buttons */
@@ -304,4 +361,23 @@ ul {
 
 #sortable-novo {
     margin-bottom: 10px
+}
+
+/*notification */
+.noti_bubble {
+    position:relative;
+    top: -5px;
+    right: 15px;
+    text-align: center;
+    padding:1px 2px 1px 2px;
+    background-color:red;
+    color:white;
+    font-weight:bold;
+    font-size: 12px;
+    z-index: 9999;
+    float: right;
+    width: 10px;
+    
+    border-radius:30px;
+    box-shadow:1px 1px 1px gray;
 }
