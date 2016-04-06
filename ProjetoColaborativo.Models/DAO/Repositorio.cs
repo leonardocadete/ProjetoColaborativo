@@ -55,7 +55,7 @@ namespace ProjetoColaborativo.Models.DAO
             if (entity == default(T))
                 throw new ArgumentNullException("entity");
 
-            if (Sessao.Contains(entity) && entity.Handle > 0)
+            if (entity.Handle > 0)
                 return Sessao.Merge(entity);
 
             Sessao.SaveOrUpdate(entity);

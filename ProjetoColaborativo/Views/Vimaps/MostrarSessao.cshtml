@@ -21,38 +21,6 @@
     {
         <canvas id="draw-canvas"></canvas>
 
-        @*
-    <div id="left-panel">
-        <div class="bg-overlay"></div>
-        <div class="panel-trigger"></div>
-        <div class="panel-content">
-
-            <input type="button" value="" class="btn btn-default button-toolbar icon-rect">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-elipse">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-pencil">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-text">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-pin">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-youtube">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-speaker">
-        </div>
-    </div>
-
-    <div id="right-panel">
-        <div class="bg-overlay"></div>
-        <div class="panel-trigger"></div>
-        <div class="panel-content">
-
-            <input type="button" value="" class="btn btn-default button-toolbar icon-rect">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-elipse">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-pencil">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-text">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-pin">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-youtube">
-            <input type="button" value="" class="btn btn-default button-toolbar icon-speaker">
-        </div>
-    </div>
-        *@
-
         <div class="toolbar">
             <div class="drag window-title">Ferramentas</div>
             <div class="tools">
@@ -195,8 +163,8 @@
             @if (ViewBag.ObjectId != null)
             {
                 <text>
-            setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
-            </text>
+                setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
+                </text>
             }
 
             $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
@@ -326,16 +294,16 @@
         var cordono = "#@Html.Raw(ViewBag.CorDono)";
 
         @if (ViewBag.LerElementos != null)
-    {
-        <text>
-        var json = @Html.Raw(ViewBag.LerElementos);
-        canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
-            if (object.iddono != dono) {
-                object.selectable = false;
-            }
-        });
-        </text>
-    }
+        {
+            <text>
+            var json = @Html.Raw(ViewBag.LerElementos);
+            canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
+                if (object.iddono != dono) {
+                    object.selectable = false;
+                }
+            });
+            </text>
+        }
     </script>
 
 </body>

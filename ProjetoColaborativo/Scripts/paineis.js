@@ -69,7 +69,7 @@ canvas1.on('path:created', function (e) {
 });
 
 function SaveObject(target, remover) {
-
+    
     if (target.naosalvar) 
         return;
     
@@ -141,6 +141,10 @@ var drawingobject;
  */
 $("input[type='button'].icon-rect").click(function () {
 
+    canvas1.off('mouse:move');
+    canvas1.off('mouse:down');
+    canvas1.off('mouse:up');
+
     draw = true;
     var drawingobject;
 
@@ -158,6 +162,8 @@ $("input[type='button'].icon-rect").click(function () {
             drawingobject = new fabric.Rect({
                 top: startY,
                 left: startX,
+                originX: 'left',
+                originY: 'top',
                 width: 0,
                 height: 0,
                 fill: "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)",
@@ -170,9 +176,17 @@ $("input[type='button'].icon-rect").click(function () {
             canvas1.add(drawingobject);
 
             canvas1.on('mouse:move', function (option) {
-                var e = option.e;
-                drawingobject.set('width', e.offsetX - startX);
-                drawingobject.set('height', e.offsetY - startY);
+                var pointer = canvas1.getPointer(option.e);
+                
+                if (startX > pointer.x) {
+                    drawingobject.set({ left: Math.abs(pointer.x) });
+                }
+                if (startY > pointer.y) {
+                    drawingobject.set({ top: Math.abs(pointer.y) });
+                }
+                
+                drawingobject.set({ width: Math.abs(startX - pointer.x) });
+                drawingobject.set({ height: Math.abs(startY - pointer.y) });
                 drawingobject.setCoords();
                 canvas1.renderAll();
             });
@@ -195,8 +209,11 @@ $("input[type='button'].icon-rect").click(function () {
  */
 $("input[type='button'].icon-elipse").click(function () {
 
-    draw = true;
+    canvas1.off('mouse:move');
+    canvas1.off('mouse:down');
+    canvas1.off('mouse:up');
 
+    draw = true;
     var drawingobject;
 
     canvas1.on('mouse:down', function (option) {
@@ -273,6 +290,11 @@ $("input[type='button'].icon-elipse").click(function () {
  */
 
 $("input[type='button'].icon-pencil").click(function () {
+
+    canvas1.off('mouse:move');
+    canvas1.off('mouse:down');
+    canvas1.off('mouse:up');
+
     canvas1.isDrawingMode = true;
 
     canvas1.freeDrawingBrush.color = "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)";
@@ -283,6 +305,60 @@ $("input[type='button'].icon-pencil").click(function () {
     });
 });
 
+/**
+ * PIN
+ */
+
+var pinpath = "M156.831,70.804c0,13.473-10.904,24.396-24.357,24.396c-13.434,0-24.357-10.923-24.357-24.396c0-13.434,10.904-24.337,24.357-24.337C145.927,46.467,156.831,57.37,156.831,70.804z M203.298,70.795c0,8.764-1.661,17.098-4.563,24.836c-9.282,27.571-70.736,169.307-70.736,169.307S70.14,110.403,65.118,92.68c-2.237-6.868-3.478-14.196-3.478-21.866C61.64,31.743,93.354,0,132.474,0C171.593-0.01,203.307,31.733,203.298,70.795zM177.661,71.078c0-24.953-20.214-45.197-45.187-45.197c-24.953,0-45.177,20.234-45.177,45.187s20.224,45.187,45.177,45.187C157.446,116.255,177.661,96.031,177.661,71.078z";
+$("input[type='button'].icon-pin").click(function () {
+
+    canvas1.off('mouse:move');
+    canvas1.off('mouse:down');
+    canvas1.off('mouse:up');
+
+    draw = true;
+    var drawingobject;
+
+    canvas1.on('mouse:down', function (option) {
+
+        if (!draw) return false;
+
+        if (typeof option.target != "undefined") {
+            return;
+        } else {
+            var startY = option.e.offsetY,
+                startX = option.e.offsetX,
+                id = uuid.v4();
+            
+            drawingobject = new fabric.Path(pinpath, {
+                originX: 'center',
+                originY: 'bottom',
+                top: startY,
+                left: startX,
+                width: 141,
+                height: 164,
+                fill: "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)",
+                stroke: '',
+                strokewidth: 0,
+                id: id,
+                iddono: dono
+            });
+
+            canvas1.add(drawingobject);
+        }
+    });
+
+    canvas1.on('mouse:up', function () {
+        draw = false;
+        canvas1.off('mouse:move');
+        canvas1.off('mouse:down');
+        canvas1.off('mouse:up');
+        SaveObject(drawingobject, false);
+    });
+
+});
+
+
 // alert json
 $("input[type='button'].icon-speaker").click(function () {
     alert(JSON.stringify(canvas1.toDatalessJSON()));
@@ -292,6 +368,10 @@ $("input[type='button'].icon-speaker").click(function () {
  * TEXT
  */
 $("input[type='button'].icon-text").click(function () {
+
+    canvas1.off('mouse:move');
+    canvas1.off('mouse:down');
+    canvas1.off('mouse:up');
 
     canvas1.on('mouse:up', function(o) {
         var id = uuid.v4();
