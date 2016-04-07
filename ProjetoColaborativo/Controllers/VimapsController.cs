@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using ProjetoColaborativo.Hubs;
@@ -140,6 +141,17 @@ namespace ProjetoColaborativo.Controllers
             }
 
             return Json("ok");
+        }
+
+        public ActionResult SendAudio(HttpPostedFileBase file, string objectid)
+        {
+            var audiospath = Server.MapPath("~/UserData/Audio");
+            if (!Directory.Exists(audiospath))
+                Directory.CreateDirectory(audiospath);
+
+            file.SaveAs(audiospath + "//" + objectid + ".wav");
+
+            return Json(new {status = "ok"}, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

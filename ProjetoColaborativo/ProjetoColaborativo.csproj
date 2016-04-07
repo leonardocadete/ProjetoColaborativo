@@ -248,6 +248,11 @@
     <Content Include="Content\colorpicker.css" />
     <Content Include="Content\fonts\slick.svg" />
     <Content Include="Content\icons\arrow.png" />
+    <Content Include="Content\icons\delete.png" />
+    <Content Include="Content\icons\ok.png" />
+    <Content Include="Content\icons\play.png" />
+    <Content Include="Content\icons\record.png" />
+    <Content Include="Content\icons\stop.png" />
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\paineis.css" />
     <Content Include="Content\slick-theme.css" />
@@ -283,6 +288,7 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\audio.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\fonts\slick.ttf" />
@@ -1061,6 +1067,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\paineis.js" />
+    <Content Include="Scripts\recorder.js" />
+    <Content Include="Scripts\recorderWorker.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\slick.min.js" />

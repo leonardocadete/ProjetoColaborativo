@@ -150,6 +150,30 @@ ul {
     background-image: url('/Content/icons/speaker.png');
 }
 
+.icon-record {
+    background-image: url('/Content/icons/record.png');
+}
+
+.icon-record.recording {
+    background-image: url('/Content/icons/stop.png');
+}
+
+.icon-stop {
+    background-image: url('/Content/icons/stop.png');
+}
+
+.icon-play {
+    background-image: url('/Content/icons/play.png');
+}
+
+.icon-ok {
+    background-image: url('/Content/icons/ok.png');
+}
+
+.icon-delete {
+    background-image: url('/Content/icons/delete.png');
+}
+
 /* thumbs */
 
 .miniaturas {
@@ -380,4 +404,13 @@ ul {
     
     border-radius:30px;
     box-shadow:1px 1px 1px gray;
+}
+
+
+.btn[disabled] {
+    opacity: 0.6;
+}
+
+#audio-record-toolbar {
+    display: none;
 }

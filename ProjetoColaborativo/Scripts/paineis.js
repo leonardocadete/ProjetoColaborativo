@@ -23,7 +23,7 @@ function atualizarMiniatura(salvar) {
         quality: 0.1
     }));
 
-    if(salvar)
+    if (salvar)
         SaveThumbnail();
 }
 
@@ -58,6 +58,7 @@ canvas1.on('object:modified', function (e) {
 });
 
 canvas1.on('object:removed', function (e) {
+    $("#audio-record-toolbar").fadeOut();
     SaveObject(e.target, true);
 });
 
@@ -69,10 +70,10 @@ canvas1.on('path:created', function (e) {
 });
 
 function SaveObject(target, remover) {
-    
-    if (target.naosalvar) 
+
+    if (target.naosalvar)
         return;
-    
+
     atualizarMiniatura(true);
 
     $.ajax({
@@ -99,7 +100,7 @@ function SaveThumbnail() {
         type: "POST",
         url: window.location.pathname.replace("MostrarSessao", "SalvarMiniatura"),
         data: { imgdata: image },
-        success: function(data) {
+        success: function (data) {
             console.log(data);
         },
         failure: function (errMsg) {
@@ -120,10 +121,10 @@ resizeCanvas();
 
 function setCanvasBackground(url) {
     canvas1.setBackgroundImage(url, canvas1.renderAll.bind(canvas1), {
-       // width: canvas1.width,
-       // height: canvas1.height,
-       // originX: 'left',
-       // originY: 'top'
+        // width: canvas1.width,
+        // height: canvas1.height,
+        // originX: 'left',
+        // originY: 'top'
     });
 }
 
@@ -172,19 +173,19 @@ $("input[type='button'].icon-rect").click(function () {
                 id: id,
                 iddono: dono
             });
-            
+
             canvas1.add(drawingobject);
 
             canvas1.on('mouse:move', function (option) {
                 var pointer = canvas1.getPointer(option.e);
-                
+
                 if (startX > pointer.x) {
                     drawingobject.set({ left: Math.abs(pointer.x) });
                 }
                 if (startY > pointer.y) {
                     drawingobject.set({ top: Math.abs(pointer.y) });
                 }
-                
+
                 drawingobject.set({ width: Math.abs(startX - pointer.x) });
                 drawingobject.set({ height: Math.abs(startY - pointer.y) });
                 drawingobject.setCoords();
@@ -329,7 +330,7 @@ $("input[type='button'].icon-pin").click(function () {
             var startY = option.e.offsetY,
                 startX = option.e.offsetX,
                 id = uuid.v4();
-            
+
             drawingobject = new fabric.Path(pinpath, {
                 originX: 'center',
                 originY: 'bottom',
@@ -359,10 +360,93 @@ $("input[type='button'].icon-pin").click(function () {
 });
 
 
-// alert json
+/**
+ * SPEAKER
+ */
+
+var speakerpath = "M19.779,3.349l-1.111,1.664C20.699,6.663,22,9.179,22,12    c0,2.822-1.301,5.338-3.332,6.988l1.111,1.663C22.345,18.639,24,15.516,24,12C24,8.485,22.346,5.362,19.779,3.349z M17.55,6.687    l-1.122,1.68c0.968,0.913,1.58,2.198,1.58,3.634s-0.612,2.722-1.58,3.635l1.122,1.68C19.047,16.03,20,14.128,20,12    C20,9.873,19.048,7.971,17.55,6.687z M12,1c-1.177,0-1.533,0.684-1.533,0.684S7.406,5.047,5.298,6.531C4.91,6.778,4.484,7,3.73,7    H2C0.896,7,0,7.896,0,9v6c0,1.104,0.896,2,2,2h1.73c0.754,0,1.18,0.222,1.567,0.469c2.108,1.484,5.169,4.848,5.169,4.848    S10.823,23,12,23c1.104,0,2-0.895,2-2V3C14,1.895,13.104,1,12,1z";
 $("input[type='button'].icon-speaker").click(function () {
-    alert(JSON.stringify(canvas1.toDatalessJSON()));
+
+    resetRecordTools();
+
+    canvas1.off('mouse:move');
+    canvas1.off('mouse:down');
+    canvas1.off('mouse:up');
+
+    draw = true;
+    var drawingobject;
+
+    canvas1.on('mouse:down', function (option) {
+
+        if (!draw) return false;
+
+        if (typeof option.target != "undefined") {
+            return;
+        } else {
+
+            var startY = option.e.offsetY,
+                startX = option.e.offsetX,
+                id = uuid.v4();
+
+            $("input[type='button'].icon-ok").attr("data-objectid", id);
+
+            drawingobject = new fabric.Path(speakerpath, {
+                originX: 'center',
+                originY: 'bottom',
+                top: startY,
+                left: startX,
+                width: 141,
+                height: 164,
+                fill: "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)",
+                stroke: '',
+                strokewidth: 0,
+                id: id,
+                iddono: dono
+            });
+
+            canvas1.add(drawingobject);
+
+            $("#audio-record-toolbar").css("top", startY); 
+            $("#audio-record-toolbar").css("left", startX); 
+            $("#audio-record-toolbar").fadeIn();
+        }
+    });
+
+    canvas1.on('mouse:up', function () {
+        draw = false;
+        canvas1.off('mouse:move');
+        canvas1.off('mouse:down');
+        canvas1.off('mouse:up');
+        SaveObject(drawingobject, false);
+    });
+
+
+    // record controls
+    $("input[type='button'].icon-record").click(function () {
+
+        toggleRecording(this);
+        if ($(this).hasClass("recording")) {
+            $("input[type='button'].icon-play").attr("disabled", "disabled");
+            $("input[type='button'].icon-ok").attr("disabled", "disabled");
+        } else {
+            $("input[type='button'].icon-ok").removeAttr("disabled");
+            $("input[type='button'].icon-play").removeAttr("disabled");
+        }
+
+    });
+
+    $("input[type='button'].icon-delete").click(function () {
+        canvas1.remove(drawingobject);
+        $("#audio-record-toolbar").fadeOut();
+    });
+
 });
+
+function resetRecordTools() {
+    $("input[type='button'].icon-record").removeAttr("disabled");
+    $("input[type='button'].icon-play").attr("disabled", "disabled");
+    $("input[type='button'].icon-ok").attr("disabled", "disabled");
+}
 
 /**
  * TEXT
@@ -373,7 +457,7 @@ $("input[type='button'].icon-text").click(function () {
     canvas1.off('mouse:down');
     canvas1.off('mouse:up');
 
-    canvas1.on('mouse:up', function(o) {
+    canvas1.on('mouse:up', function (o) {
         var id = uuid.v4();
         var startY = o.e.offsetY,
             startX = o.e.offsetX;

@@ -25,13 +25,25 @@
             <div class="drag window-title">Ferramentas</div>
             <div class="tools">
                 <div class="bg"></div>
-                <input type="button" value="" class="btn btn-default button-toolbar icon-rect" />
-                <input type="button" value="" class="btn btn-default button-toolbar icon-elipse" />
-                <input type="button" value="" class="btn btn-default button-toolbar icon-pencil" />
-                <input type="button" value="" class="btn btn-default button-toolbar icon-text" />
-                <input type="button" value="" class="btn btn-default button-toolbar icon-pin" />
-                <input type="button" value="" class="btn btn-default button-toolbar icon-youtube" />
-                <input type="button" value="" class="btn btn-default button-toolbar icon-speaker" />
+                <input type="button" value="" class="btn btn-default button-toolbar icon-rect"/>
+                <input type="button" value="" class="btn btn-default button-toolbar icon-elipse"/>
+                <input type="button" value="" class="btn btn-default button-toolbar icon-pencil"/>
+                <input type="button" value="" class="btn btn-default button-toolbar icon-text"/>
+                <input type="button" value="" class="btn btn-default button-toolbar icon-pin"/>
+                <input type="button" value="" class="btn btn-default button-toolbar icon-youtube"/>
+                <input type="button" value="" class="btn btn-default button-toolbar icon-speaker"/>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div id="audio-record-toolbar" class="toolbar">
+            <div class="window-title">Gravar Áudio</div>
+            <div class="tools">
+                <div class="bg"></div>
+                <input type="button" value="" class="btn btn-default button-toolbar icon-record" />
+                <input type="button" value="" disabled="disabled" class="btn btn-default button-toolbar icon-play" />
+                <input type="button" value="" disabled="disabled" class="btn btn-default button-toolbar icon-ok" />
+                <input type="button" value="" class="btn btn-default button-toolbar icon-delete" />
                 <div class="clear"></div>
             </div>
         </div>
@@ -63,7 +75,7 @@
                 <div class="bg-overlay"></div>
                 <div class="miniaturas">
 
-                @if (Model.ObjetosDaSessao.Count > 0)
+                    @if (Model.ObjetosDaSessao.Count > 0)
                 {
                     if (ViewBag.NovoObjeto != null)
                     {
@@ -77,7 +89,7 @@
                                     Arraste ele para a lista abaixo, na posição que ele deve ficar.
                                 </li>
                             </ul>
-                    }
+                        }
 
                         <div></div>
 
@@ -116,13 +128,14 @@
         </div>
     }
 
-
     <script src="/Scripts/jquery-1.10.2.min.js"></script>
     <script src="/Scripts/jquery-ui.min.js"></script>
     <script src="/Scripts/uuid.js"></script>
     <script src="/Scripts/fabric.min.js"></script>
     <script src="/Scripts/paineis.js"></script>
-    <script src="~/Scripts/angular.js"></script>
+    <script src="/Scripts/angular.js"></script>
+    <script src="/Scripts/recorder.js"></script>
+    <script src="/Scripts/audio.js"></script>
     @Scripts.Render("~/Scripts/jquery.signalR-2.2.0.js")
     <script src="~/Scripts/SignalRDirective.js"></script>
     @Scripts.Render("~/signalr/hubs")
@@ -135,14 +148,6 @@
         $("#left-panel").on("mouseleave", function () {
             $(this).animate({ left: -42 }, 100);
         });
-
-        //$("#right-panel .panel-trigger").on("mouseenter", function() {
-        //    $(this).parent().animate({ right: 0 }, 100);
-        //});
-
-        //$("#right-panel").on("mouseleave", function() {
-        //    $(this).animate({ right: -42 }, 100);
-        //});
 
         $(".troggle-minimize").on("click", function () {
             var p = $(this).closest(".toggle-panel");
@@ -163,8 +168,8 @@
             @if (ViewBag.ObjectId != null)
             {
                 <text>
-                setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
-                </text>
+            setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
+            </text>
             }
 
             $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
@@ -296,13 +301,13 @@
         @if (ViewBag.LerElementos != null)
         {
             <text>
-            var json = @Html.Raw(ViewBag.LerElementos);
-            canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
-                if (object.iddono != dono) {
-                    object.selectable = false;
-                }
-            });
-            </text>
+        var json = @Html.Raw(ViewBag.LerElementos);
+        canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
+            if (object.iddono != dono) {
+                object.selectable = false;
+            }
+        });
+        </text>
         }
     </script>
 
