@@ -30,8 +30,7 @@
                 return parseInt($(a).attr("data-order")) > parseInt($(b).attr("data-order"));
             });
             $("#sortable").append(li);
-
-
+            
             canvas1.forEachObject(function(d) {
                 if (d.iddono != dono) {
                     d.naosalvar = true;
@@ -44,7 +43,10 @@
                 canvas1.renderOnAddRemove = false;
                 objects.forEach(function(o) {
                     o.naosalvar = true;
-                    o.selectable = false;
+                    //o.selectable = false;
+                    o.lockRotation = true;
+                    o.lockScalingX = o.lockScalingY = true;
+                    o.lockMovementX = o.lockMovementY = true;
                     canvas1.add(o);
                 });
                 canvas1.renderOnAddRemove = origRenderOnAddRemove;

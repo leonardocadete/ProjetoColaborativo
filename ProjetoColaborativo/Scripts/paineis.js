@@ -4,7 +4,7 @@ var canvas1 = new fabric.Canvas('draw-canvas');
 
 window.addEventListener('resize', resizeCanvas, false);
 
-var customProperties = 'id iddono'.split(' ');
+var customProperties = 'id iddono collabtype soundsent'.split(' ');
 
 function getThumbnail(original, scale) {
     var canvas = document.createElement("canvas");
@@ -58,7 +58,10 @@ canvas1.on('object:modified', function (e) {
 });
 
 canvas1.on('object:removed', function (e) {
-    $("#audio-record-toolbar").fadeOut();
+
+    if(e.target.collabtype == 'sound')
+        $("#audio-record-toolbar").fadeOut();
+
     SaveObject(e.target, true);
 });
 
@@ -69,7 +72,34 @@ canvas1.on('path:created', function (e) {
     SaveObject(e.path, false);
 });
 
+var audio;
+canvas1.on('object:selected', function (e) {
+
+    var o = canvas1.getActiveObject();
+
+    if (o && o.collabtype) {
+
+        switch (o.collabtype) {
+            case 'sound':
+                if (o.soundsent) {
+                var url = '/UserData/Audio/' + o.id + '.wav';
+                audio = new Audio(url);
+                audio.play();
+            }
+        }
+    }
+
+});
+
+canvas1.on('selection:cleared', function() {
+    if (audio) {
+        audio.pause();
+    }
+});
+
 function SaveObject(target, remover) {
+    
+    console.log(target);
 
     if (target.naosalvar)
         return;
@@ -401,8 +431,10 @@ $("input[type='button'].icon-speaker").click(function () {
                 stroke: '',
                 strokewidth: 0,
                 id: id,
-                iddono: dono
-            });
+                iddono: dono,
+                collabtype: 'sound',
+                naosalvar: true
+        });
 
             canvas1.add(drawingobject);
 
@@ -484,6 +516,7 @@ $("input[type='button'].icon-text").click(function () {
 // delete
 $('html').keyup(function (e) {
     if (e.keyCode == 46) {
-        canvas1.getActiveObject().remove();
+        if (canvas1.getActiveObject().iddono == dono)
+            canvas1.getActiveObject().remove();
     }
 });

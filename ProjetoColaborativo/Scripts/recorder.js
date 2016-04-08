@@ -105,7 +105,7 @@ DEALINGS IN THE SOFTWARE.
     this.node.connect(this.context.destination);   // if the script node is not connected to an output the "onaudioprocess" event is not triggered in chrome.
   };
 
-  Recorder.setupDownload = function (blob, objectid) {
+  Recorder.setupDownload = function (blob) {
       $("input[type='button'].icon-ok").off("click");
       $("input[type='button'].icon-play").off("click");
 
@@ -120,10 +120,12 @@ DEALINGS IN THE SOFTWARE.
       });
 
       $("input[type='button'].icon-ok").click(function () {
-          
+
+          var id = $("input[type='button'].icon-ok").attr("data-objectid");
+
           var fd = new FormData();
           fd.append('file', blob);
-          fd.append('objectid', objectid);
+          fd.append('objectid', id);
           $.ajax({
               type: 'POST',
               url: '/Vimaps/SendAudio',
@@ -131,7 +133,13 @@ DEALINGS IN THE SOFTWARE.
               processData: false,
               contentType: false
           }).done(function (data) {
-              console.log(data);
+              canvas1.forEachObject(function (d) {
+                  if (d.id == id) {
+                      d.soundsent = true;
+                      d.naosalvar = false;
+                      SaveObject(d, false);
+                  }
+              });
           });
 
           $("input[type='button'].icon-play").attr("disabled", "disabled");

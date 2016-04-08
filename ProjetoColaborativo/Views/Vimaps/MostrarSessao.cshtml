@@ -303,8 +303,14 @@
             <text>
         var json = @Html.Raw(ViewBag.LerElementos);
         canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
+            
             if (object.iddono != dono) {
-                object.selectable = false;
+                //object.selectable = false;
+
+                object.lockRotation = true;
+                object.lockScalingX = object.lockScalingY = true;
+                object.lockMovementX = object.lockMovementY  = true;
+
             }
         });
         </text>
