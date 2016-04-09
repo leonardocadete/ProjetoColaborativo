@@ -48,6 +48,29 @@
             </div>
         </div>
 
+        <div id="video-record-toolbar" class="toolbar">
+            <div class="drag window-title">Gravar Vídeo</div>
+            <div class="tools">
+                <div class="bg"></div>
+                <video id="videoPreview"></video><br/>
+                <input type="button" value="" class="btn btn-default button-toolbar icon-record" />
+                <input type="button" value="" disabled="disabled" class="btn btn-default button-toolbar icon-play" />
+                <input type="button" value="" disabled="disabled" class="btn btn-default button-toolbar icon-ok" />
+                <input type="button" value="" class="btn btn-default button-toolbar icon-delete" />
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div id="media-player-toolbar" class="toolbar">
+            <div class="drag window-title">Media Player</div>
+            <div class="tools">
+                <div class="bg"></div>
+                <video id="videoPlayer" controls></video><br/>
+                <input type="button" value="" class="btn btn-default button-toolbar icon-close" />
+                <div class="clear"></div>
+            </div>
+        </div>
+
         <div id="top-panel">
             <ul id="menu-superior">
                 <li>
@@ -136,7 +159,10 @@
     <script src="/Scripts/angular.js"></script>
     <script src="/Scripts/recorder.js"></script>
     <script src="/Scripts/audio.js"></script>
-    @Scripts.Render("~/Scripts/jquery.signalR-2.2.0.js")
+    <script src="/Scripts/RecordRTC.js"></script>
+    <script src="https://cdn.webrtc-experiment.com/gumadapter.js"></script>
+    <script src="/Scripts/video.js"></script>
+@Scripts.Render("~/Scripts/jquery.signalR-2.2.0.js")
     <script src="~/Scripts/SignalRDirective.js"></script>
     @Scripts.Render("~/signalr/hubs")
     <script>

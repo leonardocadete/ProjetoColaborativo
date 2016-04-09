@@ -106,22 +106,22 @@ DEALINGS IN THE SOFTWARE.
   };
 
   Recorder.setupDownload = function (blob) {
-      $("input[type='button'].icon-ok").off("click");
-      $("input[type='button'].icon-play").off("click");
+      $("#audio-record-toolbar input[type='button'].icon-ok").off("click");
+      $("#audio-record-toolbar input[type='button'].icon-play").off("click");
 
-      $("input[type='button'].icon-play").click(function () {
-          $("input[type='button'].icon-play").attr("disabled", "disabled");
+      $("#audio-record-toolbar input[type='button'].icon-play").click(function () {
+          $("#audio-record-toolbar input[type='button'].icon-play").attr("disabled", "disabled");
           var url = (window.URL || window.webkitURL).createObjectURL(blob);
           var a = new Audio(url);
           a.onended = function () {
-              $("input[type='button'].icon-play").removeAttr("disabled");
+              $("#audio-record-toolbar input[type='button'].icon-play").removeAttr("disabled");
           }
           a.play();
       });
 
-      $("input[type='button'].icon-ok").click(function () {
+      $("#audio-record-toolbar input[type='button'].icon-ok").click(function () {
 
-          var id = $("input[type='button'].icon-ok").attr("data-objectid");
+          var id = $("#audio-record-toolbar input[type='button'].icon-ok").attr("data-objectid");
 
           var fd = new FormData();
           fd.append('file', blob);
@@ -135,15 +135,15 @@ DEALINGS IN THE SOFTWARE.
           }).done(function (data) {
               canvas1.forEachObject(function (d) {
                   if (d.id == id) {
-                      d.soundsent = true;
+                      d.mediasent = true;
                       d.naosalvar = false;
                       SaveObject(d, false);
                   }
               });
           });
 
-          $("input[type='button'].icon-play").attr("disabled", "disabled");
-          $("input[type='button'].icon-ok").attr("disabled", "disabled");
+          $("#audio-record-toolbar input[type='button'].icon-play").attr("disabled", "disabled");
+          $("#audio-record-toolbar input[type='button'].icon-ok").attr("disabled", "disabled");
           $("#audio-record-toolbar").fadeOut();
       });
       

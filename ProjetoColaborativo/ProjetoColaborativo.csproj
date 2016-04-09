@@ -248,6 +248,7 @@
     <Content Include="Content\colorpicker.css" />
     <Content Include="Content\fonts\slick.svg" />
     <Content Include="Content\icons\arrow.png" />
+    <Content Include="Content\icons\close.png" />
     <Content Include="Content\icons\delete.png" />
     <Content Include="Content\icons\ok.png" />
     <Content Include="Content\icons\play.png" />
@@ -294,6 +295,8 @@
     <Content Include="Content\fonts\slick.ttf" />
     <Content Include="Content\fonts\slick.woff" />
     <Content Include="Content\fonts\slick.eot" />
+    <None Include="Properties\PublishProfiles\colaborativo - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\colaborativo - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\test.pubxml" />
     <Content Include="Scripts\errors.json" />
@@ -1069,10 +1072,12 @@
     <Content Include="Scripts\paineis.js" />
     <Content Include="Scripts\recorder.js" />
     <Content Include="Scripts\recorderWorker.js" />
+    <Content Include="Scripts\RecordRTC.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\slick.min.js" />
     <Content Include="Scripts\uuid.js" />
+    <Content Include="Scripts\video.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="teste_postar_imagem.html" />
     <Content Include="Scripts\SignalRDirective.js" />
