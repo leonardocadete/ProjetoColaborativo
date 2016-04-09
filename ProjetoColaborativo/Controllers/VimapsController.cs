@@ -255,7 +255,7 @@ namespace ProjetoColaborativo.Controllers
             if (obj == null)
                 return Json("", JsonRequestBehavior.AllowGet);
 
-            var usuario = _repositorioUsuarios.Consultar(x => x.Handle.Equals(User.Identity.GetUserId<long>())).FirstOrDefault();
+            var usuario = _repositorioUsuarios.Retornar(User.Identity.GetUserId<long>());
 
             List<ElementoMultimidia> elementosdosoutros =
                 obj.ElementosMultimidia.Where(x => x.Usuario != usuario).ToList();
