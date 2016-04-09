@@ -19,9 +19,9 @@ namespace ProjetoColaborativo.Models.Entidades
 
         public virtual string Email { get; set; }
 
-        public virtual IList<ElementoMultimidia> ElementosMultimidia { get; set; }
-
         public virtual IList<SessaoColaborativa> SessoesColaborativas { get; set; }
+
+        public virtual IList<Notificacao> Notificacoes { get; set; }
 
         public virtual string Id
         {

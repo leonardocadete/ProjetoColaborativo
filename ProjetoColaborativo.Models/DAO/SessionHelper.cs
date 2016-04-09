@@ -37,6 +37,7 @@ namespace ProjetoColaborativo.Models.DAO
                         m.FluentMappings.AddFromAssemblyOf<SessaoColaborativaMapping>();
                         m.FluentMappings.AddFromAssemblyOf<ObjetoSessaoMapping>();
                         m.FluentMappings.AddFromAssemblyOf<ElementoMultimidiaMapping>();
+                        m.FluentMappings.AddFromAssemblyOf<NotificacaoMapping>();
                     }
                  )
                 .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))

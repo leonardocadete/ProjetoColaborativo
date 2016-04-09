@@ -25,9 +25,9 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
 
             Map(x => x.Foto, "FOTO").Length(100);
 
-            //HasMany(x => x.ElementosMultimidia).KeyColumn("USUARIO");
-
             HasManyToMany(x => x.SessoesColaborativas).Cascade.All().Inverse().Table("USUARIOSESSAO");
+
+            HasMany(x => x.Notificacoes).Cascade.AllDeleteOrphan();
         }
     }
 }

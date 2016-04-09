@@ -77,9 +77,11 @@
     <Compile Include="Entidades\ElementoMultimidia.cs" />
     <Compile Include="Entidades\Entidade.cs" />
     <Compile Include="Entidades\Mappings\ElementoMultimidiaMapping.cs" />
+    <Compile Include="Entidades\Mappings\NotificacaoMapping.cs" />
     <Compile Include="Entidades\Mappings\ObjetoSessaoMapping.cs" />
     <Compile Include="Entidades\Mappings\SessaoColaborativaMapping.cs" />
     <Compile Include="Entidades\Mappings\UsuarioMapping.cs" />
+    <Compile Include="Entidades\Notificacao.cs" />
     <Compile Include="Entidades\ObjetoSessao.cs" />
     <Compile Include="Entidades\SessaoColaborativa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
