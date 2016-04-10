@@ -100,6 +100,8 @@
     <Compile Include="Cargas\CargaUsuarioAdm.cs" />
     <Compile Include="Cargas\ICargaUsuarioAdm.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Notificacao\IRepositorioNotificacao.cs" />
+    <Compile Include="Notificacao\RepositorioNotificacao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
