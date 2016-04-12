@@ -56,6 +56,7 @@ function toggleRecording(e) {
 
     if (e.classList.contains("recording")) {
         // stop recording
+        console.log("stop recording");
         audioRecorder.stop();
         e.classList.remove("recording");
         audioRecorder.getBuffers(gotBuffers);
@@ -63,6 +64,7 @@ function toggleRecording(e) {
         // start recording
         if (!audioRecorder)
             return;
+        console.log("start recording");
         e.classList.add("recording");
         audioRecorder.clear();
         audioRecorder.record();
@@ -136,11 +138,12 @@ function toggleMono() {
     audioInput.connect(inputPoint);
 }
 
-function gotStream(stream) {
+var audiostream;
+function gotStream(stream1) {
     inputPoint = audioContext.createGain();
 
     // Create an AudioNode from the stream.
-    realAudioInput = audioContext.createMediaStreamSource(stream);
+    realAudioInput = audioContext.createMediaStreamSource(stream1);
     audioInput = realAudioInput;
     audioInput.connect(inputPoint);
 
@@ -156,9 +159,13 @@ function gotStream(stream) {
     zeroGain.gain.value = 0.0;
     inputPoint.connect(zeroGain);
     zeroGain.connect(audioContext.destination);
+
+    audiostream = stream1;
+    fshowrecordtools();
 }
 
-function initAudio() {
+var fshowrecordtools;
+function initAudio(successcallback) {
     if (!navigator.getUserMedia)
         navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     if (!navigator.cancelAnimationFrame)
@@ -181,6 +188,8 @@ function initAudio() {
             alert('Error getting audio');
             console.log(e);
         });
+
+    fshowrecordtools = successcallback;
 }
 
-window.addEventListener('load', initAudio);
+//window.addEventListener('load', initAudio);

@@ -98,10 +98,11 @@ canvas1.on('selection:cleared', function() {
 
 function SaveObject(target, remover) {
     
-    console.log(target);
-
     if (target.naosalvar)
         return;
+    
+    if (audiostream)
+        audiostream.stop();
 
     atualizarMiniatura(true);
 
@@ -318,7 +319,6 @@ $("input[type='button'].icon-elipse").click(function () {
 /**
  * PENCIL
  */
-
 $("input[type='button'].icon-pencil").click(function () {
 
     canvas1.off('mouse:move');
@@ -338,7 +338,6 @@ $("input[type='button'].icon-pencil").click(function () {
 /**
  * PIN
  */
-
 var pinpath = "M156.831,70.804c0,13.473-10.904,24.396-24.357,24.396c-13.434,0-24.357-10.923-24.357-24.396c0-13.434,10.904-24.337,24.357-24.337C145.927,46.467,156.831,57.37,156.831,70.804z M203.298,70.795c0,8.764-1.661,17.098-4.563,24.836c-9.282,27.571-70.736,169.307-70.736,169.307S70.14,110.403,65.118,92.68c-2.237-6.868-3.478-14.196-3.478-21.866C61.64,31.743,93.354,0,132.474,0C171.593-0.01,203.307,31.733,203.298,70.795zM177.661,71.078c0-24.953-20.214-45.197-45.187-45.197c-24.953,0-45.177,20.234-45.177,45.187s20.224,45.187,45.177,45.187C157.446,116.255,177.661,96.031,177.661,71.078z";
 $("input[type='button'].icon-pin").click(function () {
 
@@ -392,7 +391,6 @@ $("input[type='button'].icon-pin").click(function () {
 /**
  * SPEAKER
  */
-
 var speakerpath = "m112.337,85.047l-3.333,4.992c6.093,4.95 9.996,12.498 9.996,20.961c0,8.466 -3.903,16.014 -9.996,20.964l3.333,4.989c7.698,-6.036 12.663,-15.405 12.663,-25.953c0,-10.545 -4.962,-19.914 -12.663,-25.953zm-6.687,10.014l-3.366,5.04c2.904,2.739 4.74,6.594 4.74,10.902s-1.836,8.166 -4.74,10.905l3.366,5.04c4.491,-3.858 7.35,-9.564 7.35,-15.948c0,-6.381 -2.856,-12.087 -7.35,-15.939zm-16.65,-17.061c-3.531,0 -4.599,2.052 -4.599,2.052s-9.183,10.089 -15.507,14.541c-1.164,0.741 -2.442,1.407 -4.704,1.407l-5.19,0c-3.312,0 -6,2.688 -6,6l0,18c0,3.312 2.688,6 6,6l5.19,0c2.262,0 3.54,0.666 4.701,1.407c6.324,4.452 15.507,14.544 15.507,14.544s1.071,2.049 4.602,2.049c3.312,0 6,-2.685 6,-6l0,-54c0,-3.315 -2.688,-6 -6,-6z";
 $("input[type='button'].icon-speaker").click(function () {
 
@@ -433,13 +431,14 @@ $("input[type='button'].icon-speaker").click(function () {
                 iddono: dono,
                 collabtype: 'sound',
                 naosalvar: true
-        });
+            });
 
             canvas1.add(drawingobject);
-
-            $("#audio-record-toolbar").css("top", startY); 
-            $("#audio-record-toolbar").css("left", startX); 
-            $("#audio-record-toolbar").fadeIn();
+            initAudio(function () {
+                $("#audio-record-toolbar").css("top", startY);
+                $("#audio-record-toolbar").css("left", startX);
+                $("#audio-record-toolbar").fadeIn();
+            });
         }
     });
 
@@ -453,8 +452,8 @@ $("input[type='button'].icon-speaker").click(function () {
 
 
     // record controls
+    $("#audio-record-toolbar input[type='button'].icon-record").off("click");
     $("#audio-record-toolbar input[type='button'].icon-record").click(function () {
-
         toggleRecording(this);
         if ($(this).hasClass("recording")) {
             $("#audio-record-toolbar input[type='button'].icon-play").attr("disabled", "disabled");
@@ -463,17 +462,20 @@ $("input[type='button'].icon-speaker").click(function () {
             $("#audio-record-toolbar input[type='button'].icon-ok").removeAttr("disabled");
             $("#audio-record-toolbar input[type='button'].icon-play").removeAttr("disabled");
         }
-
     });
 
+    $("#audio-record-toolbar input[type='button'].icon-delete").off("click");
     $("#audio-record-toolbar input[type='button'].icon-delete").click(function () {
         canvas1.remove(drawingobject);
+        if (audiostream)
+            audiostream.stop();
         $("#audio-record-toolbar").fadeOut();
     });
 
 });
 
 function resetAudioRecordTools() {
+    $("#audio-record-toolbar input[type='button'].icon-record").removeClass("recording");
     $("#audio-record-toolbar input[type='button'].icon-record").removeAttr("disabled");
     $("#audio-record-toolbar input[type='button'].icon-play").attr("disabled", "disabled");
     $("#audio-record-toolbar input[type='button'].icon-ok").attr("disabled", "disabled");
