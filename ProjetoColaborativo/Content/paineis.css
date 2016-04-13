@@ -114,7 +114,7 @@ ul {
     background-size: 20px 20px;
     width: 32px;
     height: 32px;
-    margin: 0 0 5px 5px;
+    margin: 0 0 0 5px;
     float: left;
 }
 
@@ -300,7 +300,7 @@ ul {
     .toolbar .tools {
         z-index: 11;
         position: relative;
-        padding: 2px;
+        padding: 4px;
     }
 
     /*Menu superior*/
@@ -359,6 +359,7 @@ ul {
     padding: 0 5px;
     border: solid 1px #fff;
     border-radius: 4px;
+    color: #fff;
 }
 
 .troggle-minimize:hover {
@@ -439,4 +440,13 @@ ul {
 }
 #media-player-toolbar .btn {
     float:right
+}
+
+
+/* bootstrap overrides */
+.navbar-fixed-top, .navbar-fixed-bottom {
+    position: inherit;
+}
+.navbar {
+    margin-bottom: 0;
 }

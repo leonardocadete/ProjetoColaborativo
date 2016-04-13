@@ -11,27 +11,51 @@
 <head>
     <title></title>
     <link href='https://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
-    <link href="/Content/jquery-ui.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/jquery-ui.min.css" rel="stylesheet"/>
     <link href="/Content/paineis.css" rel="stylesheet" />
 </head>
 <body ng-app="ColaborativoApp" atualiza-elementos="true">
 
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @* @Html.ActionLink("Projeto Colaborativo", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }) *@
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Users", "Index", "Usuario")</li>
+                    <li>@Html.ActionLink("Sessions", "Index", "Home")</li>
+                    <li><a href="javascript:" id="minimizar-colaborativo-master">Minimizar colaborativo</a></li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
 
-    @if (Model.ObjetosDaSessao.Count > 0)
-    {
+@if (Model.ObjetosDaSessao.Count > 0)
+{
+    <div>
         <canvas id="draw-canvas"></canvas>
 
         <div class="toolbar">
             <div class="drag window-title">Ferramentas</div>
             <div class="tools">
                 <div class="bg"></div>
-                <input type="button" value="" class="btn btn-default button-toolbar icon-rect"/>
-                <input type="button" value="" class="btn btn-default button-toolbar icon-elipse"/>
-                <input type="button" value="" class="btn btn-default button-toolbar icon-pencil"/>
-                <input type="button" value="" class="btn btn-default button-toolbar icon-text"/>
-                <input type="button" value="" class="btn btn-default button-toolbar icon-pin"/>
-                <input type="button" value="" class="btn btn-default button-toolbar icon-youtube"/>
-                <input type="button" value="" class="btn btn-default button-toolbar icon-speaker"/>
+                <input type="button" value="" class="button-toolbar icon-rect" />
+                <input type="button" value="" class="button-toolbar icon-elipse" />
+                <input type="button" value="" class="button-toolbar icon-pencil" />
+                <input type="button" value="" class="button-toolbar icon-text" />
+                <input type="button" value="" class="button-toolbar icon-pin" />
+                <input type="button" value="" class="button-toolbar icon-youtube" />
+                <input type="button" value="" class="button-toolbar icon-speaker" />
                 <div class="clear"></div>
             </div>
         </div>
@@ -52,7 +76,7 @@
             <div class="drag window-title">Gravar Vídeo</div>
             <div class="tools">
                 <div class="bg"></div>
-                <video id="videoPreview"></video><br/>
+                <video id="videoPreview"></video><br />
                 <input type="button" value="" class="btn btn-default button-toolbar icon-record" />
                 <input type="button" value="" disabled="disabled" class="btn btn-default button-toolbar icon-play" />
                 <input type="button" value="" disabled="disabled" class="btn btn-default button-toolbar icon-ok" />
@@ -71,21 +95,6 @@
             </div>
         </div>
 
-        <div id="top-panel">
-            <ul id="menu-superior">
-                <li>
-                    <a href="#">Objeto</a>
-                    <ul>
-                        <li><a href="#">Abrir no Vimaps</a></li>
-                        <li><a href="#">Excluir</a></li>
-                        <li><a href="#">Sub Menu 1</a></li>
-                    </ul>
-                </li>
-                <li><a href="javascript:" id="minimizar-colaborativo">Minimizar colaborativo</a></li>
-                <li><a href="@Url.Action("Index", "Home")" id="link-minhas-sessoes">Minhas sessões</a></li>
-            </ul>
-        </div>
-
         <div id="bottom-panel" class="toggle-panel">
             <div class="window-title">
                 @Model.Descricao - Lista de objetos
@@ -102,246 +111,244 @@
                 {
                     if (ViewBag.NovoObjeto != null)
                     {
-                            <ul id="sortable-novo" class="listas-sortable">
-                                <li data-id="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle})" class="miniatura @(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")">
-                                    <img data-createdtime="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().DataCriacao.ToString()" data-authorname="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")" />
-                                </li>
-                                <li class="miniatura info">
-                                    <img class="icon-arrow" src="/Content/icons/arrow.png" />
-                                    <h3>Esse é o seu novo objeto!</h3>
-                                    Arraste ele para a lista abaixo, na posição que ele deve ficar.
-                                </li>
-                            </ul>
+                <ul id="sortable-novo" class="listas-sortable">
+                    <li data-id="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle})" class="miniatura @(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")">
+                        <img data-createdtime="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().DataCriacao.ToString()" data-authorname="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")" />
+                    </li>
+                    <li class="miniatura info">
+                        <img class="icon-arrow" src="/Content/icons/arrow.png" />
+                        <h3>Esse é o seu novo objeto!</h3>
+                        Arraste ele para a lista abaixo, na posição que ele deve ficar.
+                    </li>
+                </ul>
+                    }
+
+                <div></div>
+
+                <ul id="sortable" class="listas-sortable">
+
+                    @foreach (var os in @Model.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
+                        {
+                        <li data-id="@os.Handle" data-order="@os.Ordem" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
+                            <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == os.Handle ? "selecionado" : "")" />
+                            <div class="noti_bubble">2</div>
+                        </li>
                         }
 
-                        <div></div>
-
-                        <ul id="sortable" class="listas-sortable">
-
-                            @foreach (var os in @Model.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
-                            {
-                                <li data-id="@os.Handle" data-order="@os.Ordem" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
-                                    <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == os.Handle ? "selecionado" : "")" />
-                                    <div class="noti_bubble">2</div>
-                                </li>
-                            }
-
-                        </ul>
-                    }
-                    else
-                    {
-                        <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
-                    }
+                </ul>
+                }
+                else
+                {
+                <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
+                }
                 </div>
 
             </div>
         </div>
+    </div>
+}
+else
+{
+    <div class="sem-objetos">
+        Esta sessão ainda não possui nenhum objeto. <br/>
+        Para adicionar objetos acesse o
+        <a href="">Vimaps</a> ou
+        @Html.ActionLink("escolha outra sessão", "Index", "Home")
 
-    }
-    else
-    {
-        <div class="sem-objetos">
-            Esta sessão ainda não possui nenhum objeto. <br />
-            Para adicionar objetos acesse o
-            <a href="">Vimaps</a> ou
-            @Html.ActionLink("escolha outra sessão", "Index", "Home")
+        <br/><br/><br/><br/>
+        <a href="/teste_postar_imagem.html">Teste de envio de imagem</a>
+    </div>
+}
 
-            <br /><br /><br /><br />
-            <a href="/teste_postar_imagem.html">Teste de envio de imagem</a>
-        </div>
-    }
-
-    <script src="/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="/Scripts/jquery-ui.min.js"></script>
-    <script src="/Scripts/uuid.js"></script>
-    <script src="/Scripts/fabric.min.js"></script>
-    <script src="/Scripts/paineis.js"></script>
-    <script src="/Scripts/angular.js"></script>
-    <script src="/Scripts/recorder.js"></script>
-    <script src="/Scripts/audio.js"></script>
-    <script src="/Scripts/RecordRTC.js"></script>
-    <script src="https://cdn.webrtc-experiment.com/gumadapter.js"></script>
-    <script src="/Scripts/video.js"></script>
+<script src="/Scripts/jquery-1.10.2.min.js"></script>
+<script src="/Scripts/jquery-ui.min.js"></script>
+<script src="/Scripts/uuid.js"></script>
+<script src="/Scripts/fabric.min.js"></script>
+<script src="/Scripts/paineis.js"></script>
+<script src="/Scripts/angular.js"></script>
+<script src="/Scripts/recorder.js"></script>
+<script src="/Scripts/audio.js"></script>
+<script src="/Scripts/RecordRTC.js"></script>
+<script src="https://cdn.webrtc-experiment.com/gumadapter.js"></script>
+<script src="/Scripts/video.js"></script>
 @Scripts.Render("~/Scripts/jquery.signalR-2.2.0.js")
-    <script src="~/Scripts/SignalRDirective.js"></script>
-    @Scripts.Render("~/signalr/hubs")
-    <script>
+<script src="~/Scripts/SignalRDirective.js"></script>
+@Scripts.Render("~/signalr/hubs")
+<script>
 
-        $("#left-panel .panel-trigger").on("mouseenter", function () {
-            $(this).parent().animate({ left: 0 }, 100);
-        });
+    $("#left-panel .panel-trigger").on("mouseenter", function() {
+        $(this).parent().animate({ left: 0 }, 100);
+    });
 
-        $("#left-panel").on("mouseleave", function () {
-            $(this).animate({ left: -42 }, 100);
-        });
+    $("#left-panel").on("mouseleave", function() {
+        $(this).animate({ left: -42 }, 100);
+    });
 
-        $(".troggle-minimize").on("click", function () {
-            var p = $(this).closest(".toggle-panel");
-            var t = $(this).closest(".window-title");
+    $(".troggle-minimize").on("click", function() {
+        var p = $(this).closest(".toggle-panel");
+        var t = $(this).closest(".window-title");
 
-            if ($(this).html() != "▴") {
-                $(this).html("▴");
-                p.animate({ bottom: (p.height() * -1) + t.height() + 5 }, 100);
-            } else {
-                $(this).html("▾");
-                p.animate({ bottom: 0 }, 100);
-            }
-        });
-
-
-        (function () {
-
-            @if (ViewBag.ObjectId != null)
-            {
-                <text>
-            setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
-            </text>
-            }
-
-            $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
-
-            $(".toolbar").draggable({ handle: ".drag" });
-
-            $("#sortable, #sortable-novo").sortable({
-                items: "li:not(.info)",
-                connectWith: ".listas-sortable",
-                //axis: 'x',
-                cursor: 'move',
-                stop: function(event, ui) {
-                    $("#sortable-novo").hide();
-                    var id = ui.item.attr("data-id");
-                    var idanterior = ui.item.prev().attr("data-id") || "0";
-
-                    $.ajax({
-                        type: "POST",
-                        url: window.location.pathname.replace("MostrarSessao", "OrdenarObjeto"),
-                        data: "{ 'idreordenar' : '" + id + "', 'idanterior' : '" + idanterior + "'}",
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (data) { console.log(data) },
-                        failure: function (errMsg) {
-                            alert(errMsg);
-                        }
-                    });
-
-                }
-            });
-
-            $("#sortable, #sortable-novo").disableSelection();
-
-            // autoscroll
-            var $bl    = $(".miniaturas"),
-                $th    = $("#sortable"),
-                blW    = $bl.outerWidth(),
-                blSW   = $bl[0].scrollWidth,
-                wDiff  = (blSW/blW)-1,
-                mPadd  = 90,
-                damp   = 20,
-                mX     = 0,
-                mX2    = 0,
-                posX   = 0,
-                mmAA   = blW-(mPadd*2),
-                mmAAr  = (blW/mmAA);
-
-            $bl.mousemove(function(e) {
-                mX = e.pageX - this.offsetLeft;
-                mX2 = Math.min( Math.max(0, mX-mPadd), mmAA ) * mmAAr;
-            });
-
-            setInterval(function(){
-                posX += (mX2 - posX) / damp;
-                $th.css({marginLeft: -posX*wDiff });
-            }, 10);
-            // autoscroll
+        if ($(this).html() != "▴") {
+            $(this).html("▴");
+            p.animate({ bottom: (p.height() * -1) + t.height() + 5 }, 100);
+        } else {
+            $(this).html("▾");
+            p.animate({ bottom: 0 }, 100);
+        }
+    });
 
 
+    (function() {
 
-            $(".miniatura").on("click", function () {
-                window.location.href = $(this).attr("data-url");
-            });
-
-            $( document ).tooltip({
-                at: "center top",
-                tooltipClass: "collab-tooltip-styling",
-                items: '[data-tooltip]',
-                content: function() {
-                    return "<img class='img-tooltip' src='" + $(this).attr("src") + "' > <br />" +
-                        "Enviado por <b>" + $(this).attr("data-authorname") + "</b><br/>" +
-                        $(this).attr("data-createdtime");
-                },
-                show: {
-                    delay: 700
-                },
-                hide: {
-                    effect: "", // fadeOut
-                },
-                open: function( event, ui ) {
-                    //ui.tooltip.animate({ top: ui.tooltip.position().top + 10 }, "fast" );
-                },
-                close: function( event, ui ) {
-                    ui.tooltip.hover(
-                        function () {
-                            $(this).stop(true).fadeTo(400, 1);
-                            //.fadeIn("slow"); // doesn't work because of stop()
-                        },
-                        function () {
-                            $(this).fadeOut("400", function() { $(this).remove(); });
-                        }
-                    );
-                }
-            });
-
-
-
-            if (window.self !== window.top) { // está no iframe
-                $("#abrir-no-vimaps").click(function() {
-                    @if (Model.ObjetosDaSessao.Any())
-                    {
-                        <text>
-                    parent.postMessage("url<|>@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)", "*");
-                    </text>
-                    }
-
-                });
-                $("#minimizar-colaborativo").click(function() {
-                    parent.postMessage("fechar<|>yo", "*");
-                });
-            } else {
-                $("#abrir-no-vimaps").click(function() {
-                    @if (Model.ObjetosDaSessao.Any())
-                    {
-                        <text>
-                    window.location.href = "@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)";
-                    </text>
-                    }
-
-                });
-                $("#minimizar-colaborativo").parent().hide();
-            }
-
-        })();
-
-        var dono = "@Html.Raw(ViewBag.Dono)";
-        var cordono = "#@Html.Raw(ViewBag.CorDono)";
-
-        @if (ViewBag.LerElementos != null)
+        @if (ViewBag.ObjectId != null)
         {
             <text>
-        var json = @Html.Raw(ViewBag.LerElementos);
-        canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function (o, object) {
-            
-            if (object.iddono != dono) {
-                //object.selectable = false;
+        setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
+        </text>
+        }
 
-                object.lockRotation = true;
-                object.lockScalingX = object.lockScalingY = true;
-                object.lockMovementX = object.lockMovementY  = true;
+        $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
+
+        $(".toolbar").draggable({ handle: ".drag" });
+
+        $("#sortable, #sortable-novo").sortable({
+            items: "li:not(.info)",
+            connectWith: ".listas-sortable",
+            //axis: 'x',
+            cursor: 'move',
+            stop: function(event, ui) {
+                $("#sortable-novo").hide();
+                var id = ui.item.attr("data-id");
+                var idanterior = ui.item.prev().attr("data-id") || "0";
+
+                $.ajax({
+                    type: "POST",
+                    url: window.location.pathname.replace("MostrarSessao", "OrdenarObjeto"),
+                    data: "{ 'idreordenar' : '" + id + "', 'idanterior' : '" + idanterior + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(data) { console.log(data) },
+                    failure: function(errMsg) {
+                        alert(errMsg);
+                    }
+                });
 
             }
         });
-        </text>
+
+        $("#sortable, #sortable-novo").disableSelection();
+
+        // autoscroll
+        var $bl = $(".miniaturas"),
+            $th = $("#sortable"),
+            blW = $bl.outerWidth(),
+            blSW = $bl[0].scrollWidth,
+            wDiff = (blSW / blW) - 1,
+            mPadd = 90,
+            damp = 20,
+            mX = 0,
+            mX2 = 0,
+            posX = 0,
+            mmAA = blW - (mPadd * 2),
+            mmAAr = (blW / mmAA);
+
+        $bl.mousemove(function(e) {
+            mX = e.pageX - this.offsetLeft;
+            mX2 = Math.min(Math.max(0, mX - mPadd), mmAA) * mmAAr;
+        });
+
+        setInterval(function() {
+            posX += (mX2 - posX) / damp;
+            $th.css({ marginLeft: -posX * wDiff });
+        }, 10);
+        // autoscroll
+
+
+        $(".miniatura").on("click", function() {
+            window.location.href = $(this).attr("data-url");
+        });
+
+        $(document).tooltip({
+            at: "center top",
+            tooltipClass: "collab-tooltip-styling",
+            items: '[data-tooltip]',
+            content: function() {
+                return "<img class='img-tooltip' src='" + $(this).attr("src") + "' > <br />" +
+                    "Enviado por <b>" + $(this).attr("data-authorname") + "</b><br/>" +
+                    $(this).attr("data-createdtime");
+            },
+            show: {
+                delay: 700
+            },
+            hide: {
+                effect: "", // fadeOut
+            },
+            open: function(event, ui) {
+                //ui.tooltip.animate({ top: ui.tooltip.position().top + 10 }, "fast" );
+            },
+            close: function(event, ui) {
+                ui.tooltip.hover(
+                    function() {
+                        $(this).stop(true).fadeTo(400, 1);
+                        //.fadeIn("slow"); // doesn't work because of stop()
+                    },
+                    function() {
+                        $(this).fadeOut("400", function() { $(this).remove(); });
+                    }
+                );
+            }
+        });
+
+
+        if (window.self !== window.top) { // está no iframe
+            $("#abrir-no-vimaps").click(function() {
+                @if (Model.ObjetosDaSessao.Any())
+                {
+                    <text>
+                parent.postMessage("url<|>@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)", "*");
+                </text>
+                }
+
+            });
+            $("#minimizar-colaborativo").click(function() {
+                parent.postMessage("fechar<|>yo", "*");
+            });
+        } else {
+            $("#abrir-no-vimaps").click(function() {
+                @if (Model.ObjetosDaSessao.Any())
+                {
+                    <text>
+                window.location.href = "@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)";
+                </text>
+                }
+
+            });
+            $("#minimizar-colaborativo").parent().hide();
         }
-    </script>
+
+    })();
+
+    var dono = "@Html.Raw(ViewBag.Dono)";
+    var cordono = "#@Html.Raw(ViewBag.CorDono)";
+
+    @if (ViewBag.LerElementos != null)
+    {
+        <text>
+    var json = @Html.Raw(ViewBag.LerElementos);
+    canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function(o, object) {
+
+        if (object.iddono != dono) {
+            //object.selectable = false;
+
+            object.lockRotation = true;
+            object.lockScalingX = object.lockScalingY = true;
+            object.lockMovementX = object.lockMovementY = true;
+
+        }
+    });
+    </text>
+    }
+</script>
 
 </body>
 </html>
