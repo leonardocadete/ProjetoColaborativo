@@ -70,6 +70,24 @@ namespace ProjetoColaborativo.Controllers
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
+        
+        [Authorize]
+        public ActionResult GetDadosUsuario(long idusuario)
+        {
+            var u = _repositorioUsuarios.Retornar(idusuario);
+            if (u != null)
+                return Json(new
+                {
+                    u.Id,
+                    u.Email,
+                    u.Login,
+                    u.Nome,
+                    u.Foto
+                }, JsonRequestBehavior.AllowGet);
+
+            return null;
+        }
+
         [HttpPost]
         [Authorize]
         public ActionResult OrdenarObjeto(long id, long objetoid, long idanterior, long idreordenar)

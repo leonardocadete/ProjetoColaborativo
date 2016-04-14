@@ -88,12 +88,65 @@ canvas1.on('object:selected', function (e) {
 
 });
 
-canvas1.on('selection:cleared', function() {
+canvas1.on('selection:cleared', function () {
     if (audio) {
         audio.pause();
     }
 
     $("#media-player-toolbar").fadeOut();
+});
+
+function getDadosUsuario(id, callback) {
+
+    $.ajax({
+        type: "GET",
+        url: window.location.pathname.replace("MostrarSessao", "GetDadosUsuario"),
+        data: { idusuario: id },
+        success: function (data) {
+            callback(data);
+        }
+    });
+
+}
+
+var c, f, b;
+canvas1.on('mouse:over', function (e) {
+    c = e.target.stroke;
+    e.target.stroke = c.replace("0.5", "1");
+
+    if (e.target.fill) {
+        f = e.target.fill;
+        e.target.fill = f.replace("0.5", "1");
+    }
+
+    if (e.target.textBackgroundColor) {
+        b = e.target.textBackgroundColor;
+        e.target.textBackgroundColor = b.replace("0.5", "1");
+    }
+    
+    getDadosUsuario(e.target.iddono, function (data) {
+        $("#elemento-tooltip-txt").html(data.Nome);
+        $("#elemento-tooltip").css("top", e.target.top);
+        $("#elemento-tooltip").css("left", e.target.left);
+        $("#elemento-tooltip").show();
+    });
+
+    canvas1.renderAll();
+});
+
+canvas1.on('mouse:out', function (e) {
+    if (e.target.fill) {
+        e.target.fill = f;
+    }
+
+    if (e.target.textBackgroundColor) {
+        e.target.textBackgroundColor = b;
+    }
+    e.target.stroke = c;
+
+    $("#elemento-tooltip").hide();
+
+    canvas1.renderAll();
 });
 
 function SaveObject(target, remover) {

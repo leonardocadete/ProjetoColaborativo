@@ -64,10 +64,10 @@
             <div class="window-title">Gravar Áudio</div>
             <div class="tools">
                 <div class="bg"></div>
-                <input type="button" value="" class="btn btn-default button-toolbar icon-record" />
-                <input type="button" value="" disabled="disabled" class="btn btn-default button-toolbar icon-play" />
-                <input type="button" value="" disabled="disabled" class="btn btn-default button-toolbar icon-ok" />
-                <input type="button" value="" class="btn btn-default button-toolbar icon-delete" />
+                <input type="button" value="" class=" button-toolbar icon-record" />
+                <input type="button" value="" disabled="disabled" class=" button-toolbar icon-play" />
+                <input type="button" value="" disabled="disabled" class=" button-toolbar icon-ok" />
+                <input type="button" value="" class=" button-toolbar icon-delete" />
                 <div class="clear"></div>
             </div>
         </div>
@@ -77,10 +77,10 @@
             <div class="tools">
                 <div class="bg"></div>
                 <video id="videoPreview"></video><br />
-                <input type="button" value="" class="btn btn-default button-toolbar icon-record" />
-                <input type="button" value="" disabled="disabled" class="btn btn-default button-toolbar icon-play" />
-                <input type="button" value="" disabled="disabled" class="btn btn-default button-toolbar icon-ok" />
-                <input type="button" value="" class="btn btn-default button-toolbar icon-delete" />
+                <input type="button" value="" class=" button-toolbar icon-record" />
+                <input type="button" value="" disabled="disabled" class=" button-toolbar icon-play" />
+                <input type="button" value="" disabled="disabled" class=" button-toolbar icon-ok" />
+                <input type="button" value="" class=" button-toolbar icon-delete" />
                 <div class="clear"></div>
             </div>
         </div>
@@ -89,9 +89,16 @@
             <div class="drag window-title">Media Player</div>
             <div class="tools">
                 <div class="bg"></div>
-                <input type="button" value="" class="btn btn-default button-toolbar icon-close" /><br />
+                <input type="button" value="" class=" button-toolbar icon-close"/><br/>
                 <video id="videoPlayer" controls></video>
                 <div class="clear"></div>
+            </div>
+        </div>
+
+        <div id="elemento-tooltip" class="toolbar" style="display: none">
+            <div class="tools">
+                <div class="bg"></div>
+                <label id="elemento-tooltip-txt"></label>
             </div>
         </div>
 
