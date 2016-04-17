@@ -13,19 +13,19 @@
     {
         <div class="card-sessao">
             <h3>
-                <a href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle})">@sessao.Descricao</a>
+                <a data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle})">@sessao.Descricao</a>
             </h3>
             @*
-    <em>Criada por <b>@sessao.Usuario.Nome</b> em @sessao.DataCriacao</em>
+                <em>Criada por <b>@sessao.Usuario.Nome</b> em @sessao.DataCriacao</em>
             *@
-            <div class="miniaturas">
+            <div class="miniaturas session-objects">
 
                 @if (sessao.ObjetosDaSessao.Count > 0)
                 {
                     <div class="list-scroll">
                         @foreach (var os in sessao.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
                         {
-                            <a href="@Url.Action("MostrarSessao", "Vimaps", new { id = sessao.Handle, objetoid = os.Handle })">
+                            <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new { id = sessao.Handle, objetoid = os.Handle })">
                                 <div data-id="@os.Handle" data-url="" class="miniatura">
                                     <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
                                 </div>
@@ -60,7 +60,7 @@ else
                 <a href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle})">@sessao.Descricao</a>
             </h3>
             @*
-    <em>Criada por <b>@sessao.Usuario.Nome</b> em @sessao.DataCriacao</em>
+                <em>Criada por <b>@sessao.Usuario.Nome</b> em @sessao.DataCriacao</em>
             *@
             <div class="miniaturas">
 
@@ -92,8 +92,8 @@ else
 }
 
 @section styles{
-<link href="/Content/slick.css" rel="stylesheet" />
-<link href="/Content/slick-theme.css" rel="stylesheet" />
+    <link href="/Content/slick.css" rel="stylesheet" />
+    <link href="/Content/slick-theme.css" rel="stylesheet" />
 
 
 }
@@ -106,6 +106,19 @@ else
             slidesToShow: 5,
             slidesToScroll: 5,
             infinite: false
+        });
+
+        $(".card-sessao h3 a").on("click", function (e) {
+            var a = $(this);
+            if (a.attr("href") != undefined)
+                return;
+
+            e.preventDefault();
+            $(".card-sessao h3 a").removeAttr("href");
+            $(".session-objects").slideUp();
+
+            a.attr("href", a.attr("data-url"));
+            a.parent("h3").siblings(".session-objects").slideDown();
         });
     </script>
 
