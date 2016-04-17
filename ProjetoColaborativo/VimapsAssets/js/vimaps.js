@@ -4,11 +4,16 @@
 
     console.log("starting collab...");
 
-    var urlbase = document.location.protocol + "//177.131.33.18:8080";
+    //var urlbase = document.location.protocol + "//177.131.33.18:8080";
+    var urlbase = "https://colaborativo.azurewebsites.net";
 
     var script = document.createElement('script');
     script.src = urlbase + "/VimapsAssets/js/exportcanvas.js";
     document.getElementsByTagName('head')[0].appendChild(script);
+
+    var script2 = document.createElement('script');
+    script2.src = urlbase + "/VimapsAssets/js/html2canvas.js";
+    document.getElementsByTagName('head')[0].appendChild(script2);
 
     var showiframe = false;
 

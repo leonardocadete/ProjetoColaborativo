@@ -207,6 +207,9 @@ else
 
     (function() {
 
+        if (window.location.protocol != "https:")
+            window.location.href = "https:" + window.location.href.replace(":8080", "").substring(window.location.protocol.length);
+
         @if (ViewBag.ObjectId != null)
         {
             <text>
