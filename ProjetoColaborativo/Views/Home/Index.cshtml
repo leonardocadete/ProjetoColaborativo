@@ -57,19 +57,19 @@ else
     {
         <div class="card-sessao">
             <h3>
-                <a href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle})">@sessao.Descricao</a>
+                <a data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle})">@sessao.Descricao</a>
             </h3>
             @*
                 <em>Criada por <b>@sessao.Usuario.Nome</b> em @sessao.DataCriacao</em>
             *@
-            <div class="miniaturas">
+            <div class="miniaturas session-objects">
 
                 @if (sessao.ObjetosDaSessao.Count > 0)
                 {
                     <ul class="list-scroll">
                         @foreach (var os in sessao.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
                         {
-                            <a href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
+                            <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
                                 <li data-id="@os.Handle" data-url="" class="miniatura">
                                     <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
                                 </li>
