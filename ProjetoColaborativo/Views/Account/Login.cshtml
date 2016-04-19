@@ -40,13 +40,22 @@
 
         <div class="form-group">
             <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+            <button class="btn btn-lg btn-default btn-block" type="button" id="btnCancelar" style="display: none">Cancelar</button>
         </div>
     </form>
     @Html.ActionLink("Carga usuário adm", "CargaUsuarioAdm")
+    
 </div>
     
     <script>
         parent.postMessage("fechar<|>yo", "*");
+
+        if (window.self !== window.top) { // está no iframe
+            $("#btnCancelar").show();
+            $("#btnCancelar").on("click", function() {
+                parent.postMessage("fechar<|>yo", "*");
+            });
+        }
     </script>
     
 </body>
