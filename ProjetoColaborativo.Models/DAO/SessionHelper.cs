@@ -26,11 +26,12 @@ namespace ProjetoColaborativo.Models.DAO
 
         private static Configuration CreateNewConfiguration()
         {
-            //const string connectionString = "Data Source = localhost; Initial Catalog = projetoColaborativo; Integrated Security = True";
-            const string connectionString = "Data Source=|DataDirectory|Colaborativo.sdf;Persist Security Info=False;";
+            const string connectionString = "Data Source = localhost; Initial Catalog = projetoColaborativo; Integrated Security = True";
+            //const string connectionString = "Data Source=|DataDirectory|Colaborativo.sdf;Persist Security Info=False;";
             
             var configuration = Fluently.Configure()
-                .Database(MsSqlCeConfiguration.MsSqlCe40.ConnectionString(connectionString).ShowSql)
+                .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString).ShowSql)
+                //.Database(MsSqlCeConfiguration.MsSqlCe40.ConnectionString(connectionString).ShowSql)
                 .Mappings(
                     m =>
                     {

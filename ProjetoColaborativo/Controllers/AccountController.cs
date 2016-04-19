@@ -60,7 +60,6 @@ namespace ProjetoColaborativo.Controllers
         {
             FormsAuthentication.SignOut();
             authenticationManager.SignOut();
-
             return RedirectToAction("Index", "Home");
         }
 
