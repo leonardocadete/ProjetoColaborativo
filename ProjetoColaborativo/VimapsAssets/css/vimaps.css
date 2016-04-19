@@ -3,6 +3,11 @@
    left:0px;
    bottom:0px;
    z-index:99999;
+    width: 100px;
+}
+
+#footer button {
+    float: left;
 }
 
 /* IE 6 */
