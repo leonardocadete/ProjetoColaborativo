@@ -49,6 +49,7 @@
             <div class="drag window-title">Ferramentas</div>
             <div class="tools">
                 <div class="bg"></div>
+                <input type="button" value="" class="button-toolbar icon-cursor" />
                 <input type="button" value="" class="button-toolbar icon-rect" />
                 <input type="button" value="" class="button-toolbar icon-elipse" />
                 <input type="button" value="" class="button-toolbar icon-pencil" />
@@ -206,9 +207,6 @@ else
 
 
     (function() {
-
-        if (window.location.protocol != "https:")
-            window.location.href = "https:" + window.location.href.replace(":8080", "").substring(window.location.protocol.length);
 
         @if (ViewBag.ObjectId != null)
         {

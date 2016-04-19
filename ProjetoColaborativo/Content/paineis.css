@@ -178,6 +178,10 @@ ul {
     background-image: url('/Content/icons/close.png');
 }
 
+.icon-cursor {
+    background-image: url('/Content/icons/cursor.png');
+}
+
 /* thumbs */
 
 .miniaturas {

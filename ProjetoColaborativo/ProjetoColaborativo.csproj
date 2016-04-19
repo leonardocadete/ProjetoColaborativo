@@ -249,6 +249,8 @@
     <Compile Include="ViewModels\Usuario\UsuarioViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\icons\cursor.png" />
+    <Content Include="teste.cur" />
     <Content Include="App_Data\Colaborativo.sdf" />
     <Content Include="bgvimaps.png" />
     <Content Include="Content\ajax-loader.gif" />

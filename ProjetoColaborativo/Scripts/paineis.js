@@ -223,11 +223,25 @@ var drawingobject;
 /**
  * SQUARE
  */
+$("input[type='button'].icon-cursor").click(function() {
+    canvas1.defaultCursor = "default";
+    canvas1.off('mouse:move');
+    canvas1.off('mouse:down');
+    canvas1.off('mouse:up');
+    canvas1.isDrawingMode = false;
+});
+
+/**
+ * SQUARE
+ */
 $("input[type='button'].icon-rect").click(function () {
+
+    canvas1.defaultCursor = "url(/Content/icons/rect.png),default";
 
     canvas1.off('mouse:move');
     canvas1.off('mouse:down');
     canvas1.off('mouse:up');
+    canvas1.isDrawingMode = false;
 
     draw = true;
     var drawingobject;
@@ -278,10 +292,10 @@ $("input[type='button'].icon-rect").click(function () {
     });
 
     canvas1.on('mouse:up', function () {
-        draw = false;
+        // draw = false;
         canvas1.off('mouse:move');
-        canvas1.off('mouse:down');
-        canvas1.off('mouse:up');
+        // canvas1.off('mouse:down');
+        // canvas1.off('mouse:up');
         SaveObject(drawingobject, false);
     });
 
@@ -293,9 +307,12 @@ $("input[type='button'].icon-rect").click(function () {
  */
 $("input[type='button'].icon-elipse").click(function () {
 
+    canvas1.defaultCursor = "url(/Content/icons/elipse.png),default";
+
     canvas1.off('mouse:move');
     canvas1.off('mouse:down');
     canvas1.off('mouse:up');
+    canvas1.isDrawingMode = false;
 
     draw = true;
     var drawingobject;
@@ -359,10 +376,10 @@ $("input[type='button'].icon-elipse").click(function () {
     });
 
     canvas1.on('mouse:up', function () {
-        draw = false;
+        // draw = false;
         canvas1.off('mouse:move');
-        canvas1.off('mouse:down');
-        canvas1.off('mouse:up');
+        // canvas1.off('mouse:down');
+        // canvas1.off('mouse:up');
         SaveObject(drawingobject, false);
     });
 
@@ -379,12 +396,13 @@ $("input[type='button'].icon-pencil").click(function () {
     canvas1.off('mouse:up');
 
     canvas1.isDrawingMode = true;
+    canvas1.defaultCursor = "url(/Content/icons/pencil.png),default";
 
     canvas1.freeDrawingBrush.color = "rgba(" + hexToRgb(cordono).r + ", " + hexToRgb(cordono).g + ", " + hexToRgb(cordono).b + ", 0.5)";
     canvas1.freeDrawingBrush.width = 12;
 
     canvas1.on('mouse:up', function () {
-        canvas1.isDrawingMode = false;
+        //canvas1.isDrawingMode = false;
     });
 });
 
@@ -393,10 +411,13 @@ $("input[type='button'].icon-pencil").click(function () {
  */
 var pinpath = "m138.34106,102.24695c0,4.62839 -3.74586,8.38078 -8.36738,8.38078c-4.615,0 -8.36738,-3.75239 -8.36738,-8.38078c0,-4.615 3.74586,-8.36051 8.36738,-8.36051c4.62152,0 8.36738,3.74552 8.36738,8.36051zm15.96285,-0.00309c0,3.01071 -0.5706,5.87369 -1.56753,8.53194c-3.18865,9.47149 -24.30001,58.1622 -24.30001,58.1622s-19.87636,-53.08756 -21.60157,-59.17596c-0.76848,-2.35937 -1.1948,-4.87677 -1.1948,-7.51165c0,-13.4221 10.89474,-24.3268 24.33367,-24.3268c13.43859,-0.00344 24.33333,10.90127 24.33024,24.32028zm-8.8071,0.09722c0,-8.57213 -6.94414,-15.52657 -15.52313,-15.52657c-8.57213,0 -15.5197,6.95101 -15.5197,15.52313s6.94757,15.52313 15.5197,15.52313c8.57866,0 15.52313,-6.94757 15.52313,-15.5197z";
 $("input[type='button'].icon-pin").click(function () {
+    
+    canvas1.defaultCursor = "url(/Content/icons/pin.png),default";
 
     canvas1.off('mouse:move');
     canvas1.off('mouse:down');
     canvas1.off('mouse:up');
+    canvas1.isDrawingMode = false;
 
     draw = true;
     var drawingobject;
@@ -431,10 +452,10 @@ $("input[type='button'].icon-pin").click(function () {
     });
 
     canvas1.on('mouse:up', function () {
-        draw = false;
-        canvas1.off('mouse:move');
-        canvas1.off('mouse:down');
-        canvas1.off('mouse:up');
+        // draw = false;
+        // canvas1.off('mouse:move');
+        // canvas1.off('mouse:down');
+        // canvas1.off('mouse:up');
         SaveObject(drawingobject, false);
     });
 
@@ -449,9 +470,12 @@ $("input[type='button'].icon-speaker").click(function () {
 
     resetAudioRecordTools();
 
+    canvas1.defaultCursor = "url(/Content/icons/speaker.png),default";
+
     canvas1.off('mouse:move');
     canvas1.off('mouse:down');
     canvas1.off('mouse:up');
+    canvas1.isDrawingMode = false;
 
     draw = true;
     var drawingobject;
@@ -497,9 +521,9 @@ $("input[type='button'].icon-speaker").click(function () {
 
     canvas1.on('mouse:up', function () {
         draw = false;
-        canvas1.off('mouse:move');
-        canvas1.off('mouse:down');
-        canvas1.off('mouse:up');
+        // canvas1.off('mouse:move');
+        // canvas1.off('mouse:down');
+        // canvas1.off('mouse:up');
         SaveObject(drawingobject, false);
     });
 
@@ -543,9 +567,12 @@ $("input[type='button'].icon-youtube").click(function () {
 
     resetVideoRecordTools();
 
+    canvas1.defaultCursor = "url(/Content/icons/youtube.png),default";
+
     canvas1.off('mouse:move');
     canvas1.off('mouse:down');
     canvas1.off('mouse:up');
+    canvas1.isDrawingMode = false;
 
     draw = true;
     var drawingobject;
@@ -591,9 +618,9 @@ $("input[type='button'].icon-youtube").click(function () {
 
     canvas1.on('mouse:up', function () {
         draw = false;
-        canvas1.off('mouse:move');
-        canvas1.off('mouse:down');
-        canvas1.off('mouse:up');
+        // canvas1.off('mouse:move');
+        // canvas1.off('mouse:down');
+        // canvas1.off('mouse:up');
         SaveObject(drawingobject, false);
     });
     
@@ -700,9 +727,13 @@ function showMediaPlayer(o) {
  */
 $("input[type='button'].icon-text").click(function () {
 
+
+    canvas1.defaultCursor = "url(/Content/icons/text.png),default";
+
     canvas1.off('mouse:move');
     canvas1.off('mouse:down');
     canvas1.off('mouse:up');
+    canvas1.isDrawingMode = false;
 
     canvas1.on('mouse:up', function (o) {
         var id = uuid.v4();
