@@ -31,7 +31,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Users", "Index", "Usuario")</li>
                     <li>@Html.ActionLink("Sessions", "Index", "Home")</li>
-                    <li><a href="javascript:" id="minimizar-colaborativo-master">Minimizar colaborativo</a></li>
+                    <li style="display: none" id="btnMinimizar"><a href="javascript:" id="minimizar-colaborativo-master">Minimizar colaborativo</a></li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
@@ -245,6 +245,10 @@ else
         });
 
         $("#sortable, #sortable-novo").disableSelection();
+
+        if (window.self !== window.top) { // está no iframe
+            $("#btnMinimizar").show();
+        }
 
         // autoscroll
         var $bl = $(".miniaturas"),
