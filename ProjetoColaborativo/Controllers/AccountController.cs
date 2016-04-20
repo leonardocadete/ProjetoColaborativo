@@ -44,7 +44,6 @@ namespace ProjetoColaborativo.Controllers
                 switch (loginResult)
                 {
                     case SignInStatus.Success:
-                        FormsAuthentication.SetAuthCookie(viewModel.Login, false);
                         return RedirectToLocal(returnUrl);
                     default:
                         ModelState.AddModelError("", "Usuário ou senha incorretos.");
@@ -56,11 +55,11 @@ namespace ProjetoColaborativo.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
         public ActionResult LogOff()
         {
-            FormsAuthentication.SignOut();
             authenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         [AllowAnonymous]
