@@ -243,7 +243,6 @@
   <ItemGroup>
     <Content Include="Content\icons\cursor.png" />
     <Content Include="teste.cur" />
-    <Content Include="App_Data\Colaborativo.sdf" />
     <Content Include="bgvimaps.png" />
     <Content Include="Content\ajax-loader.gif" />
     <Content Include="Content\bootstrap.css" />
@@ -1149,7 +1148,9 @@
     <Content Include="Views\Vimaps\EscolherSessao.cshtml" />
     <Content Include="Scripts\version.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

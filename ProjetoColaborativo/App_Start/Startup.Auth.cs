@@ -17,7 +17,7 @@ namespace ProjetoColaborativo
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Account/Login"),
-                LogoutPath = new PathString("/Account/Logout"),
+                LogoutPath = new PathString("/Account/Logoff"),
                 ExpireTimeSpan = TimeSpan.FromMinutes(TEMPO_PARA_SESSAO_EXPIRAR_EM_MINUTOS),
                 SlidingExpiration = true
             });
