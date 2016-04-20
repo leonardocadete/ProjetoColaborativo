@@ -261,6 +261,21 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [Authorize]
+        public ActionResult ExcluirObjetoDaSessao(long id, long objetoid)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            var usuario = _repositorioUsuarios.Retornar(User.Identity.GetUserId<long>());
+            var obj = sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == objetoid);
+
+            if (obj.Usuario.Handle == usuario.Handle)
+            {
+                sessao.ObjetosDaSessao.Remove(obj);
+            }
+
+            return RedirectToAction("MostrarSessao");
+        }
+
+        [Authorize]
         public ActionResult BuscarElementosDosOutrosParticipantesJson(long id, long objetoid)
         {
             var sessao = _repositorioSessaoColaborativa.Retornar(id);

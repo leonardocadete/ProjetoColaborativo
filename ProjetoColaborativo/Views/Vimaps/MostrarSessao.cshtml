@@ -1,5 +1,6 @@
 ﻿@using System
 @using System.Linq
+@using Microsoft.AspNet.Identity
 @model ProjetoColaborativo.Models.Entidades.SessaoColaborativa
 @{
     Layout = null;
@@ -108,9 +109,19 @@
                 @Model.Descricao - Lista de objetos
                 <a class="troggle-minimize">▾</a>
             </div>
+
             <div class="window-title-info">
                 <a href="javascript:" id="abrir-no-vimaps">Abrir essa tela no Vimaps</a>
             </div>
+
+            @if (User.Identity.GetUserId<long>() == Model.Usuario.Handle)
+            {
+                <div class="window-title-info">
+                    @Html.ActionLink("Excluir este objeto da sessão", "ExcluirObjetoDaSessao", new { id = Model.Handle, objetoid = ViewBag.ObjectId }, new { onclick = "return confirm('Tem certeza que deseja excluir este objeto e todos os elementos multimídia da sessão?')" })
+                    
+                </div>
+            }
+
             <div class="panel-content">
                 <div class="bg-overlay"></div>
                 <div class="miniaturas">
