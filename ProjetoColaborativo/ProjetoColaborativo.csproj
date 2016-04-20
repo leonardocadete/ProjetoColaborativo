@@ -242,7 +242,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\icons\cursor.png" />
-    <Content Include="HtmlPage1.html" />
     <Content Include="teste.cur" />
     <Content Include="App_Data\Colaborativo.sdf" />
     <Content Include="bgvimaps.png" />
