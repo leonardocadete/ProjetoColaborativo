@@ -171,6 +171,7 @@ namespace ProjetoColaborativo.Controllers
 
             return Json(new { status = "ok" }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult SendVideo(HttpPostedFileBase file, string objectid)
         {
             var videospath = Server.MapPath("~/UserData/Video");

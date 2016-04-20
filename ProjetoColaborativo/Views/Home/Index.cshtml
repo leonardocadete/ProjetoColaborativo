@@ -5,38 +5,63 @@
     ViewBag.Title = "Home Page";
 }
 
-<h1>Minhas sessões colaborativas</h1>
+<div class="row" style="margin-top: 20px">
+    <div class="col-md-6">
+        <h1>Minhas sessões colaborativas</h1>
+    </div>
+    <div class="col-md-6" style="margin-top: 20px;">
+
+        @using (Html.BeginForm("CriarSessaoColaborativa", "Vimaps", FormMethod.Post))
+        {<div class="input-group">
+             <input type="text" name="descricao" id="descricao" class="form-control" placeholder="Nome da sessão colaborativa" required>
+             <span class="input-group-btn">
+                <input type="submit" class="btn btn-primary btn-block" value="Criar Sessão Colaborativa" />
+            </span>
+         </div>
+        }
+
+    </div>
+</div>
+
+
 
 @if (((NhQueryable<SessaoColaborativa>)ViewBag.MinhasSessoes).Any())
 {
     foreach (SessaoColaborativa sessao in ViewBag.MinhasSessoes)
     {
         <div class="card-sessao">
-            <h3>
-                <a data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle})">@sessao.Descricao</a>
-            </h3>
-            @*
-                <em>Criada por <b>@sessao.Usuario.Nome</b> em @sessao.DataCriacao</em>
-            *@
-            <div class="miniaturas session-objects">
+            <div class="bg-warning">
 
-                @if (sessao.ObjetosDaSessao.Count > 0)
-                {
-                    <div class="list-scroll">
-                        @foreach (var os in sessao.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
-                        {
-                            <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new { id = sessao.Handle, objetoid = os.Handle })">
-                                <div data-id="@os.Handle" data-url="" class="miniatura">
-                                    <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
-                                </div>
-                            </a>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
-                }
+                <div class="header">
+                    <a class="title">
+                        <span class="caret"></span>
+                        @sessao.Descricao
+                    </a><br />
+                    <span class="dados">
+                        criada em @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objetos • @sessao.UsuariosDaSessao.Count participantes
+                    </span>
+                </div>
+
+                <div class="miniaturas session-objects">
+                    @if (sessao.ObjetosDaSessao.Count > 0)
+                    {
+                        <div class="list-scroll">
+                            @foreach (var os in sessao.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
+                            {
+                                <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
+                                    <div data-id="@os.Handle" data-url="" class="miniatura">
+                                        <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)"/>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="margin: auto;"> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
+                    }
+                </div>
+
             </div>
         </div>
     }
@@ -56,34 +81,40 @@ else
     foreach (SessaoColaborativa sessao in ViewBag.SessoesQueParticipo)
     {
         <div class="card-sessao">
-            <h3>
-                <a data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle})">@sessao.Descricao</a>
-            </h3>
-            @*
-                <em>Criada por <b>@sessao.Usuario.Nome</b> em @sessao.DataCriacao</em>
-            *@
-            <div class="miniaturas session-objects">
+            <div class="bg-warning">
 
-                @if (sessao.ObjetosDaSessao.Count > 0)
-                {
-                    <ul class="list-scroll">
-                        @foreach (var os in sessao.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
-                        {
-                            <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
-                                <li data-id="@os.Handle" data-url="" class="miniatura">
-                                    <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
-                                </li>
-                            </a>
-                        }
-                    </ul>
-                }
-                else
-                {
-                    <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
-                }
+                <div class="header">
+                    <a class="title">
+                        <span class="caret"></span>
+                        @sessao.Descricao
+                    </a><br />
+                    <span class="dados">
+                        criada em @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objetos • @sessao.UsuariosDaSessao.Count participantes
+                    </span>
+                </div>
+
+                <div class="miniaturas session-objects">
+                    @if (sessao.ObjetosDaSessao.Count > 0)
+                    {
+                        <div class="list-scroll">
+                            @foreach (var os in sessao.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
+                            {
+                                <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
+                                    <div data-id="@os.Handle" data-url="" class="miniatura">
+                                        <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="margin: auto;"> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
+                    }
+                </div>
+
             </div>
         </div>
-
     }
 }
 else
@@ -94,8 +125,6 @@ else
 @section styles{
     <link href="/Content/slick.css" rel="stylesheet" />
     <link href="/Content/slick-theme.css" rel="stylesheet" />
-
-
 }
 
 @section scripts{
@@ -107,18 +136,14 @@ else
             slidesToScroll: 5,
             infinite: false
         });
+        $(".session-objects").slideUp();
 
-        $(".card-sessao h3 a").on("click", function (e) {
+        $(".card-sessao .header").on("click", function (e) {
             var a = $(this);
-            if (a.attr("href") != undefined)
-                return;
-
-            e.preventDefault();
-            $(".card-sessao h3 a").removeAttr("href");
             $(".session-objects").slideUp();
 
-            a.attr("href", a.attr("data-url"));
-            a.parent("h3").siblings(".session-objects").slideDown();
+            if (!a.siblings(".session-objects").is(":visible"))
+                a.siblings(".session-objects").slideDown();
         });
     </script>
 

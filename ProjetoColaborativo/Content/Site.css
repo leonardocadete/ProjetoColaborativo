@@ -18,7 +18,7 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,*/
 select,
 textarea {
     max-width: 280px;
@@ -47,6 +47,7 @@ ul {
 .miniaturas {
     overflow-x: hidden;
     white-space: nowrap;
+    margin-top: 15px;
 }
 
     .miniaturas .miniatura {
@@ -60,6 +61,10 @@ ul {
             cursor: pointer;
             float: left;
             opacity: .8;
+
+            -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow:    2px 2px 5px 0px rgba(0,0,0,0.75);
+            box-shadow:         2px 2px 5px 0px rgba(0,0,0,0.75);
         }
 
             .miniaturas .miniatura img:hover {
@@ -77,7 +82,6 @@ ul {
                 margin: 0;
             }
 
-
             .icon-arrow {
                 height: 48px;
                 float:left
@@ -92,24 +96,35 @@ ul {
 .card-sessao {
     background: #fff;
     padding: 5px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    
 }
 
+    .card-sessao .dados {
+        color: #999
+    }
 
-.card-sessao h3 {
+.card-sessao .bg-warning {
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+    .card-sessao .bg-warning:hover {
+        background-color: #FBF4D2;
+    }
+
+.card-sessao .title {
+    font-size: 24px;
     margin: 5px auto;
     padding: 0;
-    width: 1000px
+    width: 1000px;
+    font-weight: bold;
 }
 
-.card-sessao h3 a {
+.card-sessao a {
     color: #e74c3c;
     cursor: pointer;
 }
 
-.card-sessao h3 a:hover {
+.card-sessao a:hover {
     text-decoration: none;
 }
 
@@ -120,8 +135,4 @@ ul {
 
 .slick-prev:before, .slick-next:before { 
     color:#e74c3c !important;
-}
-
-.session-objects {
-    display: none;
 }
