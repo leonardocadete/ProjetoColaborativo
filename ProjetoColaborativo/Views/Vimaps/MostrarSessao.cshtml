@@ -68,10 +68,10 @@
                 <div class="window-title">Gravar Áudio</div>
                 <div class="tools">
                     <div class="bg"></div>
-                    <input type="button" value="" class=" button-toolbar icon-record" />
+                    <input type="button" value="" class="button-toolbar icon-record" />
                     <input type="button" value="" disabled="disabled" class="button-toolbar icon-play" />
                     <input type="button" value="" disabled="disabled" class="button-toolbar icon-ok" />
-                    <input type="button" value="" class=" button-toolbar icon-delete" />
+                    <input type="button" value="" class="button-toolbar icon-delete" />
                     <div class="clear"></div>
                 </div>
             </div>
@@ -81,10 +81,10 @@
                 <div class="tools">
                     <div class="bg"></div>
                     <video id="videoPreview"></video><br />
-                    <input type="button" value="" class=" button-toolbar icon-record" />
+                    <input type="button" value="" class="button-toolbar icon-record" />
                     <input type="button" value="" disabled="disabled" class="button-toolbar icon-play" />
                     <input type="button" value="" disabled="disabled" class="button-toolbar icon-ok" />
-                    <input type="button" value="" class=" button-toolbar icon-delete" />
+                    <input type="button" value="" class="button-toolbar icon-delete" />
                     <div class="clear"></div>
                 </div>
             </div>
@@ -113,6 +113,10 @@
                 </div>
 
                 <div class="window-title-info">
+                    <a href="javascript:" id="ordenar-objetos">Ordenar objetos</a>
+                </div>
+
+                <div class="window-title-info">
                     <a href="javascript:" id="abrir-no-vimaps">Abrir essa tela no Vimaps</a>
                 </div>
 
@@ -120,7 +124,6 @@
                 {
                     <div class="window-title-info">
                         @Html.ActionLink("Excluir este objeto da sessão", "ExcluirObjetoDaSessao", new { id = Model.Handle, objetoid = ViewBag.ObjectId }, new { onclick = "return confirm('Tem certeza que deseja excluir este objeto e todos os elementos multimídia da sessão?')" })
-
                     </div>
                 }
 
@@ -242,6 +245,38 @@
             }
         });
 
+        var ordenando = false;
+        $("#ordenar-objetos").on("click", function() {
+
+            if (ordenando) {
+                //desligando ordenação
+                $(this).html("Ordenar objetos");
+                $(".list-scroll").sortable("disable");
+                $('.miniaturas').css("white-space", "nowrap");
+                $(document).tooltip('enable');
+
+                // ligando slider
+                $('.list-scroll').slick({
+                    slidesToShow: 5,
+                    slidesToScroll: 5,
+                    infinite: false,
+                    slickGoTo: index
+                });
+
+            } else {
+                //ligando ordenação
+                $(this).html("Terminar ordenação");
+                $('.list-scroll').slick('unslick');
+                $('.miniaturas').css("white-space", "normal");
+                $(document).tooltip('disable');
+                $(".list-scroll").sortable("enable");
+                $(".list-scroll").disableSelection();
+            }
+
+            ordenando = !ordenando;
+
+        });
+
 
         (function() {
 
@@ -256,8 +291,12 @@
 
             $(".toolbar").draggable({ handle: ".drag" });
 
-            $("#sortable, #sortable-novo").sortable({
-                items: "li:not(.info)",
+            if (window.self !== window.top) { // está no iframe
+                $("#btnMinimizar").show();
+            }
+
+            $(".list-scroll").sortable({
+                items: ".session-title",
                 connectWith: ".listas-sortable",
                 //axis: 'x',
                 cursor: 'move',
@@ -277,46 +316,10 @@
                             alert(errMsg);
                         }
                     });
-
                 }
             });
-
-            $("#sortable, #sortable-novo").disableSelection();
-
-            if (window.self !== window.top) { // está no iframe
-                $("#btnMinimizar").show();
-            }
-
-            // autoscroll
-            // var $bl = $(".miniaturas"),
-            //     $th = $("#sortable"),
-            //     blW = $bl.outerWidth(),
-            //     blSW = $bl[0].scrollWidth,
-            //     wDiff = (blSW / blW) - 1,
-            //     mPadd = 90,
-            //     damp = 20,
-            //     mX = 0,
-            //     mX2 = 0,
-            //     posX = 0,
-            //     mmAA = blW - (mPadd * 2),
-            //     mmAAr = (blW / mmAA);
-            // 
-            // $bl.mousemove(function(e) {
-            //     mX = e.pageX - this.offsetLeft;
-            //     mX2 = Math.min(Math.max(0, mX - mPadd), mmAA) * mmAAr;
-            // });
-            // 
-            // setInterval(function() {
-            //     posX += (mX2 - posX) / damp;
-            //     $th.css({ marginLeft: -posX * wDiff });
-            // }, 10);
-            // autoscroll
-
-
-            // $(".miniatura").on("click", function() {
-            //     window.location.href = $(this).attr("data-url");
-            // });
-
+            $(".list-scroll").sortable("disable");
+            
             $(document).tooltip({
                 at: "center top",
                 tooltipClass: "collab-tooltip-styling",
