@@ -86,13 +86,18 @@ ul {
 
 /* BAIXO */
 #bottom-panel {
-    width: 100%;
-    position: absolute;
+    width: 1100px;
+    position: fixed;
     bottom: 0;
+    left: 50%;
+    margin-left: -550px;
 }
 
     #bottom-panel .bg-overlay {
         border-top: solid 2px #e74c3c;
+        border-left: solid 2px #e74c3c;
+        border-right: solid 2px #e74c3c;
+        border-radius: 5px 5px 0 0;
         bottom: 0;
         width: 100%;
         height: 100%;
@@ -195,8 +200,8 @@ ul {
     }
 
         .miniaturas .miniatura img:not(.icon-arrow) {
-            width: 150px;
-            height: 80px;
+            width: 195px;
+            height: 104px;
             margin-right: 5px;
             cursor: pointer;
             float: left;
@@ -224,13 +229,14 @@ ul {
                 float:left
             }
             
-.miniatura img:not(.icon-arrow):not(.selecionado) {
+.miniatura:not(.icon-arrow):not(.selecionado) img {
     outline: 1px solid white;
     outline-offset: -4px;
 }
 
-.selecionado img {
+.miniatura.selecionado img {
     outline: 4px solid #e74c3c;
+    outline-offset: -4px;
 }
 
 .clear {
@@ -457,4 +463,17 @@ ul {
 
 label {
     margin: 0;
+}
+
+.list-scroll {
+    width: 1000px;
+    margin: auto;
+}
+
+.slick-prev:before, .slick-next:before { 
+    color:#e74c3c !important;
+}
+
+.slick-slider {
+    margin-bottom: 0;
 }
