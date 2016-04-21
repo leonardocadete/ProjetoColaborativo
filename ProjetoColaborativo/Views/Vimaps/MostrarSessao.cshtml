@@ -1,6 +1,7 @@
 ﻿@using System
 @using System.Linq
 @using Microsoft.AspNet.Identity
+@using ProjetoColaborativo.Models.Entidades
 @model ProjetoColaborativo.Models.Entidades.SessaoColaborativa
 @{
     Layout = null;
@@ -93,9 +94,27 @@
                 <div class="drag window-title">Media Player</div>
                 <div class="tools">
                     <div class="bg"></div>
-                    <input type="button" value="" class=" button-toolbar icon-close" /><br />
+                    <input type="button" value="" class="button-toolbar icon-close" /><br />
                     <video id="videoPlayer" controls></video>
                     <div class="clear"></div>
+                </div>
+            </div>
+
+            <div id="participantes-toolbar" class="toolbar" style="left: 700px; display: none">
+                <div class="drag window-title">Participantes desta sessão
+                    <a class="troggle-close">▾</a></div>
+                <div class="tools">
+                    <div class="bg"></div>
+                    <div class="tools-content">
+
+                        <input type="text" style="width: 100%; margin: 3px" id="buscar-usuarios" name="buscar-usuarios" placeholder="Nome do usuário que deseja adicionar..."/>
+                        
+                        <div id="usuarios-da-sessao" style="max-height: 200px; overflow-y: scroll">
+                            @Html.Partial("_ListaUsuariosDaSessao", @Model)
+                        </div>
+
+                        <div class="clear"></div>
+                    </div>
                 </div>
             </div>
 
@@ -113,16 +132,28 @@
                 </div>
 
                 <div class="window-title-info">
+                    <a href="javascript:" id="abrir-no-vimaps">Abrir essa tela no Vimaps</a>
+                </div>
+
+                <div class="window-title-info">
                     <a href="javascript:" id="ordenar-objetos">Ordenar objetos</a>
                 </div>
 
                 <div class="window-title-info">
-                    <a href="javascript:" id="abrir-no-vimaps">Abrir essa tela no Vimaps</a>
+                    <a href="javascript:" id="mostrar-participantes">Participantes</a>
                 </div>
+
 
                 @if (User.Identity.GetUserId<long>() == Model.Usuario.Handle)
                 {
-                    <div class="window-title-info">
+                    <div class="window-title-info direita">
+                        @Html.ActionLink("Excluir esta sessão", "ExcluirSessao", new { id = Model.Handle, objetoid = ViewBag.ObjectId }, new { onclick = "return confirm('Tem certeza que deseja excluir esta sessão inteira, com todos os objetos e elementos?')" })
+                    </div>
+                }
+
+                @if (User.Identity.GetUserId<long>() == ViewBag.IdDonoObjeto)
+                {
+                    <div class="window-title-info direita">
                         @Html.ActionLink("Excluir este objeto da sessão", "ExcluirObjetoDaSessao", new { id = Model.Handle, objetoid = ViewBag.ObjectId }, new { onclick = "return confirm('Tem certeza que deseja excluir este objeto e todos os elementos multimídia da sessão?')" })
                     </div>
                 }
@@ -220,7 +251,7 @@
             infinite: false,
             slickGoTo: index
         });
-        
+
         var index = $("a[data-id='" + idobjeto + "']").index() + 1;
         $('.list-scroll').slick('slickGoTo', index);
 
@@ -243,6 +274,18 @@
                 $(this).html("▾");
                 p.animate({ bottom: 0 }, 100);
             }
+        });
+
+        $(".troggle-close").on("click", function() {
+            $(this).closest(".toolbar").hide();
+        });
+
+
+        $("#mostrar-participantes").on("click", function() {
+            if ($("#participantes-toolbar").is(":visible"))
+                $("#participantes-toolbar").hide();
+            else
+                $("#participantes-toolbar").show();
         });
 
         var ordenando = false;
@@ -277,6 +320,24 @@
 
         });
 
+        function ExcluirUsuarioDaSessao(id) {
+            
+            if (confirm("Tem certeza que deseja excluir este usuário da sessão?")) {
+                $.ajax({
+                    type: "POST",
+                    url: window.location.pathname.replace("MostrarSessao", "ExcluirUsuario"),
+                    data: "{ 'usuarioid' : '" + id + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(data) {
+                        $("#usuarios-da-sessao").load(window.location.pathname.replace("MostrarSessao", "GetListaDeUsuariosDaSessao"));
+                    },
+                    failure: function(errMsg) {
+
+                    }
+                });
+            }
+        }
 
         (function() {
 
@@ -286,6 +347,43 @@
                 setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
                 </text>
             }
+
+
+            $( "#buscar-usuarios" ).autocomplete({
+                minLength: 0,
+                source: window.location.pathname.replace("MostrarSessao", "BuscarUsuarios"),
+                // focus: function( event, ui ) {
+                //     $( "#project" ).val( ui.item.label );
+                //     return false;
+                // },
+                select: function( event, ui ) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: window.location.pathname.replace("MostrarSessao", "AdicionarUsuario"),
+                        data: "{ 'usuarioid' : '" + ui.item.Id + "'}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function(data) {
+                            $("#usuarios-da-sessao").load(window.location.pathname.replace("MostrarSessao", "GetListaDeUsuariosDaSessao"));
+                        },
+                        failure: function(errMsg) {
+
+                        }
+                    });
+
+                    $("#buscar-usuarios").val("");
+                    $("#buscar-usuarios").focus();
+
+                    return false;
+                }
+            })
+            .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                return $( "<li>" )
+                  .append( "<a>" + item.Nome )
+                  .appendTo( ul );
+            };
+
 
             $("#left-panel").delay(1000).animate({ left: $("#left-panel").width() * -1 + 20 });
 
@@ -319,7 +417,7 @@
                 }
             });
             $(".list-scroll").sortable("disable");
-            
+
             $(document).tooltip({
                 at: "center top",
                 tooltipClass: "collab-tooltip-styling",

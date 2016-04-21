@@ -273,7 +273,24 @@ namespace ProjetoColaborativo.Controllers
                 sessao.ObjetosDaSessao.Remove(obj);
             }
 
-            return RedirectToAction("MostrarSessao");
+            if (sessao.ObjetosDaSessao.Count > 0)
+                return RedirectToAction("MostrarSessao", new { id = sessao.Handle, objetoid = sessao.ObjetosDaSessao.FirstOrDefault().Handle });
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public ActionResult ExcluirSessao(long id)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            var usuario = _repositorioUsuarios.Retornar(User.Identity.GetUserId<long>());
+
+            if (sessao.Usuario.Handle == usuario.Handle)
+            {
+                _repositorioSessaoColaborativa.Excluir(sessao);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
@@ -341,6 +358,61 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [Authorize]
+        public ActionResult BuscarUsuarios(long id, string term)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            if (sessao == null)
+                return null;
+
+            var usuarios = _repositorioUsuarios.Consultar(x => x.Nome.StartsWith(term) 
+            && !sessao.UsuariosDaSessao.Contains(x)
+            && x != sessao.Usuario)
+            .Select(x => new {Id = x.Handle, Nome = x.Nome}).ToList();
+            
+            return Json(usuarios,JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AdicionarUsuario(long? id, long? usuarioid)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id.Value);
+            if (sessao == null)
+                return null;
+
+            var usuario = _repositorioUsuarios.Consultar(x => x.Handle.Equals(usuarioid.Value)).FirstOrDefault();
+            if (usuario == null)
+                return null;
+
+            if(!sessao.UsuariosDaSessao.Contains(usuario))
+                sessao.UsuariosDaSessao.Add(usuario);
+
+            return Json("ok");
+        }
+
+        public ActionResult ExcluirUsuario(long? id, long? usuarioid)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id.Value);
+            if (sessao == null)
+                return null;
+
+            var usuario = _repositorioUsuarios.Consultar(x => x.Handle.Equals(usuarioid.Value)).FirstOrDefault();
+            if (usuario == null)
+                return null;
+
+            if (sessao.UsuariosDaSessao.Contains(usuario))
+                sessao.UsuariosDaSessao.Remove(usuario);
+
+            return Json("ok");
+        }
+
+        public ActionResult GetListaDeUsuariosDaSessao(long id)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            if (sessao == null)
+                return null;
+            return PartialView("_ListaUsuariosDaSessao", sessao);
+        }
+
+        [Authorize]
         public ActionResult MostrarSessao(long? id, long? objetoid)
         {
             if (id == null)
@@ -356,7 +428,7 @@ namespace ProjetoColaborativo.Controllers
                 return RedirectToAction("MostrarSessao", new { id = id, objetoid = sessao.ObjetosDaSessao.FirstOrDefault().Handle });
 
             var usuario = _repositorioUsuarios.Consultar(x => x.Handle.Equals(User.Identity.GetUserId<long>())).FirstOrDefault();
-
+            
             ViewBag.LerElementos = "null";
             ViewBag.Dono = usuario.Handle;
             ViewBag.CorDono = usuario.Cor;
@@ -364,6 +436,8 @@ namespace ProjetoColaborativo.Controllers
 
             if (obj != null && obj.ElementosMultimidia.Count > 0)
             {
+                ViewBag.IdDonoObjeto = obj.Usuario.Handle;
+
                 List<string> els = new List<string>();
                 foreach (var el in obj.ElementosMultimidia)
                 {
