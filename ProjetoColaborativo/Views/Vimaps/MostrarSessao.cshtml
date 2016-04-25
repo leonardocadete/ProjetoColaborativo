@@ -168,16 +168,16 @@
                         {
                             if (ViewBag.NovoObjeto != null)
                             {
-                                <ul id="sortable-novo" class="listas-sortable">
-                                    <li data-id="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle})" class="miniatura @(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")">
+                                <div id="sortable-novo" class="list-scroll">
+                                    <a data-id="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle})" class="miniatura session-title @(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")">
                                         <img data-createdtime="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().DataCriacao.ToString()" data-authorname="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")" />
-                                    </li>
-                                    <li class="miniatura info">
+                                    </a>
+                                    <div class="miniatura info">
                                         <img class="icon-arrow" src="/Content/icons/arrow.png" />
-                                        <h3>Esse é o seu novo objeto!</h3>
-                                        Arraste ele para a lista abaixo, na posição que ele deve ficar.
-                                    </li>
-                                </ul>
+                                        <h3>This is your new object!</h3>
+                                        Drag it to the list below, the position he should stay.
+                                    </div>
+                                </div>
                             }
 
                             @*
@@ -207,7 +207,7 @@
                         }
                         else
                         {
-                            <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
+                            <div> This session does not have any object. To add objects, access the Vimaps. </div>
                         }
 
                     </div>
@@ -397,7 +397,7 @@
 
             $(".list-scroll").sortable({
                 items: ".session-title",
-                connectWith: ".listas-sortable",
+                connectWith: ".list-scroll",
                 //axis: 'x',
                 cursor: 'move',
                 stop: function(event, ui) {
@@ -450,6 +450,14 @@
                     );
                 }
             });
+
+            
+            @if (ViewBag.NovoObjeto != null)
+            {
+                <text>
+                $("#ordenar-objetos").click();
+                </text>
+            }
         })();
 
         var dono = "@Html.Raw(ViewBag.Dono)";

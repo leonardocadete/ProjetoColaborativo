@@ -136,3 +136,20 @@ ul {
 .slick-prev:before, .slick-next:before { 
     color:#e74c3c !important;
 }
+
+.expand-more {
+    background-image: url('/Content/icons/expandmore.png');
+    width: 32px;
+    height: 32px;
+    display: block;
+    float: left;
+    margin-right: 5px;
+}
+.expand-less {
+    background-image: url('/Content/icons/expandless.png');
+    width: 32px;
+    height: 32px;
+    display: block;
+    float: left;
+    margin-right: 5px;
+}

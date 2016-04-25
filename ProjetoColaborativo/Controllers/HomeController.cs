@@ -22,6 +22,11 @@ namespace ProjetoColaborativo.Controllers
 
         public ActionResult Index()
         {
+            Session["lastSessionId"] = null;
+            Session["lastObjectId"] = null;
+
+            ViewBag.NovoObjeto = TempData.Peek("ThumbImageTNSavedURL");
+
             var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));
 
             var minhassessoes = _repositorioSessaoColaborativa

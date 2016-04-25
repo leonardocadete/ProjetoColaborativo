@@ -5,6 +5,17 @@
     ViewBag.Title = "Home Page";
 }
 
+
+@if (ViewBag.NovoObjeto != null)
+{
+    <div class="row well" style="margin-top: 20px">
+        <img src="@ViewBag.NovoObjeto" width="250px" />
+        <h2>Choose below the session to send the new object, or create a new session.</h2>
+    </div>
+    <hr />
+}
+
+
 <div class="row" style="margin-top: 20px">
     <div class="col-md-6">
         <h1>My collaborative sessions</h1>
@@ -13,11 +24,11 @@
 
         @using (Html.BeginForm("CriarSessaoColaborativa", "Vimaps", FormMethod.Post))
         {<div class="input-group">
-             <input type="text" name="descricao" id="descricao" class="form-control" placeholder="Name to collaborative session" required>
-             <span class="input-group-btn">
-                <input type="submit" class="btn btn-primary btn-block" value="Create collaborative session" />
-            </span>
-         </div>
+                    <input type="text" name="descricao" id="descricao" class="form-control" placeholder="Name to collaborative session" required>
+                    <span class="input-group-btn">
+                        <input type="submit" class="btn btn-primary btn-block" value="Create collaborative session" />
+                    </span>
+                </div>
         }
 
     </div>
@@ -29,28 +40,28 @@
 {
     foreach (SessaoColaborativa sessao in ViewBag.MinhasSessoes)
     {
-        <div class="card-sessao">
+        <div class="card-sessao" data-url="@Url.Action("EscolherSessao", "Vimaps", new {SessaoColaborativaId = sessao.Handle})">
             <div class="bg-warning">
 
                 <div class="header">
                     <a class="title">
-                        <span class="caret"></span>
+                        <span class="expand-more"></span>
                         @sessao.Descricao
                     </a><br />
                     <span class="dados">
-                        created on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @sessao.UsuariosDaSessao.Count participants
+                        created on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @(sessao.UsuariosDaSessao.Count + 1) participants
                     </span>
                 </div>
 
-                <div class="miniaturas session-objects">
+                <div class="miniaturas session-objects" style="display: none">
                     @if (sessao.ObjetosDaSessao.Count > 0)
                     {
                         <div class="list-scroll">
-                            @foreach (var os in sessao.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
+                            @foreach (var os in sessao.ObjetosDaSessao.OrderBy(x => x.Ordem))
                             {
                                 <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
                                     <div data-id="@os.Handle" data-url="" class="miniatura">
-                                        <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)"/>
+                                        <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
                                     </div>
                                 </a>
                             }
@@ -80,20 +91,20 @@ else
 {
     foreach (SessaoColaborativa sessao in ViewBag.SessoesQueParticipo)
     {
-        <div class="card-sessao">
+        <div class="card-sessao" data-url="@Url.Action("EscolherSessao", "Vimaps", new {SessaoColaborativaId = sessao.Handle})">
             <div class="bg-warning">
 
                 <div class="header">
                     <a class="title">
-                        <span class="caret"></span>
+                        <span class="expand-more"></span>
                         @sessao.Descricao
                     </a><br />
                     <span class="dados">
-                        created on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @sessao.UsuariosDaSessao.Count participants
+                        created on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @(sessao.UsuariosDaSessao.Count + 1) participants
                     </span>
                 </div>
 
-                <div class="miniaturas session-objects">
+                <div class="miniaturas session-objects" style="display: none">
                     @if (sessao.ObjetosDaSessao.Count > 0)
                     {
                         <div class="list-scroll">
@@ -136,14 +147,29 @@ else
             slidesToScroll: 5,
             infinite: false
         });
-        $(".session-objects").slideUp();
 
-        $(".card-sessao .header").on("click", function (e) {
+        $(".card-sessao").on("click", function () {
+            var url = $(this).attr("data-url");
+            if (url)
+                window.location.href = url;
+        });
+
+        $(".card-sessao .expand-more").on("click", function (e) {
+            e.stopPropagation();
             var a = $(this);
+
+            a.removeClass("expand-more");
+            a.removeClass("expand-less");
+
             $(".session-objects").slideUp();
 
-            if (!a.siblings(".session-objects").is(":visible"))
-                a.siblings(".session-objects").slideDown();
+            if (!a.parents(".header").siblings(".session-objects").is(":visible")) {
+                a.parents(".header").siblings(".session-objects").slideDown();
+                a.parents(".header").siblings(".session-objects").children(".list-scroll").resize();
+                a.addClass("expand-less");
+            } else {
+                a.addClass("expand-more");
+            }
         });
     </script>
 

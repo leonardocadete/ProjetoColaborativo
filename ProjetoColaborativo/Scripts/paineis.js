@@ -18,7 +18,7 @@ function getThumbnail(original, scale) {
 }
 
 function atualizarMiniatura(salvar) {
-    $("li.selecionado img").attr("src", canvas1.toDataURL({
+    $("div.selecionado img").attr("src", canvas1.toDataURL({
         format: 'jpeg',
         quality: 0.1
     }));

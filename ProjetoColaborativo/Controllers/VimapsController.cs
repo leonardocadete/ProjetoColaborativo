@@ -439,8 +439,11 @@ namespace ProjetoColaborativo.Controllers
             ViewBag.Dono = usuario.Handle;
             ViewBag.CorDono = usuario.Cor;
             ViewBag.NovoObjeto = TempData["NovoObjeto"];
+            TempData["NovoObjeto"] = null;
+            TempData["ThumbImageSavedURL"] = null;
+            TempData["ThumbImageTNSavedURL"] = null;
 
-            if(obj != null)
+            if (obj != null)
                 ViewBag.DonoDoObjeto = Convert.ToInt64(User.Identity.GetUserId()) == obj.Usuario.Handle;
 
             if (obj != null && obj.ElementosMultimidia.Count > 0)
@@ -481,35 +484,11 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [Authorize]
-        public ActionResult EscolherSessao()
-        {
-            var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));
-
-            var minhassessoes = _repositorioSessaoColaborativa
-                                .Consultar(x =>
-                                    x.Usuario == usuario // minhas sessoes
-                                    ||
-                                    x.UsuariosDaSessao.Contains(usuario) // sessões que participo
-                                );
-
-            var select = minhassessoes
-                .Select(x => new { Handle = x.Handle, Descricao = x.Descricao + string.Format(" ({0})", x.Usuario.Nome) })
-                    .ToList();
-
-            ViewBag.TemSessoes = select.Count > 0;
-            ViewBag.SessaoColaborativaId = new SelectList(
-                select,
-                "Handle",
-                "Descricao"
-            );
-
-            return View();
-        }
-
-        [Authorize]
-        [HttpPost]
         public ActionResult EscolherSessao(string SessaoColaborativaId)
         {
+            if(string.IsNullOrEmpty(SessaoColaborativaId))
+                return RedirectToAction("Index", "Home");
+
             var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));
 
             if (string.IsNullOrEmpty(SessaoColaborativaId))
