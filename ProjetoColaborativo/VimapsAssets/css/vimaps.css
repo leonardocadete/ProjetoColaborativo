@@ -1,9 +1,9 @@
 #footer {
    position:fixed;
    left:0px;
-   bottom:0px;
    z-index:99999;
-    width: 100px;
+   width: 100px;
+   padding: 4px;
 }
 
 #footer button {

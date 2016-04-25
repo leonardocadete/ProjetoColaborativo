@@ -46,17 +46,23 @@
     @Html.ActionLink("Carga usuário adm", "CargaUsuarioAdm")
     
 </div>
-    
-    <script>
-        parent.postMessage("fechar<|>yo", "*");
 
-        if (window.self !== window.top) { // está no iframe
-            $("#btnCancelar").show();
-            $("#btnCancelar").on("click", function() {
-                parent.postMessage("fechar<|>yo", "*");
-            });
-        }
-    </script>
+<script>
+    @if (ViewBag.Minimize == true)
+    {
+        <text>
+        parent.postMessage("fechar<|>yo", "*");
+        </text>
+    }
+    
+
+    if (window.self !== window.top) { // está no iframe
+        $("#btnCancelar").show();
+        $("#btnCancelar").on("click", function() {
+            parent.postMessage("fechar<|>yo", "*");
+        });
+    }
+</script>
     
 </body>
 </html>

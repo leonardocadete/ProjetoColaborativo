@@ -7,15 +7,15 @@
 
 <div class="row" style="margin-top: 20px">
     <div class="col-md-6">
-        <h1>Minhas sessões colaborativas</h1>
+        <h1>My collaborative sessions</h1>
     </div>
     <div class="col-md-6" style="margin-top: 20px;">
 
         @using (Html.BeginForm("CriarSessaoColaborativa", "Vimaps", FormMethod.Post))
         {<div class="input-group">
-             <input type="text" name="descricao" id="descricao" class="form-control" placeholder="Nome da sessão colaborativa" required>
+             <input type="text" name="descricao" id="descricao" class="form-control" placeholder="Name to collaborative session" required>
              <span class="input-group-btn">
-                <input type="submit" class="btn btn-primary btn-block" value="Criar Sessão Colaborativa" />
+                <input type="submit" class="btn btn-primary btn-block" value="Create collaborative session" />
             </span>
          </div>
         }
@@ -38,7 +38,7 @@
                         @sessao.Descricao
                     </a><br />
                     <span class="dados">
-                        criada em @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objetos • @sessao.UsuariosDaSessao.Count participantes
+                        created on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @sessao.UsuariosDaSessao.Count participants
                     </span>
                 </div>
 
@@ -58,7 +58,7 @@
                     }
                     else
                     {
-                        <div style="margin: auto;"> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
+                        <div style="margin: auto;"> This session does not have any object. To add objects, access the Vimaps. </div>
                     }
                 </div>
 
@@ -68,13 +68,13 @@
 }
 else
 {
-    <div> Você não possui nenhuma sessão. </div>
+    <div> You do not have any session. </div>
 }
 
 
 
 
-<h1>Sessões compartilhadas comigo</h1>
+<h1>Sessions shared with me</h1>
 
 @if (((NhQueryable<SessaoColaborativa>)ViewBag.SessoesQueParticipo).Any())
 {
@@ -89,7 +89,7 @@ else
                         @sessao.Descricao
                     </a><br />
                     <span class="dados">
-                        criada em @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objetos • @sessao.UsuariosDaSessao.Count participantes
+                        created on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @sessao.UsuariosDaSessao.Count participants
                     </span>
                 </div>
 
@@ -109,7 +109,7 @@ else
                     }
                     else
                     {
-                        <div style="margin: auto;"> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
+                        <div style="margin: auto;"> This session does not have any object. To add objects, access the Vimaps. </div>
                     }
                 </div>
 
@@ -119,7 +119,7 @@ else
 }
 else
 {
-    <div> Você não possui nenhuma sessão compartilhada. </div>
+    <div> You do not have any shared session. </div>
 }
 
 @section styles{

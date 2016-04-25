@@ -194,11 +194,17 @@ namespace ProjetoColaborativo.Controllers
             if (!Directory.Exists(imagespath))
                 Directory.CreateDirectory(imagespath);
 
-            var jpgEncoder = GetEncoder(ImageFormat.Png);
+            var jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+
             var myEncoder = Encoder.Quality;
             var myEncoderParameters = new EncoderParameters(1);
             var myEncoderParameter = new EncoderParameter(myEncoder, 90L);
             myEncoderParameters.Param[0] = myEncoderParameter;
+
+            var myEncodert = Encoder.Quality;
+            var myEncoderParameterst = new EncoderParameters(1);
+            var myEncoderParametert = new EncoderParameter(myEncodert, 10L);
+            myEncoderParameterst.Param[0] = myEncoderParametert;
 
             var filename = DateTime.Now.ToString("yyyyMMddhhmmss") + "_" + Guid.NewGuid() + ".jpg";
             var filenametn = DateTime.Now.ToString("yyyyMMddhhmmss") + "_" + Guid.NewGuid() + "_tn.jpg";
@@ -212,7 +218,7 @@ namespace ProjetoColaborativo.Controllers
             }
 
             image.Save(imagespath + "/" + filename, jpgEncoder, myEncoderParameters);
-            image.Save(imagespath + "/" + filenametn, jpgEncoder, myEncoderParameters);
+            image.Save(imagespath + "/" + filenametn, jpgEncoder, myEncoderParameterst);
 
             // VERIFICANDO SESSÃO ABERTA
             if (Session["lastSessionId"] != null && Session["lastObjectId"] != null)
@@ -434,10 +440,11 @@ namespace ProjetoColaborativo.Controllers
             ViewBag.CorDono = usuario.Cor;
             ViewBag.NovoObjeto = TempData["NovoObjeto"];
 
+            if(obj != null)
+                ViewBag.DonoDoObjeto = Convert.ToInt64(User.Identity.GetUserId()) == obj.Usuario.Handle;
+
             if (obj != null && obj.ElementosMultimidia.Count > 0)
             {
-                ViewBag.IdDonoObjeto = obj.Usuario.Handle;
-
                 List<string> els = new List<string>();
                 foreach (var el in obj.ElementosMultimidia)
                 {

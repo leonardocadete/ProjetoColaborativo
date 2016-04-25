@@ -35,7 +35,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Users", "Index", "Usuario")</li>
                     <li>@Html.ActionLink("Sessions", "Index", "Home")</li>
-                    <li style="display: none" id="btnMinimizar"><a href="javascript:" id="minimizar-colaborativo-master">Minimizar colaborativo</a></li>
+                    <li style="display: none" id="btnMinimizar"><a href="javascript: parent.postMessage('fechar<|>yo', '*');" id="minimizar-colaborativo-master">Minimize SisColMet</a></li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
@@ -50,7 +50,7 @@
             <canvas id="draw-canvas"></canvas>
 
             <div class="toolbar">
-                <div class="drag window-title">Ferramentas</div>
+                <div class="drag window-title">Tools</div>
                 <div class="tools">
                     <div class="bg"></div>
                     <input type="button" value="" class="button-toolbar icon-cursor" />
@@ -66,7 +66,7 @@
             </div>
 
             <div id="audio-record-toolbar" class="toolbar">
-                <div class="window-title">Gravar Áudio</div>
+                <div class="window-title">Record Audio</div>
                 <div class="tools">
                     <div class="bg"></div>
                     <input type="button" value="" class="button-toolbar icon-record" />
@@ -78,7 +78,7 @@
             </div>
 
             <div id="video-record-toolbar" class="toolbar">
-                <div class="drag window-title">Gravar Vídeo</div>
+                <div class="drag window-title">Record Video</div>
                 <div class="tools">
                     <div class="bg"></div>
                     <video id="videoPreview"></video><br />
@@ -101,14 +101,16 @@
             </div>
 
             <div id="participantes-toolbar" class="toolbar" style="left: 700px; display: none">
-                <div class="drag window-title">Participantes desta sessão
-                    <a class="troggle-close">▾</a></div>
+                <div class="drag window-title">
+                    Participants in this session
+                    <a class="troggle-close">▾</a>
+                </div>
                 <div class="tools">
                     <div class="bg"></div>
                     <div class="tools-content">
 
-                        <input type="text" style="width: 100%; margin: 3px" id="buscar-usuarios" name="buscar-usuarios" placeholder="Nome do usuário que deseja adicionar..."/>
-                        
+                        <input type="text" style="width: 100%; margin: 3px" id="buscar-usuarios" name="buscar-usuarios" placeholder="User name to add..." />
+
                         <div id="usuarios-da-sessao" style="max-height: 200px; overflow-y: scroll">
                             @Html.Partial("_ListaUsuariosDaSessao", @Model)
                         </div>
@@ -127,34 +129,34 @@
 
             <div id="bottom-panel" class="toggle-panel">
                 <div class="window-title">
-                    @Model.Descricao - Lista de objetos
+                    @Model.Descricao - Objects List
                     <a class="troggle-minimize">▾</a>
                 </div>
 
                 <div class="window-title-info">
-                    <a href="javascript:" id="abrir-no-vimaps">Abrir essa tela no Vimaps</a>
+                    <a href="javascript:" id="abrir-no-vimaps">Open object on Vimaps</a>
                 </div>
 
                 <div class="window-title-info">
-                    <a href="javascript:" id="ordenar-objetos">Ordenar objetos</a>
+                    <a href="javascript:" id="ordenar-objetos">Sort Objects</a>
                 </div>
 
                 <div class="window-title-info">
-                    <a href="javascript:" id="mostrar-participantes">Participantes</a>
+                    <a href="javascript:" id="mostrar-participantes">Participants</a>
                 </div>
 
 
                 @if (User.Identity.GetUserId<long>() == Model.Usuario.Handle)
                 {
                     <div class="window-title-info direita">
-                        @Html.ActionLink("Excluir esta sessão", "ExcluirSessao", new { id = Model.Handle, objetoid = ViewBag.ObjectId }, new { onclick = "return confirm('Tem certeza que deseja excluir esta sessão inteira, com todos os objetos e elementos?')" })
+                        @Html.ActionLink("Delete this session", "ExcluirSessao", new { id = Model.Handle, objetoid = ViewBag.ObjectId }, new { onclick = "return confirm('Tem certeza que deseja excluir esta sessão inteira, com todos os objetos e elementos?')" })
                     </div>
                 }
 
-                @if (User.Identity.GetUserId<long>() == ViewBag.IdDonoObjeto)
+                @if (ViewBag.DonoDoObjeto == true)
                 {
                     <div class="window-title-info direita">
-                        @Html.ActionLink("Excluir este objeto da sessão", "ExcluirObjetoDaSessao", new { id = Model.Handle, objetoid = ViewBag.ObjectId }, new { onclick = "return confirm('Tem certeza que deseja excluir este objeto e todos os elementos multimídia da sessão?')" })
+                        @Html.ActionLink("Delete this object from session", "ExcluirObjetoDaSessao", new { id = Model.Handle, objetoid = ViewBag.ObjectId }, new { onclick = "return confirm('Tem certeza que deseja excluir este objeto e todos os elementos multimídia da sessão?')" })
                     </div>
                 }
 
@@ -162,51 +164,51 @@
                     <div class="bg-overlay"></div>
                     <div class="miniaturas">
 
-                    @if (Model.ObjetosDaSessao.Count > 0)
-                    {
-                        if (ViewBag.NovoObjeto != null)
+                        @if (Model.ObjetosDaSessao.Count > 0)
                         {
-                            <ul id="sortable-novo" class="listas-sortable">
-                                <li data-id="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle})" class="miniatura @(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")">
-                                    <img data-createdtime="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().DataCriacao.ToString()" data-authorname="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")" />
-                                </li>
-                                <li class="miniatura info">
-                                    <img class="icon-arrow" src="/Content/icons/arrow.png" />
-                                    <h3>Esse é o seu novo objeto!</h3>
-                                    Arraste ele para a lista abaixo, na posição que ele deve ficar.
-                                </li>
-                            </ul>
+                            if (ViewBag.NovoObjeto != null)
+                            {
+                                <ul id="sortable-novo" class="listas-sortable">
+                                    <li data-id="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle})" class="miniatura @(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")">
+                                        <img data-createdtime="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().DataCriacao.ToString()" data-authorname="@Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == @Model.ObjetosDaSessao.Where(x => x.Handle == ViewBag.NovoObjeto).FirstOrDefault().Handle ? "selecionado" : "")" />
+                                    </li>
+                                    <li class="miniatura info">
+                                        <img class="icon-arrow" src="/Content/icons/arrow.png" />
+                                        <h3>Esse é o seu novo objeto!</h3>
+                                        Arraste ele para a lista abaixo, na posição que ele deve ficar.
+                                    </li>
+                                </ul>
+                            }
+
+                            @*
+                                <ul id="sortable" class="listas-sortable">
+
+                                    @foreach (var os in @Model.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
+                                    {
+                                        <li data-id="@os.Handle" data-order="@os.Ordem" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
+                                            <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == os.Handle ? "selecionado" : "")" />
+                                            <div class="noti_bubble">2</div>
+                                        </li>
+                                    }
+
+                                </ul>
+                            *@
+
+                            <div class="list-scroll">
+                                @foreach (var os in @Model.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
+                                {
+                                    <a data-id="@os.Handle" class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})">
+                                        <div data-id="@os.Handle" data-url="" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
+                                            <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
+                                        </div>
+                                    </a>
+                                }
+                            </div>
                         }
-
-                        @*
-                        <ul id="sortable" class="listas-sortable">
-
-                            @foreach (var os in @Model.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
-                            {
-                                <li data-id="@os.Handle" data-order="@os.Ordem" data-url="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
-                                    <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" class="@(ViewBag.ObjectId == os.Handle ? "selecionado" : "")" />
-                                    <div class="noti_bubble">2</div>
-                                </li>
-                            }
-
-                        </ul>
-                        *@
-
-                        <div class="list-scroll">
-                            @foreach (var os in @Model.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
-                            {
-                                <a data-id="@os.Handle" class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = @Model.Handle, objetoid = os.Handle})">
-                                    <div data-id="@os.Handle" data-url="" class="miniatura @(ViewBag.ObjectId == os.Handle ? "selecionado" : "")">
-                                        <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
-                                    </div>
-                                </a>
-                            }
-                        </div>
-                    }
-                    else
-                    {
-                        <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
-                    }
+                        else
+                        {
+                            <div> Esta sessão ainda não possui nenhum objeto. Para adicionar objetos, acesso o Vimaps. </div>
+                        }
 
                     </div>
                 </div>
@@ -293,7 +295,7 @@
 
             if (ordenando) {
                 //desligando ordenação
-                $(this).html("Ordenar objetos");
+                $(this).html("Reorder objects");
                 $(".list-scroll").sortable("disable");
                 $('.miniaturas').css("white-space", "nowrap");
                 $(document).tooltip('enable');
@@ -308,7 +310,7 @@
 
             } else {
                 //ligando ordenação
-                $(this).html("Terminar ordenação");
+                $(this).html("Finish reordering");
                 $('.list-scroll').slick('unslick');
                 $('.miniaturas').css("white-space", "normal");
                 $(document).tooltip('disable');
@@ -321,8 +323,8 @@
         });
 
         function ExcluirUsuarioDaSessao(id) {
-            
-            if (confirm("Tem certeza que deseja excluir este usuário da sessão?")) {
+
+            if (confirm("Are you sure you want to delete this user session?")) {
                 $.ajax({
                     type: "POST",
                     url: window.location.pathname.replace("MostrarSessao", "ExcluirUsuario"),
@@ -344,8 +346,8 @@
             @if (ViewBag.ObjectId != null)
             {
                 <text>
-                setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
-                </text>
+            setCanvasBackground('@Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlImagem');
+            </text>
             }
 
 
@@ -424,7 +426,7 @@
                 items: '[data-tooltip]',
                 content: function() {
                     return "<img class='img-tooltip' src='" + $(this).attr("src") + "' > <br />" +
-                        "Enviado por <b>" + $(this).attr("data-authorname") + "</b><br/>" +
+                        "Sent by <b>" + $(this).attr("data-authorname") + "</b><br/>" +
                         $(this).attr("data-createdtime");
                 },
                 show: {
@@ -448,41 +450,13 @@
                     );
                 }
             });
-
-
-            if (window.self !== window.top) { // está no iframe
-                $("#abrir-no-vimaps").click(function() {
-                    @if (Model.ObjetosDaSessao.Any())
-                {
-                    <text>
-                    parent.postMessage("url<|>@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)", "*");
-                    </text>
-                }
-
-                });
-                $("#minimizar-colaborativo").click(function() {
-                    parent.postMessage("fechar<|>yo", "*");
-                });
-            } else {
-                $("#abrir-no-vimaps").click(function() {
-                    @if (Model.ObjetosDaSessao.Any())
-                {
-                    <text>
-                    window.location.href = "@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)";
-                    </text>
-                }
-
-                });
-                $("#minimizar-colaborativo").parent().hide();
-            }
-
         })();
 
         var dono = "@Html.Raw(ViewBag.Dono)";
         var cordono = "#@Html.Raw(ViewBag.CorDono)";
 
         @if (ViewBag.LerElementos != null)
-    {
+        {
         <text>
         var json = @Html.Raw(ViewBag.LerElementos);
         canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function(o, object) {
@@ -498,6 +472,30 @@
         });
         </text>
     }
+
+        if (window.self !== window.top) { // está no iframe
+            $("#abrir-no-vimaps").click(function() {
+                @if (Model.ObjetosDaSessao.Any())
+                {
+                    <text>
+                parent.postMessage("url<|>@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)", "*");
+                </text>
+                }
+
+            });
+
+        } else {
+            $("#abrir-no-vimaps").click(function() {
+                @if (Model.ObjetosDaSessao.Any())
+                {
+                    <text>
+                window.location.href = "@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)";
+                </text>
+                }
+
+            });
+            $("#minimizar-colaborativo").parent().hide();
+        }
     </script>
 
 </body>

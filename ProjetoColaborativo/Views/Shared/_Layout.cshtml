@@ -24,7 +24,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Users", "Index", "Usuario")</li>
                     <li>@Html.ActionLink("Sessions", "Index", "Home")</li>
-                    <li style="display: none" id="btnMinimizar"><a href="javascript:" id="minimizar-colaborativo-master">Minimizar colaborativo</a></li>
+                    <li style="display: none" id="btnMinimizar"><a href="javascript: parent.postMessage('fechar<|>yo', '*');" id="minimizar-colaborativo-master">Minimize SisColMet</a></li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
@@ -42,16 +42,13 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    <script>
-        $("#minimizar-colaborativo-master").click(function () {
-            parent.postMessage("fechar<|>yo", "*");
-        });
+<script>
+    
+    if (window.self !== window.top) { // está no iframe
+        $("#btnMinimizar").show();
+    }
 
-        if (window.self !== window.top) { // está no iframe
-            $("#btnMinimizar").show();
-        }
-
-    </script>
+</script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

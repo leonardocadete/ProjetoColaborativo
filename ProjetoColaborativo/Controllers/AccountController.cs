@@ -27,9 +27,10 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string returnUrl, string minimize)
         {
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Minimize = minimize == "1";
             return View();
         }
 
@@ -59,7 +60,7 @@ namespace ProjetoColaborativo.Controllers
         public ActionResult LogOff()
         {
             authenticationManager.SignOut();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Account", new { minimize = 1 });
         }
 
         [AllowAnonymous]
