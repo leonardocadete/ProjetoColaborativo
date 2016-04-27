@@ -108,7 +108,7 @@ else
                     @if (sessao.ObjetosDaSessao.Count > 0)
                     {
                         <div class="list-scroll">
-                            @foreach (var os in sessao.ObjetosDaSessao.Where(x => x.Handle != ViewBag.NovoObjeto).OrderBy(x => x.Ordem))
+                            @foreach (var os in sessao.ObjetosDaSessao.OrderBy(x => x.Ordem))
                             {
                                 <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
                                     <div data-id="@os.Handle" data-url="" class="miniatura">
