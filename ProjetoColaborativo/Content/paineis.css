@@ -229,7 +229,7 @@ ul {
                 float:left
             }
             
-.miniatura:not(.icon-arrow):not(.selecionado) img {
+.miniatura:not(.info):not(.selecionado) img {
     outline: 1px solid white;
     outline-offset: -4px;
 }
@@ -307,6 +307,27 @@ ul {
         color: #E74C3C;
     }
 
+    .window-title-info a.vimaps {
+        color: blue;
+        background: url('/Content/icons/vimaps16.png') no-repeat;
+        padding-left: 20px
+    }
+
+    .window-title-info a.participants {
+        background: url('/Content/icons/participants16.png') no-repeat;
+        padding-left: 20px
+    }
+
+    .window-title-info a.reorder {
+        background: url('/Content/icons/reorder16.png') no-repeat;
+        padding-left: 20px
+    }
+
+    .window-title-info a.delete {
+        background: url('/Content/icons/delete16.png') no-repeat;
+        padding-left: 20px
+    }
+    
     .window-title-info:hover a {
         color: #FFF;
     }
@@ -476,7 +497,7 @@ label {
 .list-scroll {
     width: 1000px;
     margin: auto;
-    max-height: 550px;
+    max-height: 350px;
 }
 
 .slick-prev:before, .slick-next:before { 

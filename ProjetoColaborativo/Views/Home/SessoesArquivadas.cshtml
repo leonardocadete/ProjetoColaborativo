@@ -1,0 +1,186 @@
+﻿@using Microsoft.AspNet.Identity
+@using NHibernate.Linq
+@using ProjetoColaborativo.Models.Entidades
+
+@{
+    ViewBag.Title = "Archived sessions";
+}
+
+
+<h1>My archived collaborative sessions</h1>
+
+@if (((NhQueryable<SessaoColaborativa>)ViewBag.MinhasSessoes).Any())
+{
+    foreach (SessaoColaborativa sessao in ViewBag.MinhasSessoes)
+    {
+        <div class="card-sessao" data-url="@Url.Action("EscolherSessao", "Vimaps", new {SessaoColaborativaId = sessao.Handle})">
+            <div class="bg-warning">
+
+                <div class="header">
+                    <a class="title">
+                        <span class="expand expand-more"></span>
+                        @using (Ajax.BeginForm("RenomearSessao", "Vimaps", null, new AjaxOptions { OnSuccess = "RenameOk" }, new { style = "display: none", id = string.Format("rename-form-{0}", sessao.Handle) }))
+                        {
+                            <input type="text" name="nome" id="nome" value="@sessao.Descricao" />
+                            <input type="hidden" name="id" id="id" value="@sessao.Handle" />
+                            <input type="submit" />
+                        }
+                        <span id="label-title-@sessao.Handle">@sessao.Descricao</span>
+                    </a>
+                    <div class="session-controls">
+                        <a class="button-toolbar icon-rename" href="javascript: " onclick="Rename(@sessao.Handle)" title="Rename session">Rename session</a>
+                        @Html.ActionLink("Close session", "FecharSessao", "Vimaps", new { id = sessao.Handle }, new { title = "Close session", @class = "button-toolbar icon-close-session", onclick = "return confirm('Are you sure you want to close this session?')" })
+                        @Html.ActionLink("Unarchive session", "DesarquivarSessao", "Vimaps", new { id = sessao.Handle }, new { title = "Archive session", @class = "button-toolbar icon-unarchive", onclick = "return confirm('Are you sure you want to unarchive this session?')" })
+                        @Html.ActionLink("Delete session", "ExcluirSessao", "Vimaps", new { id = sessao.Handle }, new { title = "Delete session", @class = "button-toolbar icon-delete", onclick = "return confirm('Are you sure you want to delete this session?')" })
+
+                    </div>
+                    <div class="dados">
+                        created on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @(sessao.UsuariosDaSessao.Count + 1) participants
+                    </div>
+                </div>
+
+                <div class="miniaturas session-objects" style="display: none">
+                    @if (sessao.ObjetosDaSessao.Count > 0)
+                    {
+                        <div class="list-scroll">
+                            @foreach (var os in sessao.ObjetosDaSessao.OrderBy(x => x.Ordem))
+                            {
+                                <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
+                                    <div data-id="@os.Handle" data-url="" class="miniatura">
+                                        <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="margin: auto;"> This session does not have any object. To add objects, access the Vimaps. </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div> You do not have any session. </div>
+}
+
+
+
+
+<h1>Archived sessions shared with me</h1>
+
+@if (((NhQueryable<SessaoColaborativa>)ViewBag.SessoesQueParticipo).Any())
+{
+    foreach (SessaoColaborativa sessao in ViewBag.SessoesQueParticipo)
+    {
+        <div class="card-sessao shared" data-url="@Url.Action("EscolherSessao", "Vimaps", new {SessaoColaborativaId = sessao.Handle})">
+            <div class="bg-warning">
+
+                <div class="header">
+                    <a class="title">
+                        <span class="expand expand-more"></span>
+                        @sessao.Descricao
+                    </a>
+
+                    <div class="session-controls">
+                        @Html.ActionLink("Unarchive session", "DesarquivarSessao", "Vimaps", new { id = sessao.Handle }, new { title = "Archive session", @class = "button-toolbar icon-unarchive", onclick = "return confirm('Are you sure you want to unarchive this session?')" })
+
+                    </div>
+                    <div class="dados">
+                        created by <b>@sessao.Usuario.Nome</b>  on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @(sessao.UsuariosDaSessao.Count + 1) participants
+                    </div>
+                </div>
+
+                <div class="miniaturas session-objects" style="display: none">
+                    @if (sessao.ObjetosDaSessao.Count > 0)
+                    {
+                        <div class="list-scroll">
+                            @foreach (var os in sessao.ObjetosDaSessao.OrderBy(x => x.Ordem))
+                            {
+                                <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
+                                    <div data-id="@os.Handle" data-url="" class="miniatura">
+                                        <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="margin: auto;"> This session does not have any object. To add objects, access the Vimaps. </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div> You do not have any shared session. </div>
+}
+
+@if (ViewBag.NovoObjeto == null)
+{
+    <h1>Closed archived sessions</h1>
+
+    if (((NhQueryable<SessaoColaborativa>)ViewBag.SessoesFechadas).Any())
+    {
+        foreach (SessaoColaborativa sessao in ViewBag.SessoesFechadas)
+        {
+            <div class="card-sessao closed" data-url="@Url.Action("EscolherSessao", "Vimaps", new {SessaoColaborativaId = sessao.Handle})">
+                <div class="bg-warning">
+
+                    <div class="header">
+                        <a class="title">
+                            <span class="expand expand-more"></span>
+                            @sessao.Descricao
+                        </a>
+
+                        <div class="session-controls">
+                            @Html.ActionLink("Unarchive session", "DesarquivarSessao", "Vimaps", new { id = sessao.Handle }, new { title = "Archive session", @class = "button-toolbar icon-unarchive", onclick = "return confirm('Are you sure you want to unarchive this session?')" })
+
+                            @if ((User.Identity.GetUserId<long>()) == sessao.Usuario.Handle)
+                            {
+                                @Html.ActionLink("Reopen session", "AbrirSessao", "Vimaps", new { id = sessao.Handle }, new { title = "Reopen session", @class = "button-toolbar icon-open-session", onclick = "return confirm('Are you sure you want to reopen this session?')" })
+                            }
+
+                        </div>
+                        <div class="dados">
+                            created by <b>@sessao.Usuario.Nome</b> on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @(sessao.UsuariosDaSessao.Count + 1) participants
+                        </div>
+                    </div>
+
+                    <div class="miniaturas session-objects" style="display: none">
+                        @if (sessao.ObjetosDaSessao.Count > 0)
+                        {
+                            <div class="list-scroll">
+                                @foreach (var os in sessao.ObjetosDaSessao.OrderBy(x => x.Ordem))
+                            {
+                                    <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
+                                        <div data-id="@os.Handle" data-url="" class="miniatura">
+                                            <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
+                                        </div>
+                                    </a>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="margin: auto;"> This session does not have any object. To add objects, access the Vimaps. </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div> You do not have any session. </div>
+    }
+}

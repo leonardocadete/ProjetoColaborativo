@@ -245,12 +245,18 @@
     <Content Include="Content\icons\archive.png" />
     <Content Include="Content\icons\close-session.png" />
     <Content Include="Content\icons\cursor.png" />
+    <Content Include="Content\icons\delete16.png" />
     <Content Include="Content\icons\expandless.png" />
     <Content Include="Content\icons\expandmore.png" />
     <Content Include="Content\icons\movedown.png" />
     <Content Include="Content\icons\moveup.png" />
     <Content Include="Content\icons\open-session.png" />
+    <Content Include="Content\icons\participants.png" />
+    <Content Include="Content\icons\participants16.png" />
     <Content Include="Content\icons\rename.png" />
+    <Content Include="Content\icons\reorder16.png" />
+    <Content Include="Content\icons\unarchive.png" />
+    <Content Include="Content\icons\vimaps16.png" />
     <Content Include="Content\images\profile-img.jpg" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Scripts\jquery-ui.js" />
@@ -1162,6 +1168,8 @@
     <Content Include="Views\Vimaps\EscolherSessao.cshtml" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Vimaps\_ListaUsuariosDaSessao.cshtml" />
+    <Content Include="Views\Home\SessoesArquivadas.cshtml" />
+    <Content Include="Views\Home\_ListaUsuariosDaSessao.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

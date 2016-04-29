@@ -138,25 +138,25 @@
                 </div>
 
                 <div class="window-title-info">
-                    <a href="javascript:" id="abrir-no-vimaps">Open object on Vimaps</a>
+                    <a href="javascript:" class="vimaps" id="abrir-no-vimaps">Open object on Vimaps</a>
                 </div>
 
                 @if (ViewBag.Aberta == true)
                 {
                     <div class="window-title-info">
-                        <a href="javascript:" id="ordenar-objetos">Sort Objects</a>
+                        <a href="javascript:" class="reorder" id="ordenar-objetos">Sort Objects</a>
                     </div>
                 }
 
                 <div class="window-title-info">
-                    <a href="javascript:" id="mostrar-participantes">Participants</a>
+                    <a href="javascript:" class="participants" id="mostrar-participantes">Participants</a>
                 </div>
 
 
                 @if (ViewBag.DonoDoObjeto == true && ViewBag.Aberta == true)
                 {
                     <div class="window-title-info direita">
-                        @Html.ActionLink("Delete this object from session", "ExcluirObjetoDaSessao", new { id = Model.Handle, objetoid = ViewBag.ObjectId }, new { onclick = "return confirm('Tem certeza que deseja excluir este objeto e todos os elementos multimídia da sessão?')" })
+                        @Html.ActionLink("Delete this object from session", "ExcluirObjetoDaSessao", new {id = Model.Handle, objetoid = ViewBag.ObjectId}, new {onclick = "return confirm('Tem certeza que deseja excluir este objeto e todos os elementos multimídia da sessão?')", @class="delete"})
                     </div>
                 }
 
@@ -321,7 +321,7 @@
 
         });
 
-        function ExcluirUsuarioDaSessao(id) {
+        function ExcluirUsuarioDaSessao(id, usuarioid) {
 
             if (confirm("Are you sure you want to delete this user session?")) {
                 $.ajax({

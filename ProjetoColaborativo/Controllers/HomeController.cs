@@ -34,13 +34,13 @@ namespace ProjetoColaborativo.Controllers
                     .Consultar(x =>
                         x.Usuario == usuario // minhas sessoes
                         && x.Fechada != true
-                        && x.Arquivada == false
+                        //&& x.Arquivada == false
                     );
 
             var sessoesqueparticipo = _repositorioSessaoColaborativa
                     .Consultar(x =>
                         x.UsuariosDaSessao.Contains(usuario) // sessões que participo
-                        && x.Arquivada == false
+                        //&& x.Arquivada == false
                         && x.Fechada != true
                     );
 
@@ -52,7 +52,43 @@ namespace ProjetoColaborativo.Controllers
                             x.UsuariosDaSessao.Contains(usuario) // sessões que participo
                         )
                         && x.Fechada
-                        && x.Arquivada == false
+                        //&& x.Arquivada == false
+                    );
+
+            ViewBag.MinhasSessoes = minhassessoes;
+            ViewBag.SessoesFechadas = sessoesfechadas;
+            ViewBag.SessoesQueParticipo = sessoesqueparticipo;
+
+            return View();
+        }
+
+        public ActionResult SessoesArquivadas()
+        {
+            var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));
+
+            var minhassessoes = _repositorioSessaoColaborativa
+                    .Consultar(x =>
+                        x.Usuario == usuario // minhas sessoes
+                        && x.Fechada != true
+                        && x.Arquivada
+                    );
+
+            var sessoesqueparticipo = _repositorioSessaoColaborativa
+                    .Consultar(x =>
+                        x.UsuariosDaSessao.Contains(usuario) // sessões que participo
+                        && x.Arquivada
+                        && x.Fechada != true
+                    );
+
+            var sessoesfechadas = _repositorioSessaoColaborativa
+                    .Consultar(x =>
+                        (
+                            x.Usuario == usuario // minhas sessoes
+                            ||
+                            x.UsuariosDaSessao.Contains(usuario) // sessões que participo
+                        )
+                        && x.Fechada
+                        && x.Arquivada
                     );
 
             ViewBag.MinhasSessoes = minhassessoes;
@@ -72,5 +108,12 @@ namespace ProjetoColaborativo.Controllers
             return View();
         }
 
+        public ActionResult GetListaDeUsuariosDaSessao(long id)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            if (sessao == null)
+                return null;
+            return PartialView("_ListaUsuariosDaSessao", sessao);
+        }
     }
 }

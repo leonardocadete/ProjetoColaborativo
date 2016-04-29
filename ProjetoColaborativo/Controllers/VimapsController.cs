@@ -357,6 +357,20 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [Authorize]
+        public ActionResult DesarquivarSessao(long id)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            var usuario = _repositorioUsuarios.Retornar(User.Identity.GetUserId<long>());
+
+            if (sessao.Usuario.Handle == usuario.Handle)
+            {
+                sessao.Arquivada = false;
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
         public ActionResult BuscarElementosDosOutrosParticipantesJson(long id, long objetoid)
         {
             var sessao = _repositorioSessaoColaborativa.Retornar(id);
@@ -468,6 +482,14 @@ namespace ProjetoColaborativo.Controllers
         }
 
         public ActionResult GetListaDeUsuariosDaSessao(long id)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            if (sessao == null)
+                return null;
+            return PartialView("_ListaUsuariosDaSessao", sessao);
+        }
+
+        public ActionResult GetListaDeUsuariosDaSessaoHome(long id)
         {
             var sessao = _repositorioSessaoColaborativa.Retornar(id);
             if (sessao == null)

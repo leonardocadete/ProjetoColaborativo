@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNet.Identity
+@model ProjetoColaborativo.Models.Entidades.SessaoColaborativa
+
+
+<table class="table">
+
+    <tr>
+        <td style="width: 30px">
+            @if (!string.IsNullOrEmpty(@Model.Usuario.Foto))
+            {
+                <img style="border: solid 2px #@Model.Usuario.Cor" width="40px" src="@Model.Usuario.Foto" alt="@Model.Usuario.Nome" class="img-circle">
+            }
+            else
+            {
+                <img style="border: solid 2px #@Model.Usuario.Cor" width="40px" src="/Content/images/profile-img.jpg" alt="@Model.Usuario.Nome" class="img-circle">
+            }
+        </td>
+        <td> <b> @Model.Usuario.Nome </b> <br/> <small>@Model.Usuario.Email</small> </td>
+        <td style="width: 30px">
+            
+        </td>
+    </tr>
+    
+    @foreach (var p in @Model.UsuariosDaSessao)
+    {
+        <tr>
+            <td style="width: 50px">
+                @if (!string.IsNullOrEmpty(p.Foto))
+                {
+                    <img style="border: solid 2px #@p.Cor" width="40px" src="@p.Foto" alt="@p.Nome" class="img-circle">
+                }
+                else
+                {
+                    <img style="border: solid 2px #@p.Cor" width="40px" src="/Content/images/profile-img.jpg" alt="@p.Nome" class="img-circle">
+                }
+            </td>
+            <td> @p.Nome <br /> <small>@p.Email</small> </td>
+            <td style="width: 30px">
+                @if (User.Identity.GetUserId<long>() == Model.Usuario.Handle && Model.Fechada == false)
+                {
+                    <input type="button" value="" class="button-toolbar icon-delete" onclick="ExcluirUsuarioDaSessao(@Model.Handle, @p.Handle)" />
+                }
+            </td>
+        </tr>
+    }
+</table>

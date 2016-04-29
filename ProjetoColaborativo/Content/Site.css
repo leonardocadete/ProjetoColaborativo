@@ -174,8 +174,8 @@ ul {
     float: right;
 }
 
-    .card-sessao .bg-warning:hover  .button-toolbar {
-        display: block;
+    .card-sessao .bg-warning:hover .button-toolbar {
+        visibility: visible;
     }
 
 .button-toolbar {
@@ -189,7 +189,7 @@ ul {
     text-indent: -9999px;
     border-radius: 5px;
     background-color: #fff;
-    display: none;
+    visibility: hidden;
 }
 
 .button-toolbar:hover {
@@ -201,6 +201,9 @@ ul {
 }
 .icon-archive {
     background-image: url('/Content/icons/archive.png');
+}
+.icon-unarchive {
+    background-image: url('/Content/icons/unarchive.png');
 }
 .icon-close-session {
     background-image: url('/Content/icons/close-session.png');
@@ -217,3 +220,21 @@ ul {
 .icon-rename {
     background-image: url('/Content/icons/rename.png');
 }
+.icon-participants {
+    background-image: url('/Content/icons/participants.png');
+}
+
+.participantes-home {
+    width: 400px;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    border: solid 1px #e74c3c;
+    display: none;
+    float: left;
+    position: absolute;
+    margin-left: -400px;
+    z-index: 1;
+}
+
+.ui-autocomplete { position: absolute; cursor: default;z-index:2 !important;} 
