@@ -41,11 +41,16 @@ namespace ProjetoColaborativo.Controllers
                     .Consultar(x =>
                         x.UsuariosDaSessao.Contains(usuario) // sessões que participo
                         && x.Arquivada == false
+                        && x.Fechada != true
                     );
 
             var sessoesfechadas = _repositorioSessaoColaborativa
                     .Consultar(x =>
-                        x.Usuario == usuario // minhas sessoes
+                        (
+                            x.Usuario == usuario // minhas sessoes
+                            ||
+                            x.UsuariosDaSessao.Contains(usuario) // sessões que participo
+                        )
                         && x.Fechada
                         && x.Arquivada == false
                     );
