@@ -69,7 +69,6 @@ namespace ProjetoColaborativo.Controllers
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
-
         
         [Authorize]
         public ActionResult GetDadosUsuario(long idusuario)
@@ -300,6 +299,64 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        public ActionResult RenomearSessao(long id, string nome)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            var usuario = _repositorioUsuarios.Retornar(User.Identity.GetUserId<long>());
+
+            if (sessao.Usuario.Handle == usuario.Handle && !string.IsNullOrEmpty(nome))
+            {
+                sessao.Descricao = nome;
+                return Json(id, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("-1", JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        public ActionResult FecharSessao(long id)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            var usuario = _repositorioUsuarios.Retornar(User.Identity.GetUserId<long>());
+
+            if (sessao.Usuario.Handle == usuario.Handle)
+            {
+                sessao.Fechada = true;
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public ActionResult AbrirSessao(long id)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            var usuario = _repositorioUsuarios.Retornar(User.Identity.GetUserId<long>());
+
+            if (sessao.Usuario.Handle == usuario.Handle)
+            {
+                sessao.Fechada = false;
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public ActionResult ArquivarSessao(long id)
+        {
+            var sessao = _repositorioSessaoColaborativa.Retornar(id);
+            var usuario = _repositorioUsuarios.Retornar(User.Identity.GetUserId<long>());
+
+            if (sessao.Usuario.Handle == usuario.Handle)
+            {
+                sessao.Arquivada = true;
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
         public ActionResult BuscarElementosDosOutrosParticipantesJson(long id, long objetoid)
         {
             var sessao = _repositorioSessaoColaborativa.Retornar(id);
@@ -419,6 +476,7 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [Authorize]
+        [RequiresSSL]
         public ActionResult MostrarSessao(long? id, long? objetoid)
         {
             if (id == null)
@@ -439,6 +497,7 @@ namespace ProjetoColaborativo.Controllers
             ViewBag.Dono = usuario.Handle;
             ViewBag.CorDono = usuario.Cor;
             ViewBag.NovoObjeto = TempData["NovoObjeto"];
+            ViewBag.Aberta = sessao.Fechada == false;
             TempData["NovoObjeto"] = null;
             TempData["ThumbImageSavedURL"] = null;
             TempData["ThumbImageTNSavedURL"] = null;
@@ -570,5 +629,6 @@ namespace ProjetoColaborativo.Controllers
 
             return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
         }
+
     }
 }

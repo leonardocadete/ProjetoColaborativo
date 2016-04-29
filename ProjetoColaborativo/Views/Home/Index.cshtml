@@ -1,4 +1,5 @@
-﻿@using NHibernate.Linq
+﻿@using Microsoft.AspNet.Identity
+@using NHibernate.Linq
 @using ProjetoColaborativo.Models.Entidades
 @using ProjetoColaborativo.Models.Entidades.Mappings
 @{
@@ -23,12 +24,13 @@
     <div class="col-md-6" style="margin-top: 20px;">
 
         @using (Html.BeginForm("CriarSessaoColaborativa", "Vimaps", FormMethod.Post))
-        {<div class="input-group">
-                    <input type="text" name="descricao" id="descricao" class="form-control" placeholder="Name to collaborative session" required>
-                    <span class="input-group-btn">
-                        <input type="submit" class="btn btn-primary btn-block" value="Create collaborative session" />
-                    </span>
-                </div>
+        {
+            <div class="input-group">
+                <input type="text" name="descricao" id="descricao" class="form-control" placeholder="Name to collaborative session" required>
+                <span class="input-group-btn">
+                    <input type="submit" class="btn btn-primary btn-block" value="Create collaborative session" />
+                </span>
+            </div>
         }
 
     </div>
@@ -45,12 +47,25 @@
 
                 <div class="header">
                     <a class="title">
-                        <span class="expand-more"></span>
-                        @sessao.Descricao
-                    </a><br />
-                    <span class="dados">
+                        <span class="expand expand-more"></span>
+                        @using (Ajax.BeginForm("RenomearSessao", "Vimaps", null, new AjaxOptions { OnSuccess = "RenameOk" }, new { style = "display: none", id = string.Format("rename-form-{0}", sessao.Handle) }))
+                        {
+                            <input type="text" name="nome" id="nome" value="@sessao.Descricao" />
+                            <input type="hidden" name="id" id="id" value="@sessao.Handle" />
+                            <input type="submit" />
+                        }
+                        <span id="label-title-@sessao.Handle">@sessao.Descricao</span>
+                    </a>
+                    <div class="session-controls">
+                        <a class="button-toolbar icon-rename" href="javascript: " onclick="Rename(@sessao.Handle)" title="Rename session">Rename session</a>
+                        @Html.ActionLink("Close session", "FecharSessao", "Vimaps", new { id = sessao.Handle }, new { title = "Close session", @class = "button-toolbar icon-close-session", onclick = "return confirm('Are you sure you want to close this session?')" })
+                        @Html.ActionLink("Archive session", "ArquivarSessao", "Vimaps", new { id = sessao.Handle }, new { title = "Archive session", @class = "button-toolbar icon-archive", onclick = "return confirm('Are you sure you want to archive this session?')" })
+                        @Html.ActionLink("Delete session", "ExcluirSessao", "Vimaps", new { id = sessao.Handle }, new { title = "Delete session", @class = "button-toolbar icon-delete", onclick = "return confirm('Are you sure you want to delete this session?')" })
+
+                    </div>
+                    <div class="dados">
                         created on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @(sessao.UsuariosDaSessao.Count + 1) participants
-                    </span>
+                    </div>
                 </div>
 
                 <div class="miniaturas session-objects" style="display: none">
@@ -91,17 +106,22 @@ else
 {
     foreach (SessaoColaborativa sessao in ViewBag.SessoesQueParticipo)
     {
-        <div class="card-sessao" data-url="@Url.Action("EscolherSessao", "Vimaps", new {SessaoColaborativaId = sessao.Handle})">
+        <div class="card-sessao shared" data-url="@Url.Action("EscolherSessao", "Vimaps", new {SessaoColaborativaId = sessao.Handle})">
             <div class="bg-warning">
 
                 <div class="header">
                     <a class="title">
-                        <span class="expand-more"></span>
+                        <span class="expand expand-more"></span>
                         @sessao.Descricao
-                    </a><br />
-                    <span class="dados">
-                        created on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @(sessao.UsuariosDaSessao.Count + 1) participants
-                    </span>
+                    </a>
+
+                    <div class="session-controls">
+                        @Html.ActionLink("Archive session", "ArquivarSessao", "Vimaps", new { id = sessao.Handle }, new { title = "Archive session", @class = "button-toolbar icon-archive", onclick = "return confirm('Are you sure you want to archive this session?')" })
+                        
+                    </div>
+                    <div class="dados">
+                        created by <b>@sessao.Usuario.Nome</b>  on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @(sessao.UsuariosDaSessao.Count + 1) participants
+                    </div>
                 </div>
 
                 <div class="miniaturas session-objects" style="display: none">
@@ -133,6 +153,65 @@ else
     <div> You do not have any shared session. </div>
 }
 
+
+<h1>Closed sessions</h1>
+
+@if (((NhQueryable<SessaoColaborativa>)ViewBag.SessoesFechadas).Any())
+{
+    foreach (SessaoColaborativa sessao in ViewBag.SessoesFechadas)
+    {
+        <div class="card-sessao closed" data-url="@Url.Action("EscolherSessao", "Vimaps", new {SessaoColaborativaId = sessao.Handle})">
+            <div class="bg-warning">
+
+                <div class="header">
+                    <a class="title">
+                        <span class="expand expand-more"></span>
+                        @sessao.Descricao
+                    </a>
+
+                    <div class="session-controls">
+                        @Html.ActionLink("Archive session", "ArquivarSessao", "Vimaps", new { id = sessao.Handle }, new { title = "Archive session", @class = "button-toolbar icon-archive", onclick = "return confirm('Are you sure you want to archive this session?')" })
+
+                        @if ((User.Identity.GetUserId<long>()) == sessao.Usuario.Handle)
+                        {
+                            @Html.ActionLink("Reopen session", "AbrirSessao", "Vimaps", new {id = sessao.Handle}, new {title = "Reopen session", @class = "button-toolbar icon-open-session", onclick = "return confirm('Are you sure you want to reopen this session?')"})
+                        }
+                        
+                    </div>
+                    <div class="dados">
+                        created by <b>@sessao.Usuario.Nome</b> on @sessao.DataCriacao • @sessao.ObjetosDaSessao.Count objects • @(sessao.UsuariosDaSessao.Count + 1) participants
+                    </div>
+                </div>
+
+                <div class="miniaturas session-objects" style="display: none">
+                    @if (sessao.ObjetosDaSessao.Count > 0)
+                    {
+                        <div class="list-scroll">
+                            @foreach (var os in sessao.ObjetosDaSessao.OrderBy(x => x.Ordem))
+                            {
+                                <a class="session-title" href="@Url.Action("MostrarSessao", "Vimaps", new {id = sessao.Handle, objetoid = os.Handle})">
+                                    <div data-id="@os.Handle" data-url="" class="miniatura">
+                                        <img data-createdtime="@os.DataCriacao.ToString()" data-authorname="@os.Usuario.Nome" data-tooltip="" src="@string.Format("{0}?{1}", os.UrlMiniatura, DateTime.Now.Ticks)" />
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="margin: auto;"> This session does not have any object. To add objects, access the Vimaps. </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div> You do not have any session. </div>
+}
+
 @section styles{
     <link href="/Content/slick.css" rel="stylesheet" />
     <link href="/Content/slick-theme.css" rel="stylesheet" />
@@ -142,33 +221,56 @@ else
     <script src="/Scripts/slick.min.js"></script>
 
     <script>
+
+        function Rename(id) {
+            if ($("#label-title-" + id).is(":visible")) {
+                $("#label-title-" + id).hide();
+                $("#rename-form-" + id).show();
+            } else {
+                $("#label-title-" + id).show();
+                $("#rename-form-" + id).hide();
+            }
+        }
+
+        function RenameOk(response) {
+            if (response)
+            {
+                $("#label-title-" + response).html($("#rename-form-" + response).find("#nome").val());
+                $("#label-title-" + response).show();
+                $("#rename-form-" + response).hide();
+            }
+        }
+
         $('.list-scroll').slick({
             slidesToShow: 5,
             slidesToScroll: 5,
             infinite: false
         });
 
-        $(".card-sessao").on("click", function () {
+        $(".card-sessao").on("click", function() {
             var url = $(this).attr("data-url");
             if (url)
                 window.location.href = url;
         });
 
-        $(".card-sessao .expand-more").on("click", function (e) {
+        $(".button-toolbar, input").on("click focus", function(e) { e.stopPropagation(); });
+
+        var ddd;
+        $(".card-sessao .expand-more").on("click", function(e) {
             e.stopPropagation();
             var a = $(this);
 
-            a.removeClass("expand-more");
-            a.removeClass("expand-less");
+            $(".expand").removeClass("expand-more");
+            $(".expand").removeClass("expand-less");
+            $(".expand").addClass("expand-more");
 
             $(".session-objects").slideUp();
 
             if (!a.parents(".header").siblings(".session-objects").is(":visible")) {
                 a.parents(".header").siblings(".session-objects").slideDown();
-                a.parents(".header").siblings(".session-objects").children(".list-scroll").resize();
+                (a.parents(".header").siblings(".session-objects").children(".list-scroll"))[0].slick.refresh();
+                a.removeClass("expand-more");
                 a.addClass("expand-less");
-            } else {
-                a.addClass("expand-more");
             }
         });
     </script>

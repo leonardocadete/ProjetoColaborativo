@@ -38,7 +38,7 @@
             </td>
             <td> @p.Nome <br /> <small>@p.Email</small> </td>
             <td style="width: 30px">
-                @if (User.Identity.GetUserId<long>() == Model.Usuario.Handle)
+                @if (User.Identity.GetUserId<long>() == Model.Usuario.Handle && Model.Fechada == false)
                 {
                     <input type="button" value="" class="button-toolbar icon-delete" onclick="ExcluirUsuarioDaSessao(@p.Handle)" />
                 }

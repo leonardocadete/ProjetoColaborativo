@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
@@ -32,14 +33,25 @@ namespace ProjetoColaborativo.Controllers
             var minhassessoes = _repositorioSessaoColaborativa
                     .Consultar(x =>
                         x.Usuario == usuario // minhas sessoes
+                        && x.Fechada != true
+                        && x.Arquivada == false
                     );
 
             var sessoesqueparticipo = _repositorioSessaoColaborativa
                     .Consultar(x =>
                         x.UsuariosDaSessao.Contains(usuario) // sessões que participo
+                        && x.Arquivada == false
+                    );
+
+            var sessoesfechadas = _repositorioSessaoColaborativa
+                    .Consultar(x =>
+                        x.Usuario == usuario // minhas sessoes
+                        && x.Fechada
+                        && x.Arquivada == false
                     );
 
             ViewBag.MinhasSessoes = minhassessoes;
+            ViewBag.SessoesFechadas = sessoesfechadas;
             ViewBag.SessoesQueParticipo = sessoesqueparticipo;
 
             return View();
@@ -54,5 +66,6 @@ namespace ProjetoColaborativo.Controllers
         {
             return View();
         }
+
     }
 }

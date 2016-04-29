@@ -33,10 +33,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Users", "Index", "Usuario")</li>
                     <li>@Html.ActionLink("Sessions", "Index", "Home")</li>
                     <li style="display: none" id="btnMinimizar"><a href="javascript: parent.postMessage('fechar<|>yo', '*');" id="minimizar-colaborativo-master">Minimize SisColMet</a></li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -49,47 +47,50 @@
         <div>
             <canvas id="draw-canvas"></canvas>
 
-            <div class="toolbar">
-                <div class="drag window-title">Tools</div>
-                <div class="tools">
-                    <div class="bg"></div>
-                    <input type="button" value="" class="button-toolbar icon-cursor" />
-                    <input type="button" value="" class="button-toolbar icon-rect" />
-                    <input type="button" value="" class="button-toolbar icon-elipse" />
-                    <input type="button" value="" class="button-toolbar icon-pencil" />
-                    <input type="button" value="" class="button-toolbar icon-text" />
-                    <input type="button" value="" class="button-toolbar icon-pin" />
-                    <input type="button" value="" class="button-toolbar icon-youtube" />
-                    <input type="button" value="" class="button-toolbar icon-speaker" />
-                    <div class="clear"></div>
+            @if (ViewBag.Aberta == true)
+            {
+                <div class="toolbar">
+                    <div class="drag window-title">Tools</div>
+                    <div class="tools">
+                        <div class="bg"></div>
+                        <input type="button" value="" class="button-toolbar icon-cursor"/>
+                        <input type="button" value="" class="button-toolbar icon-rect"/>
+                        <input type="button" value="" class="button-toolbar icon-elipse"/>
+                        <input type="button" value="" class="button-toolbar icon-pencil"/>
+                        <input type="button" value="" class="button-toolbar icon-text"/>
+                        <input type="button" value="" class="button-toolbar icon-pin"/>
+                        <input type="button" value="" class="button-toolbar icon-youtube"/>
+                        <input type="button" value="" class="button-toolbar icon-speaker"/>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-            </div>
 
-            <div id="audio-record-toolbar" class="toolbar">
-                <div class="window-title">Record Audio</div>
-                <div class="tools">
-                    <div class="bg"></div>
-                    <input type="button" value="" class="button-toolbar icon-record" />
-                    <input type="button" value="" disabled="disabled" class="button-toolbar icon-play" />
-                    <input type="button" value="" disabled="disabled" class="button-toolbar icon-ok" />
-                    <input type="button" value="" class="button-toolbar icon-delete" />
-                    <div class="clear"></div>
+                <div id="audio-record-toolbar" class="toolbar">
+                    <div class="window-title">Record Audio</div>
+                    <div class="tools">
+                        <div class="bg"></div>
+                        <input type="button" value="" class="button-toolbar icon-record"/>
+                        <input type="button" value="" disabled="disabled" class="button-toolbar icon-play"/>
+                        <input type="button" value="" disabled="disabled" class="button-toolbar icon-ok"/>
+                        <input type="button" value="" class="button-toolbar icon-delete"/>
+                        <div class="clear"></div>
+                    </div>
                 </div>
-            </div>
 
-            <div id="video-record-toolbar" class="toolbar">
-                <div class="drag window-title">Record Video</div>
-                <div class="tools">
-                    <div class="bg"></div>
-                    <video id="videoPreview"></video><br />
-                    <input type="button" value="" class="button-toolbar icon-record" />
-                    <input type="button" value="" disabled="disabled" class="button-toolbar icon-play" />
-                    <input type="button" value="" disabled="disabled" class="button-toolbar icon-ok" />
-                    <input type="button" value="" class="button-toolbar icon-delete" />
-                    <div class="clear"></div>
+                <div id="video-record-toolbar" class="toolbar">
+                    <div class="drag window-title">Record Video</div>
+                    <div class="tools">
+                        <div class="bg"></div>
+                        <video id="videoPreview"></video><br />
+                        <input type="button" value="" class="button-toolbar icon-record" />
+                        <input type="button" value="" disabled="disabled" class="button-toolbar icon-play" />
+                        <input type="button" value="" disabled="disabled" class="button-toolbar icon-ok" />
+                        <input type="button" value="" class="button-toolbar icon-delete" />
+                        <div class="clear"></div>
+                    </div>
                 </div>
-            </div>
-
+            }
+            
             <div id="media-player-toolbar" class="toolbar">
                 <div class="drag window-title">Media Player</div>
                 <div class="tools">
@@ -109,8 +110,11 @@
                     <div class="bg"></div>
                     <div class="tools-content">
 
-                        <input type="text" style="width: 100%; margin: 3px" id="buscar-usuarios" name="buscar-usuarios" placeholder="User name to add..." />
-
+                        @if (ViewBag.Aberta == true)
+                        {
+                            <input type="text" style="width: 100%; margin: 3px" id="buscar-usuarios" name="buscar-usuarios" placeholder="User name to add..." />
+                        }
+                       
                         <div id="usuarios-da-sessao" style="max-height: 200px; overflow-y: scroll">
                             @Html.Partial("_ListaUsuariosDaSessao", @Model)
                         </div>
@@ -137,23 +141,19 @@
                     <a href="javascript:" id="abrir-no-vimaps">Open object on Vimaps</a>
                 </div>
 
-                <div class="window-title-info">
-                    <a href="javascript:" id="ordenar-objetos">Sort Objects</a>
-                </div>
+                @if (ViewBag.Aberta == true)
+                {
+                    <div class="window-title-info">
+                        <a href="javascript:" id="ordenar-objetos">Sort Objects</a>
+                    </div>
+                }
 
                 <div class="window-title-info">
                     <a href="javascript:" id="mostrar-participantes">Participants</a>
                 </div>
 
 
-                @if (User.Identity.GetUserId<long>() == Model.Usuario.Handle)
-                {
-                    <div class="window-title-info direita">
-                        @Html.ActionLink("Delete this session", "ExcluirSessao", new { id = Model.Handle, objetoid = ViewBag.ObjectId }, new { onclick = "return confirm('Tem certeza que deseja excluir esta sessão inteira, com todos os objetos e elementos?')" })
-                    </div>
-                }
-
-                @if (ViewBag.DonoDoObjeto == true)
+                @if (ViewBag.DonoDoObjeto == true && ViewBag.Aberta == true)
                 {
                     <div class="window-title-info direita">
                         @Html.ActionLink("Delete this object from session", "ExcluirObjetoDaSessao", new { id = Model.Handle, objetoid = ViewBag.ObjectId }, new { onclick = "return confirm('Tem certeza que deseja excluir este objeto e todos os elementos multimídia da sessão?')" })
@@ -218,13 +218,13 @@
     else
     {
         <div class="sem-objetos">
-            Esta sessão ainda não possui nenhum objeto. <br />
-            Para adicionar objetos acesse o
-            <a href="">Vimaps</a> ou
-            @Html.ActionLink("escolha outra sessão", "Index", "Home")
+            This session does not have any object. <br />
+            To add access objects the
+            <a id="minimize-empty" href="javascript: ">Vimaps</a> or
+            @Html.ActionLink("choose other session", "Index", "Home").
 
             <br /><br /><br /><br />
-            <a href="/teste_postar_imagem.html">Teste de envio de imagem</a>
+            @*<a href="/teste_postar_imagem.html">Teste de envio de imagem</a>*@
         </div>
     }
 
@@ -245,7 +245,7 @@
     @Scripts.Render("~/signalr/hubs")
     <script>
 
-        var idobjeto = @ViewBag.ObjectId;
+        var idobjeto = @(ViewBag.ObjectId ?? "null");
 
         $('.list-scroll').slick({
             slidesToShow: 5,
@@ -281,8 +281,7 @@
         $(".troggle-close").on("click", function() {
             $(this).closest(".toolbar").hide();
         });
-
-
+        
         $("#mostrar-participantes").on("click", function() {
             if ($("#participantes-toolbar").is(":visible"))
                 $("#participantes-toolbar").hide();
@@ -469,40 +468,54 @@
         var json = @Html.Raw(ViewBag.LerElementos);
         canvas1.loadFromJSON(json, canvas1.renderAll.bind(canvas1), function(o, object) {
 
-            if (object.iddono != dono) {
-                //object.selectable = false;
-
+            @if (ViewBag.Aberta == true)
+            {
+                <text> 
+                    if (object.iddono != dono) {
+                        object.lockRotation = true;
+                        object.lockScalingX = object.lockScalingY = true;
+                        object.lockMovementX = object.lockMovementY = true;
+                    }
+                </text>
+            }
+            else
+            {
+                <text>
                 object.lockRotation = true;
                 object.lockScalingX = object.lockScalingY = true;
                 object.lockMovementX = object.lockMovementY = true;
-
+                </text>
             }
         });
         </text>
-    }
+        }
 
         if (window.self !== window.top) { // está no iframe
             $("#abrir-no-vimaps").click(function() {
                 @if (Model.ObjetosDaSessao.Any())
                 {
                     <text>
-                parent.postMessage("url<|>@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)", "*");
-                </text>
+                    parent.postMessage("url<|>@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)", "*");
+                    </text>
                 }
-
             });
+
+            $("#minimize-empty").click(function() {
+                parent.postMessage("fechar<|>yo", "*");
+            });
+            
 
         } else {
             $("#abrir-no-vimaps").click(function() {
                 @if (Model.ObjetosDaSessao.Any())
                 {
                     <text>
-                window.location.href = "@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)";
-                </text>
+                    window.location.href = "@Html.Raw(Model.ObjetosDaSessao.FirstOrDefault(x => x.Handle == ViewBag.ObjectId).UrlOrigem)";
+                    </text>
                 }
-
             });
             $("#minimizar-colaborativo").parent().hide();
+            $("#minimize-empty").attr("href", "https://vimaps.hopto.org:8081/");
         }
     </script>
 

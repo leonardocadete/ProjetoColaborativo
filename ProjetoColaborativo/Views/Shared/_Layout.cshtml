@@ -22,10 +22,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Users", "Index", "Usuario")</li>
                     <li>@Html.ActionLink("Sessions", "Index", "Home")</li>
                     <li style="display: none" id="btnMinimizar"><a href="javascript: parent.postMessage('fechar<|>yo', '*');" id="minimizar-colaborativo-master">Minimize SisColMet</a></li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")

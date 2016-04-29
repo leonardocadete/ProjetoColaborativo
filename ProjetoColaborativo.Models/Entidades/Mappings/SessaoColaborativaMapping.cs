@@ -13,6 +13,8 @@ namespace ProjetoColaborativo.Models.Entidades.Mappings
 
             Map(x => x.DataCriacao, "DATACRIACAO").Not.Nullable();
             Map(x => x.Descricao, "DESCRICAO").Not.Nullable().Length(100);
+            Map(x => x.Fechada, "FECHADA").Default("0");
+            Map(x => x.Arquivada, "ARQUIVADA").Default("0");
 
             References(x => x.Usuario).Column("USUARIO");
 

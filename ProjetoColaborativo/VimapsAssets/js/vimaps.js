@@ -4,7 +4,7 @@
 
     console.log("starting collab...");
 
-    var urlbase = document.location.protocol + "//177.131.33.18:8080";
+    var urlbase = "https://siscolmet.hopto.org";
     //var urlbase = "https://colaborativo.azurewebsites.net";
 
     var script = document.createElement('script');
@@ -122,7 +122,7 @@
     var iframe = document.createElement("iframe");
     iframe.id = "iframeCollab";
     iframe.name = "iframeCollab";
-    iframe.src = "http://177.131.33.18:8080/";
+    iframe.src = "https://siscolmet.hopto.org/";
     iframe.frameBorder = "0";
 
     iframe.onload = function () {

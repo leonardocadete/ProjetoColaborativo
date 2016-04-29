@@ -99,7 +99,7 @@ ul {
 }
 
     .card-sessao .dados {
-        color: #999
+        color: #999;
     }
 
 .card-sessao .bg-warning {
@@ -109,6 +109,22 @@ ul {
 }
     .card-sessao .bg-warning:hover {
         background-color: #FBF4D2;
+    }
+
+    .shared .bg-warning {
+        background: #E2EEFC
+    }
+
+    .shared .bg-warning:hover {
+        background: #CBE0FA
+    }
+    
+    .closed .bg-warning {
+        background: #EFEFEF
+    }
+
+    .closed .bg-warning:hover {
+        background: #E2E2E2
     }
 
 .card-sessao .title {
@@ -152,4 +168,52 @@ ul {
     display: block;
     float: left;
     margin-right: 5px;
+}
+
+.session-controls {
+    float: right;
+}
+
+    .card-sessao .bg-warning:hover  .button-toolbar {
+        display: block;
+    }
+
+.button-toolbar {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    width: 32px;
+    height: 32px;
+    margin: 0 0 0 5px;
+    float: left;
+    text-indent: -9999px;
+    border-radius: 5px;
+    background-color: #fff;
+    display: none;
+}
+
+.button-toolbar:hover {
+    border: solid 1px #e74c3c;
+}
+
+.icon-delete {
+    background-image: url('/Content/icons/delete.png');
+}
+.icon-archive {
+    background-image: url('/Content/icons/archive.png');
+}
+.icon-close-session {
+    background-image: url('/Content/icons/close-session.png');
+}
+.icon-open-session {
+    background-image: url('/Content/icons/open-session.png');
+}
+.icon-moveup {
+    background-image: url('/Content/icons/moveup.png');
+}
+.icon-movedown {
+    background-image: url('/Content/icons/movedown.png');
+}
+.icon-rename {
+    background-image: url('/Content/icons/rename.png');
 }

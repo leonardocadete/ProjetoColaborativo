@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44385</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -233,6 +233,7 @@
     </Compile>
     <Compile Include="Mappers\UsuarioProfileMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequiresSSL.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Store\UserStore.cs" />
     <Compile Include="ValidationAttributes\CpfAttribute.cs" />
@@ -241,12 +242,20 @@
     <Compile Include="ViewModels\Usuario\UsuarioViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\icons\archive.png" />
+    <Content Include="Content\icons\close-session.png" />
     <Content Include="Content\icons\cursor.png" />
     <Content Include="Content\icons\expandless.png" />
     <Content Include="Content\icons\expandmore.png" />
+    <Content Include="Content\icons\movedown.png" />
+    <Content Include="Content\icons\moveup.png" />
+    <Content Include="Content\icons\open-session.png" />
+    <Content Include="Content\icons\rename.png" />
     <Content Include="Content\images\profile-img.jpg" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="teste.cur" />
     <Content Include="bgvimaps.png" />
     <Content Include="Content\ajax-loader.gif" />
