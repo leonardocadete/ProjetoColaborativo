@@ -100,7 +100,7 @@ function getDadosUsuario(id, callback) {
 
     $.ajax({
         type: "GET",
-        url: window.location.pathname.replace("MostrarSessao", "GetDadosUsuario"),
+        url: window.location.pathname.replace("MostrarSessaoIframe", "GetDadosUsuario"),
         data: { idusuario: id },
         success: function (data) {
             callback(data);
@@ -181,7 +181,7 @@ function SaveThumbnail() {
 
     $.ajax({
         type: "POST",
-        url: window.location.pathname.replace("MostrarSessao", "SalvarMiniatura"),
+        url: window.location.pathname.replace("MostrarSessaoIframe", "SalvarMiniatura"),
         data: { imgdata: image },
         success: function (data) {
             console.log(data);

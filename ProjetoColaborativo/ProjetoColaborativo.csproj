@@ -248,6 +248,8 @@
     <Content Include="Content\icons\delete16.png" />
     <Content Include="Content\icons\expandless.png" />
     <Content Include="Content\icons\expandmore.png" />
+    <Content Include="Content\icons\hangout-off.png" />
+    <Content Include="Content\icons\hangout-on.png" />
     <Content Include="Content\icons\movedown.png" />
     <Content Include="Content\icons\moveup.png" />
     <Content Include="Content\icons\open-session.png" />
@@ -257,6 +259,8 @@
     <Content Include="Content\icons\reorder16.png" />
     <Content Include="Content\icons\unarchive.png" />
     <Content Include="Content\icons\vimaps16.png" />
+    <Content Include="Content\icons\webcam-off.png" />
+    <Content Include="Content\icons\webcam-on.png" />
     <Content Include="Content\images\profile-img.jpg" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Scripts\jquery-ui.js" />
@@ -1128,6 +1132,7 @@
     <Content Include="Scripts\uuid.js" />
     <Content Include="Scripts\video.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="TesteVideo.html" />
     <Content Include="teste_postar_imagem.html" />
     <Content Include="Scripts\SignalRDirective.js" />
     <Content Include="VimapsAssets\css\vimaps.css" />
@@ -1170,6 +1175,7 @@
     <Content Include="Views\Vimaps\_ListaUsuariosDaSessao.cshtml" />
     <Content Include="Views\Home\SessoesArquivadas.cshtml" />
     <Content Include="Views\Home\_ListaUsuariosDaSessao.cshtml" />
+    <Content Include="Views\Vimaps\MostrarSessaoIframe.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

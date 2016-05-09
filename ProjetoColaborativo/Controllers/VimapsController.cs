@@ -34,7 +34,7 @@ namespace ProjetoColaborativo.Controllers
 
         [HttpPost]
         [Authorize]
-        [ActionName("MostrarSessao")]
+        [ActionName("MostrarSessaoIframe")]
         public ActionResult SalvarElementoMultimidia(long id, long objetoid, Guid guid, string json, bool remover = false)
         {
             var obj = _repositorioObjetosSessaoColaborativa.Retornar(objetoid);
@@ -69,7 +69,7 @@ namespace ProjetoColaborativo.Controllers
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
-        
+
         [Authorize]
         public ActionResult GetDadosUsuario(long idusuario)
         {
@@ -121,7 +121,7 @@ namespace ProjetoColaborativo.Controllers
             }
 
             _repositorioSessaoColaborativa.Salvar(sessao);
-            
+
             var atualizaElementosHub = new AtualizaElementos();
             atualizaElementosHub.Executar(sessao);
 
@@ -441,12 +441,12 @@ namespace ProjetoColaborativo.Controllers
             if (sessao == null)
                 return null;
 
-            var usuarios = _repositorioUsuarios.Consultar(x => x.Nome.StartsWith(term) 
+            var usuarios = _repositorioUsuarios.Consultar(x => x.Nome.StartsWith(term)
             && !sessao.UsuariosDaSessao.Contains(x)
             && x != sessao.Usuario)
-            .Select(x => new {Id = x.Handle, Nome = x.Nome}).ToList();
-            
-            return Json(usuarios,JsonRequestBehavior.AllowGet);
+            .Select(x => new { Id = x.Handle, Nome = x.Nome }).ToList();
+
+            return Json(usuarios, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AdicionarUsuario(long? id, long? usuarioid)
@@ -459,7 +459,7 @@ namespace ProjetoColaborativo.Controllers
             if (usuario == null)
                 return null;
 
-            if(!sessao.UsuariosDaSessao.Contains(usuario))
+            if (!sessao.UsuariosDaSessao.Contains(usuario))
                 sessao.UsuariosDaSessao.Add(usuario);
 
             return Json("ok");
@@ -497,9 +497,10 @@ namespace ProjetoColaborativo.Controllers
             return PartialView("_ListaUsuariosDaSessao", sessao);
         }
 
+
         [Authorize]
         [RequiresSSL]
-        public ActionResult MostrarSessao(long? id, long? objetoid)
+        public ActionResult MostrarSessaoIframe(long? id, long? objetoid)
         {
             if (id == null)
                 return RedirectToAction("EscolherSessao");
@@ -514,7 +515,7 @@ namespace ProjetoColaborativo.Controllers
                 return RedirectToAction("MostrarSessao", new { id = id, objetoid = sessao.ObjetosDaSessao.FirstOrDefault().Handle });
 
             var usuario = _repositorioUsuarios.Consultar(x => x.Handle.Equals(User.Identity.GetUserId<long>())).FirstOrDefault();
-            
+
             ViewBag.LerElementos = "null";
             ViewBag.Dono = usuario.Handle;
             ViewBag.CorDono = usuario.Cor;
@@ -565,9 +566,29 @@ namespace ProjetoColaborativo.Controllers
         }
 
         [Authorize]
+        [RequiresSSL]
+        public ActionResult MostrarSessao(long? id, long? objetoid)
+        {
+            if (id == null)
+                return RedirectToAction("EscolherSessao");
+
+            var sessao = _repositorioSessaoColaborativa.Retornar(id.Value);
+            if (sessao == null)
+                return RedirectToAction("EscolherSessao");
+
+            var obj = sessao.ObjetosDaSessao.FirstOrDefault(x => x.Handle == objetoid);
+
+            if (obj == null && sessao.ObjetosDaSessao.Count > 0)
+                return RedirectToAction("MostrarSessao", new { id = id, objetoid = sessao.ObjetosDaSessao.FirstOrDefault().Handle });
+
+            ViewBag.CaminhoIframe = Url.Action("MostrarSessaoIframe", "Vimaps", new {id, objetoid});
+            return View(sessao);
+        }
+
+        [Authorize]
         public ActionResult EscolherSessao(string SessaoColaborativaId)
         {
-            if(string.IsNullOrEmpty(SessaoColaborativaId))
+            if (string.IsNullOrEmpty(SessaoColaborativaId))
                 return RedirectToAction("Index", "Home");
 
             var usuario = _repositorioUsuarios.Retornar(Convert.ToInt64(User.Identity.GetUserId()));

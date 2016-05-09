@@ -187,6 +187,22 @@ ul {
     background-image: url('/Content/icons/cursor.png');
 }
 
+.icon-camera-on {
+    background-image: url('/Content/icons/webcam-on.png');
+}
+
+.icon-camera-off {
+    background-image: url('/Content/icons/webcam-off.png');
+}
+
+.icon-hangout-on {
+    background-image: url('/Content/icons/hangout-on.png');
+}
+
+.icon-hangout-off {
+    background-image: url('/Content/icons/hangout-off.png');
+}
+
 /* thumbs */
 
 .miniaturas {
@@ -510,4 +526,31 @@ label {
 
 .session-title {
     display: inline-table;
+}
+
+#videoConferenceConteiner {
+    margin: auto;
+    width: 300px;
+    float: right;
+    overflow: hidden;
+}
+
+#videoConferenceConteiner #controls {
+    float: right;
+}
+
+#remoteVideos {
+    
+}
+
+#remoteVideos video {
+    height: 45px;
+    float: right;
+    margin: 2px 5px;
+}
+
+#localVideo {
+    margin: 2px 0;
+    height: 45px;
+    float: right;
 }

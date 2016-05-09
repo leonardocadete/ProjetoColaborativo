@@ -18,7 +18,7 @@
 
     var atualizacao = function() {
 
-        $.getJSON( window.location.pathname.replace("MostrarSessao", "BuscarElementosDosOutrosParticipantesJson"), function( data ) {
+        $.getJSON( window.location.pathname.replace("MostrarSessaoIframe", "BuscarElementosDosOutrosParticipantesJson"), function( data ) {
             
             // sorting
             data.objects.forEach(function(d) {
