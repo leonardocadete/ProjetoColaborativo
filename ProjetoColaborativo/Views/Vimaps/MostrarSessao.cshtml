@@ -67,7 +67,8 @@
         webrtc = new SimpleWebRTC({
             localVideoEl: 'localVideo',
             remoteVideosEl: 'remoteVideos',
-            autoRequestMedia: false
+            autoRequestMedia: false,
+            media: { audio: true, video: false }
         });
 
         $("#bHangout").on("click", function () {

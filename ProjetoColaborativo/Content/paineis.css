@@ -537,6 +537,7 @@ label {
 
 #videoConferenceConteiner #controls {
     float: right;
+    margin-top: 10px;
 }
 
 #remoteVideos {
