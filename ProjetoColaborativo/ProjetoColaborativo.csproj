@@ -258,6 +258,7 @@
     <Content Include="Content\icons\rename.png" />
     <Content Include="Content\icons\reorder16.png" />
     <Content Include="Content\icons\unarchive.png" />
+    <Content Include="Content\icons\upload.png" />
     <Content Include="Content\icons\vimaps16.png" />
     <Content Include="Content\icons\webcam-off.png" />
     <Content Include="Content\icons\webcam-on.png" />

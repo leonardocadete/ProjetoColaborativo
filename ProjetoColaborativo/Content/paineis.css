@@ -203,6 +203,10 @@ ul {
     background-image: url('/Content/icons/hangout-off.png');
 }
 
+.icon-upload {
+    background-image: url('/Content/icons/upload.png');
+}
+
 /* thumbs */
 
 .miniaturas {

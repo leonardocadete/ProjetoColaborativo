@@ -766,3 +766,81 @@ $('html').keyup(function (e) {
             canvas1.getActiveObject().remove();
     }
 });
+
+
+$("#audio-record-toolbar .icon-upload").on('click', function () {
+    $(this).siblings("input[type='file']").click();
+});
+$("#video-record-toolbar .icon-upload").on('click', function () {
+    $(this).siblings("input[type='file']").click();
+});
+
+$('#audio-file').change(function () {
+    var blob = this.files[0];
+    
+    var id = $("#audio-record-toolbar input[type='button'].icon-ok").attr("data-objectid");
+
+    var fd = new FormData();
+    fd.append('file', blob);
+    fd.append('objectid', id);
+    $.ajax({
+        type: 'POST',
+        url: '/Vimaps/SendAudio',
+        data: fd,
+        processData: false,
+        contentType: false
+    }).done(function (data) {
+
+        if (audiostream)
+            audiostream.stop();
+
+        canvas1.forEachObject(function (d) {
+            if (d.id == id) {
+                d.mediasent = true;
+                d.naosalvar = false;
+                SaveObject(d, false);
+            }
+        });
+    });
+
+    $("#audio-record-toolbar input[type='button'].icon-play").attr("disabled", "disabled");
+    $("#audio-record-toolbar input[type='button'].icon-ok").attr("disabled", "disabled");
+    $("#audio-record-toolbar").fadeOut();
+
+});
+
+
+$('#video-file').change(function () {
+    var blob = this.files[0];
+    
+    var id = $("#video-record-toolbar input[type='button'].icon-ok").attr("data-objectid");
+
+    var fd = new FormData();
+    fd.append('file', blob);
+    fd.append('objectid', id);
+    $.ajax({
+        type: 'POST',
+        url: '/Vimaps/SendVideo',
+        data: fd,
+        processData: false,
+        contentType: false
+    }).done(function (data) {
+
+        if (stream) {
+            stream.stop();
+            stream = null;
+        }
+
+        canvas1.forEachObject(function (d) {
+            if (d.id == id) {
+                d.mediasent = true;
+                d.naosalvar = false;
+                SaveObject(d, false);
+            }
+        });
+    });
+
+    $("#video-record-toolbar input[type='button'].icon-play").attr("disabled", "disabled");
+    $("#video-record-toolbar input[type='button'].icon-ok").attr("disabled", "disabled");
+    $("#video-record-toolbar").fadeOut();
+});
