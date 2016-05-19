@@ -373,10 +373,6 @@
 
             $(".toolbar").draggable({ handle: ".drag" });
 
-            if (window.self !== window.top) { // está no iframe
-                $("#btnMinimizar").show();
-            }
-
             $(".list-scroll").sortable({
                 items: ".session-title",
                 connectWith: ".list-scroll",

@@ -89,7 +89,16 @@
             bc = !bc;
         });
 
+        window.addEventListener("message", function (event) {
+            parent.postMessage(event.data, "*");
+        });
+
+        if (window.self !== window.top) { // está no iframe
+            $("#btnMinimizar").show();
+        }
+
     })();
+
 </script>
 
 </body>
