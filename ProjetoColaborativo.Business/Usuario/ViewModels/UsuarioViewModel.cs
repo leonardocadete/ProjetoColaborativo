@@ -23,5 +23,7 @@ namespace ProjetoColaborativo.Business.Usuario.ViewModels
         [Required(ErrorMessage = "Cpf obrigatório")]
         [Cpf(ErrorMessage = "Cpf inváldo")]
         public string Cpf { get; set; }
+
+        public bool EhUsuarioLogado { get; set; }
     }
 }

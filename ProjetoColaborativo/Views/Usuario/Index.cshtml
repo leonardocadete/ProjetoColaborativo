@@ -38,8 +38,12 @@
             @item.Cpf
         </td>
         <td>
-            @Html.ActionLink("Editar", "Create", new { id = item.Handle })
-            @Html.ActionLink("Excluir", "Delete", new { id = item.Handle })
+            @if (item.EhUsuarioLogado)
+            {
+                @Html.ActionLink("Editar", "Create", new {id = item.Handle})
+                <spam>&nbsp&nbsp&nbsp</spam> 
+                @Html.ActionLink("Excluir", "Delete", new {id = item.Handle})
+            }
         </td>
     </tr>
     }

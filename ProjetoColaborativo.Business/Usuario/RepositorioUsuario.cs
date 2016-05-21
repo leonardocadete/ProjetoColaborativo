@@ -15,12 +15,17 @@ namespace ProjetoColaborativo.Business.Usuario
             this.repositorio = repositorio;
         }
 
-        public IEnumerable<UsuarioViewModel> ObterUsuarios(string q)
+        public IEnumerable<UsuarioViewModel> ObterUsuarios(string q, long handleUsuarioLogado = 0)
         {
             var usuarios = repositorio.RetornarTodos();
             if (q != null)
                 usuarios = usuarios.Where(x => x.Nome.Contains(q));
+
             var usuariosViewModel = Mapper.Map<IList<UsuarioViewModel>>(usuarios);
+
+            foreach (var usuario in usuariosViewModel.Where(usuario => usuario.Handle == handleUsuarioLogado))
+                usuario.EhUsuarioLogado = true;
+            
             return usuariosViewModel;
         }
 

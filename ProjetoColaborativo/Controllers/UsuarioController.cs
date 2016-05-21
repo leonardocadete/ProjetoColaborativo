@@ -36,7 +36,7 @@ namespace ProjetoColaborativo.Controllers
 
         public ActionResult Index(string q)
         {
-            return View(repositorioBusiness.ObterUsuarios(q));
+            return View(repositorioBusiness.ObterUsuarios(q, Convert.ToInt64(User.Identity.GetUserId())));
         }
 
         public ActionResult Create(long id = 0)
