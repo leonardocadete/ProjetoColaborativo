@@ -236,10 +236,7 @@
     <Compile Include="RequiresSSL.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Store\UserStore.cs" />
-    <Compile Include="ValidationAttributes\CpfAttribute.cs" />
     <Compile Include="ViewModels\Account\LoginViewModel.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\Usuario\UsuarioViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\icons\archive.png" />

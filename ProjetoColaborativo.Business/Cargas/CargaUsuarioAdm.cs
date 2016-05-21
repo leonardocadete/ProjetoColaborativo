@@ -1,15 +1,14 @@
 ﻿using System.Linq;
 using ProjetoColaborativo.Models.DAO;
-using ProjetoColaborativo.Models.Entidades;
 
 namespace ProjetoColaborativo.Business.Cargas
 {
     public class CargaUsuarioAdm : ICargaUsuarioAdm
     {
         private const string loginAdm = "admin";
-        private readonly IRepositorio<Usuario> repositorio;
+        private readonly IRepositorio<Models.Entidades.Usuario> repositorio;
 
-        public CargaUsuarioAdm(IRepositorio<Usuario> repositorio)
+        public CargaUsuarioAdm(IRepositorio<Models.Entidades.Usuario> repositorio)
         {
             this.repositorio = repositorio;
         }
@@ -19,7 +18,7 @@ namespace ProjetoColaborativo.Business.Cargas
             var userAdm = repositorio.Consultar(x => x.Login == loginAdm).FirstOrDefault();
 
             if (userAdm != null) return;
-            var user = new Usuario
+            var user = new Models.Entidades.Usuario
             {
                 Nome = "Administrador",
                 Login = "admin",

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using ProjetoColaborativo.Business.Usuario.ViewModels;
 using ProjetoColaborativo.Models.Entidades;
-using ProjetoColaborativo.ViewModels.Usuario;
 
 namespace ProjetoColaborativo.Mappers
 {

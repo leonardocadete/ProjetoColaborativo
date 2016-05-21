@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Web;
+using ProjetoColaborativo.Business.ViewModels;
 using ProjetoColaborativo.ValidationAttributes;
 
-namespace ProjetoColaborativo.ViewModels.Usuario
+namespace ProjetoColaborativo.Business.Usuario.ViewModels
 {
     public class UsuarioViewModel : BaseViewModel
     {

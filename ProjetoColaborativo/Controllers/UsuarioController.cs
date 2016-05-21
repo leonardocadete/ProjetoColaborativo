@@ -7,9 +7,9 @@ using System.Web.Mvc;
 using AutoMapper;
 using Microsoft.AspNet.Identity;
 using NHibernate;
+using ProjetoColaborativo.Business.Usuario.ViewModels;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
-using ProjetoColaborativo.ViewModels.Usuario;
 
 namespace ProjetoColaborativo.Controllers
 {

@@ -6,12 +6,12 @@ namespace ProjetoColaborativo.Business.Notificacao
 {
     public class RepositorioNotificacao : IRepositorioNotificacao
     {
-        private readonly IRepositorio<Usuario> repositorioUsuario;
+        private readonly IRepositorio<Models.Entidades.Usuario> repositorioUsuario;
         private readonly IRepositorio<SessaoColaborativa> repositorioSessao;
         private readonly IRepositorio<ObjetoSessao> repositorioObjeto; 
 
         public RepositorioNotificacao(
-            IRepositorio<Usuario> repositorioUsuario, 
+            IRepositorio<Models.Entidades.Usuario> repositorioUsuario, 
             IRepositorio<SessaoColaborativa> repositorioSessao, 
             IRepositorio<ObjetoSessao> repositorioObjeto)
         {
@@ -39,7 +39,7 @@ namespace ProjetoColaborativo.Business.Notificacao
             repositorioUsuario.Salvar(usuario);
         }
 
-        private static void AdicionarNotificacao(Usuario usuario, ObjetoSessao objetoSessao)
+        private static void AdicionarNotificacao(Models.Entidades.Usuario usuario, ObjetoSessao objetoSessao)
         {
             var notificacaoExistente = usuario.Notificacoes.FirstOrDefault(x => x.ObjetoSessao == objetoSessao);
             if (notificacaoExistente != null)
@@ -53,17 +53,17 @@ namespace ProjetoColaborativo.Business.Notificacao
                 });
         }
 
-        private static bool EhUsuarioLogado(long handleUsuarioLogado, Usuario usuario)
+        private static bool EhUsuarioLogado(long handleUsuarioLogado, Models.Entidades.Usuario usuario)
         {
             return usuario.Handle == handleUsuarioLogado;
         }
 
-        private Usuario ObterUsuario(long handleUsuario)
+        private Models.Entidades.Usuario ObterUsuario(long handleUsuario)
         {
             return repositorioUsuario.Retornar(handleUsuario);
         }
 
-        private static Models.Entidades.Notificacao ObterNotificacao(Usuario usuario, long handleObjetoSessao)
+        private static Models.Entidades.Notificacao ObterNotificacao(Models.Entidades.Usuario usuario, long handleObjetoSessao)
         {
             return usuario.Notificacoes.FirstOrDefault(x => x.ObjetoSessao.Handle == handleObjetoSessao);
         }

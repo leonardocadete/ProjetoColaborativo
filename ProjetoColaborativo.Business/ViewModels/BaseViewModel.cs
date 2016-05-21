@@ -1,4 +1,4 @@
-﻿namespace ProjetoColaborativo.ViewModels
+﻿namespace ProjetoColaborativo.Business.ViewModels
 {
     public class BaseViewModel
     {
