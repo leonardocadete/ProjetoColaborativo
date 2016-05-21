@@ -12,6 +12,7 @@ using NHibernate;
 using ProjetoColaborativo.Business.Cargas;
 using ProjetoColaborativo.Business.Extensions;
 using ProjetoColaborativo.Business.Notificacao;
+using ProjetoColaborativo.Business.Usuario;
 using ProjetoColaborativo.Hubs;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
@@ -49,6 +50,7 @@ namespace ProjetoColaborativo
 
             container.RegisterType<ICargaUsuarioAdm, CargaUsuarioAdm>();
             container.RegisterType<IRepositorioNotificacao, RepositorioNotificacao>();
+            container.RegisterType<IRepositorioUsuario, RepositorioUsuario>();
         }
         
         private static void RegisterRepositorios(IUnityContainer container)

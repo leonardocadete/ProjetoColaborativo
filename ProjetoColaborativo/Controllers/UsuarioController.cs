@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using Microsoft.AspNet.Identity;
 using NHibernate;
+using ProjetoColaborativo.Business.Usuario;
 using ProjetoColaborativo.Business.Usuario.ViewModels;
 using ProjetoColaborativo.Models.DAO;
 using ProjetoColaborativo.Models.Entidades;
@@ -19,31 +20,28 @@ namespace ProjetoColaborativo.Controllers
         private readonly IRepositorio<Usuario> repositorioUsuario;
         private readonly UserManager<Usuario> userManager;
         private readonly ISession session;
+        private readonly IRepositorioUsuario repositorioBusiness;
 
         public UsuarioController(
             IRepositorio<Usuario> repositorioUsuario, 
             UserManager<Usuario> userManager, 
-            ISession session)
+            ISession session, 
+            IRepositorioUsuario repositorioBusiness)
         {
             this.repositorioUsuario = repositorioUsuario;
             this.userManager = userManager;
             this.session = session;
+            this.repositorioBusiness = repositorioBusiness;
         }
 
         public ActionResult Index(string q)
         {
-            var usuarios = repositorioUsuario.RetornarTodos();
-            if (q != null)
-                usuarios = usuarios.Where(x => x.Nome.Contains(q));
-            var usuariosViewModel = Mapper.Map<IList<UsuarioViewModel>>(usuarios);
-            return View(usuariosViewModel);
+            return View(repositorioBusiness.ObterUsuarios(q));
         }
 
         public ActionResult Create(long id = 0)
         {
-            var usuario = repositorioUsuario.Retornar(id) ?? new Usuario();
-            var usuarioViewModel = Mapper.Map<UsuarioViewModel>(usuario);
-            return View(usuarioViewModel);
+            return View(repositorioBusiness.RetornarUsuario(id));
         }
 
         [HttpPost]
@@ -110,17 +108,14 @@ namespace ProjetoColaborativo.Controllers
 
         public ActionResult Delete(long id)
         {
-            var usuario = repositorioUsuario.Retornar(id);
-            var usuarioViewModel = Mapper.Map<UsuarioViewModel>(usuario);
-            return View(usuarioViewModel);
+            return View(repositorioBusiness.RetornarUsuario(id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            var usuario = repositorioUsuario.Retornar(id);
-            repositorioUsuario.Excluir(usuario);
+            repositorioBusiness.ExcluirUsuario(id);
             return RedirectToAction("Index");
         }
 
