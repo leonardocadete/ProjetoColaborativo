@@ -4,7 +4,7 @@
 
     console.log("starting collab...");
 
-    var urlbase = "https://siscolmet.hopto.org";
+    var urlbase = "https://i-ello.com";
     //var urlbase = "https://colaborativo.azurewebsites.net";
 
     var script = document.createElement('script');
@@ -14,6 +14,12 @@
     var script2 = document.createElement('script');
     script2.src = urlbase + "/VimapsAssets/js/html2canvas.js";
     document.getElementsByTagName('head')[0].appendChild(script2);
+
+            // canvg tava faltando
+            var script3 = document.createElement('script');
+            // script3.src = "https://canvg.github.io/canvg/canvg.js";
+            script3.src = urlbase + "/VimapsAssets/js/canvg.js";
+            document.getElementsByTagName('head')[0].appendChild(script3);
 
     var showiframe = false;
 
@@ -122,7 +128,7 @@
     var iframe = document.createElement("iframe");
     iframe.id = "iframeCollab";
     iframe.name = "iframeCollab";
-    iframe.src = "https://siscolmet.hopto.org/";
+    iframe.src = "https://i-ello.com/";
     iframe.frameBorder = "0";
 
     iframe.onload = function () {
@@ -163,5 +169,3 @@
     });
 
 })();
-
-
